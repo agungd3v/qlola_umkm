@@ -1,22 +1,20 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 
-class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({super.key});
+class AddEmployeeScreen extends StatefulWidget {
+  const AddEmployeeScreen({super.key});
 
   @override
-  State<AddProductScreen> createState() => _AddProductScreenState();
+  State<AddEmployeeScreen> createState() => _AddEmployeeScreenState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
-  final productName = TextEditingController();
-  final productPrice = TextEditingController();
-  bool favorite = false;
+class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
+  final employeeName = TextEditingController();
+  final employeePhone = TextEditingController();
   File? imageTemp;
 
   Future<void> _pickFromGallery() async {
@@ -109,11 +107,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -181,6 +174,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 20),
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
@@ -192,7 +186,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 decoration: InputDecoration(
                                   isDense: true,
                                   border: InputBorder.none,
-                                  hintText: "Nama produk",
+                                  hintText: "Nama pegawai",
                                   hintStyle: TextStyle(
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w400,
@@ -207,7 +201,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   fontSize: 12
                                 ),
                                 cursorColor: Theme.of(context).focusColor,
-                                controller: productName,
+                                controller: employeeName,
                               )
                             ),
                             const SizedBox(height: 12),
@@ -217,27 +211,50 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 border: Border.all(width: 1, color: Theme.of(context).dividerColor),
                                 borderRadius: BorderRadius.all(Radius.circular(6))
                               ),
-                              child: TextField(
-                                decoration: InputDecoration(
-                                  isDense: true,
-                                  border: InputBorder.none,
-                                  hintText: "Harga jual",
-                                  hintStyle: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w400,
-                                    color: Theme.of(context).disabledColor,
-                                    fontSize: 12
-                                  )
-                                ),
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontSize: 12
-                                ),
-                                keyboardType: TextInputType.number,
-                                cursorColor: Theme.of(context).focusColor,
-                                controller: productPrice,
+                              child: Row(
+                                children: [
+                                  Text(
+                                    "+62",
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).primaryColorDark,
+                                      fontSize: 12
+                                    )
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(child: TextField(
+                                    decoration: InputDecoration(
+                                      isDense: true,
+                                      border: InputBorder.none,
+                                      hintText: "No. Handphone",
+                                      hintStyle: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context).disabledColor,
+                                        fontSize: 12
+                                      )
+                                    ),
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).primaryColorDark,
+                                      fontSize: 12
+                                    ),
+                                    keyboardType: TextInputType.number,
+                                    cursorColor: Theme.of(context).focusColor,
+                                    controller: employeePhone,
+                                  ))
+                                ]
+                              )
+                            ),
+                            const SizedBox(height: 2),
+                            Text(
+                              "Contoh: 82179099557",
+                              style: TextStyle(
+                                fontFamily: "Poppins",
+                                color: Theme.of(context).disabledColor,
+                                fontSize: 10
                               )
                             )
                           ]
@@ -250,38 +267,54 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       ),
                       const SizedBox(height: 20),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
+                        margin: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Column(
                           children: [
-                            Expanded(child: Column(
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Produk Favorit",
+                                  "Outlet",
                                   style: TextStyle(
                                     fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w600,
-                                    color: Theme.of(context).primaryColor
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColorDark
                                   )
                                 ),
-                                Text(
-                                  "Tampilkan produk di posisi teratas",
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    color: Theme.of(context).primaryColorDark,
-                                    fontSize: 12
+                                GestureDetector(
+                                  onTap: () {},
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor,
+                                      borderRadius: BorderRadius.all(Radius.circular(4))
+                                    ),
+                                    child: Text(
+                                      "Pilih outlet",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.white,
+                                        fontSize: 10
+                                      )
+                                    )
                                   )
                                 )
                               ]
-                            )),
-                            const SizedBox(width: 12),
-                            Transform.scale(
-                              scale: 0.7,
-                              child: CupertinoSwitch(
-                                activeColor: Theme.of(context).primaryColor,
-                                trackColor: Theme.of(context).dividerColor,
-                                value: favorite,
-                                onChanged: (value) => setState(() => favorite = value),
+                            ),
+                            const SizedBox(height: 20),
+                            Container(
+                              width: 300,
+                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                              child: Text(
+                                'Tekan "Pilih Outlet" untuk memilih tempat pegawai bekerja',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  color: Theme.of(context).disabledColor,
+                                  fontSize: 10
+                                )
                               )
                             )
                           ]

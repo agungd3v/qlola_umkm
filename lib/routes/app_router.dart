@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/routes/tab_index.dart';
+import 'package:qlola_umkm/screens/add_employee.dart';
 import 'package:qlola_umkm/screens/add_outlet.dart';
 import 'package:qlola_umkm/screens/add_product.dart';
 import 'package:qlola_umkm/screens/employee.dart';
@@ -106,6 +107,14 @@ class AppRouter {
         parentNavigatorKey: _rootSuperNavigatorKey,
         builder: (context, state) {
           return AddOutletScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/add_employee',
+        name: 'Add Employee',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          return AddEmployeeScreen(key: state.pageKey);
         }
       )
     ]
