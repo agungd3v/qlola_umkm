@@ -62,6 +62,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       Image.asset("assets/icons/product_empty.png", width: 300, height: 200, fit: BoxFit.contain),
                       Column(
                         children: [
+                          const SizedBox(height: 12),
                           Text(
                             "Belum ada Produk",
                             style: TextStyle(
@@ -70,6 +71,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               color: Theme.of(context).primaryColorDark
                             )
                           ),
+                          const SizedBox(height: 12),
                           SizedBox(
                             width: 320,
                             child: Text(
