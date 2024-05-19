@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:qlola_umkm/routes/app_router.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Colors.white,
+    statusBarIconBrightness: Brightness.dark
+  ));
+
   await initLocalStorage();
   await dotenv.load(fileName: '.env');
 
@@ -23,6 +30,7 @@ class MyApp extends StatelessWidget {
         focusColor: Color(0xffc02a34),
         dividerColor: Color(0xffd6dfeb),
         disabledColor: Color(0xff6d7588),
+        primaryColorDark: Color(0xff292929),
         scaffoldBackgroundColor: Colors.white
       ),
       child: CupertinoApp.router(
