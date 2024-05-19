@@ -8,13 +8,13 @@ import 'package:qlola_umkm/routes/app_router.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await initLocalStorage();
+  await dotenv.load(fileName: '.env');
+
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.white,
     statusBarIconBrightness: Brightness.dark
   ));
-
-  await initLocalStorage();
-  await dotenv.load(fileName: '.env');
 
   runApp(MyApp());
 }
