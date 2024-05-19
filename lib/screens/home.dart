@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:qlola_umkm/utils/global_function.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -49,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Rp 0",
+                        transformPrice(0),
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w600,
@@ -81,7 +82,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Rp 0",
+                        transformPrice(0),
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w600,
@@ -113,7 +114,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Rp 0",
+                        transformPrice(0),
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w600,
@@ -145,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        "Rp 0",
+                        transformPrice(0),
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w600,
