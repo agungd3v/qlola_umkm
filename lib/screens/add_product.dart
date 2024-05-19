@@ -20,7 +20,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
   File? imageTemp;
 
   Future<void> _pickFromGallery() async {
-    // inspect("hello world");
     try {
       final image = await ImagePicker().pickImage(source: ImageSource.gallery);
       if (image == null) return;
