@@ -74,7 +74,7 @@ class _OutletScreenState extends State<OutletScreen> {
                               SizedBox(
                                 width: 320,
                                 child: Text(
-                                  'Pilih "Icon Plus" untuk menambahkan outlet kamu',
+                                  'Tekan "Icon Plus" untuk menambahkan outlet kamu',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "Poppins",

@@ -74,7 +74,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                               SizedBox(
                                 width: 320,
                                 child: Text(
-                                  'Pilih "Icon Plus" untuk menambahkan pegawai',
+                                  'Tekan "Icon Plus" untuk menambahkan pegawai',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "Poppins",

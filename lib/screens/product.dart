@@ -74,7 +74,7 @@ class _ProductScreenState extends State<ProductScreen> {
                               SizedBox(
                                 width: 320,
                                 child: Text(
-                                  'Pilih "Icon Plus" untuk menambahkan produk kamu ke dalam inventory',
+                                  'Tekan "Icon Plus" untuk menambahkan produk kamu ke dalam inventory',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "Poppins",
