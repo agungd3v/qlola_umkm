@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -43,14 +44,14 @@ class _ProductScreenState extends State<ProductScreen> {
                       ]
                     )),
                     GestureDetector(
-                      onTap: () => debugPrint("create new product"),
+                      onTap: () => context.pushNamed("Add Product"),
                       child: Image.asset("assets/icons/add_new.png", width: 30, height: 30)
                     )
                   ]
                 )
               ),
               Container(
-                height: 4,
+                height: 10,
                 color: Theme.of(context).dividerColor.withOpacity(0.5),
               ),
               Expanded(

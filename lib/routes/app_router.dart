@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/routes/tab_index.dart';
+import 'package:qlola_umkm/screens/add_product.dart';
 import 'package:qlola_umkm/screens/employee.dart';
 import 'package:qlola_umkm/screens/home.dart';
 import 'package:qlola_umkm/screens/outlet.dart';
@@ -89,6 +90,14 @@ class AppRouter {
             ]
           )
         ]
+      ),
+      GoRoute(
+        path: '/add_product',
+        name: 'Add Product',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          return AddProductScreen(key: state.pageKey);
+        },
       )
     ]
   );
