@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qlola_umkm/api/request.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -18,6 +19,20 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final productPrice = TextEditingController();
   bool favorite = false;
   File? imageTemp;
+  String? imagePath;
+
+  Future<void> _addproduct() async {
+    final Map<String, dynamic> data = {
+      "product_name": productName.text,
+      "product_price": productPrice.text,
+      "product_image": imagePath
+    };
+
+    final httpRequest = await add_product(data);
+    if (httpRequest["status"] == 200) {
+      Navigator.pop(context);
+    }
+  }
 
   Future<void> _pickFromGallery() async {
     try {
@@ -25,13 +40,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
       if (image == null) return;
 
       final imageFile = File(image.path);
-      setState(() => imageTemp = imageFile);
+      setState(() {
+        imageTemp = imageFile;
+        imagePath = image.path;
+      });
 
       FocusScope.of(context).unfocus();
     } on PlatformException catch (e) {
       inspect("failed pick image: $e");
     }
 
+    FocusScope.of(context).unfocus();
     Navigator.pop(context);
   }
 
@@ -301,7 +320,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: GestureDetector(
-                  onTap: () => debugPrint("store image"),
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    _addproduct();
+                  },
                   child: Container(
                     height: 40,
                     alignment: Alignment.center,
