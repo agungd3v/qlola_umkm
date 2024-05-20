@@ -21,3 +21,22 @@ Future sign_up(Map<String, dynamic> request) async {
     ...response
   };
 }
+
+Future sign_in(Map<String, dynamic> request) async {
+  final httpRequest = await http.post(
+    Uri.parse("${dotenv.env["API_URL"]}/signin"),
+    headers: <String, String> {
+      "accept": "application/json",
+      "content-type": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}"
+    },
+    body: jsonEncode(request)
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}

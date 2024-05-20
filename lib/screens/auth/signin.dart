@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:qlola_umkm/api/request.dart';
+import 'package:restart_app/restart_app.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -13,6 +18,21 @@ class _SigninScreenState extends State<SigninScreen> {
   final phone = TextEditingController();
   final password = TextEditingController();
   bool show_password = false;
+
+  Future<void> _signin() async {
+    final Map<String, dynamic> data = {
+      "phone": "+62${phone.text}",
+      "password": password.text
+    };
+
+    final httpRequest = await sign_in(data);
+    if (httpRequest["status"] == 200) {
+      localStorage.setItem("user", json.encode(httpRequest["user"]));
+      localStorage.setItem("token", httpRequest["token"]);
+
+      Restart.restartApp();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +160,10 @@ class _SigninScreenState extends State<SigninScreen> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
                 child: GestureDetector(
-                  onTap: () => debugPrint("signin"),
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    _signin();
+                  },
                   child: Container(
                     height: 38,
                     width: double.infinity,

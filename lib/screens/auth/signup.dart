@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/api/request.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -21,11 +18,6 @@ class _SignupScreenState extends State<SignupScreen> {
   bool show_password = false;
 
   Future<void> _signup() async {
-    // inspect(name.text);
-    // inspect(phone.text);
-    // inspect(email.text);
-    // inspect(password.text);
-    // inspect(business.text);
     final Map<String, dynamic> data = {
       "name" : name.text,
       "phone": "+62${phone.text}",
@@ -38,8 +30,6 @@ class _SignupScreenState extends State<SignupScreen> {
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
     }
-
-    FocusScope.of(context).unfocus();
   }
 
   @override
@@ -299,7 +289,10 @@ class _SignupScreenState extends State<SignupScreen> {
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
                 child: GestureDetector(
-                  onTap: () => _signup(),
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    _signup();
+                  },
                   child: Container(
                     height: 38,
                     width: double.infinity,
