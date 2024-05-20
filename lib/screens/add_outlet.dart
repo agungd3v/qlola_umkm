@@ -118,27 +118,41 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                               border: Border.all(width: 1, color: Theme.of(context).dividerColor),
                               borderRadius: BorderRadius.all(Radius.circular(6))
                             ),
-                            child: TextField(
-                              decoration: InputDecoration(
-                                isDense: true,
-                                border: InputBorder.none,
-                                hintText: "No. Telepon",
-                                hintStyle: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w400,
-                                  color: Theme.of(context).disabledColor,
-                                  fontSize: 12
-                                )
-                              ),
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).primaryColorDark,
-                                fontSize: 12
-                              ),
-                              keyboardType: TextInputType.number,
-                              cursorColor: Theme.of(context).focusColor,
-                              controller: outletPhone,
+                            child: Row(
+                              children: [
+                                Text(
+                                  "+62",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 12
+                                  )
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(child: TextField(
+                                  decoration: InputDecoration(
+                                    isDense: true,
+                                    border: InputBorder.none,
+                                    hintText: "No. Handphone",
+                                    hintStyle: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w400,
+                                      color: Theme.of(context).disabledColor,
+                                      fontSize: 12
+                                    )
+                                  ),
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 12
+                                  ),
+                                  keyboardType: TextInputType.number,
+                                  cursorColor: Theme.of(context).focusColor,
+                                  controller: outletPhone,
+                                ))
+                              ]
                             )
                           ),
                           const SizedBox(height: 12),
