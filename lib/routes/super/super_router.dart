@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:qlola_umkm/routes/tab_index.dart';
+import 'package:qlola_umkm/routes/super/tab_index.dart';
 import 'package:qlola_umkm/screens/add_employee.dart';
 import 'package:qlola_umkm/screens/add_outlet.dart';
 import 'package:qlola_umkm/screens/add_product.dart';
@@ -10,8 +10,8 @@ import 'package:qlola_umkm/screens/outlet.dart';
 import 'package:qlola_umkm/screens/product.dart';
 import 'package:qlola_umkm/screens/profile.dart';
 
-class AppRouter {
-  AppRouter._();
+class SuperRouter {
+  SuperRouter._();
 
   static String initSuperRoute = '/home';
   static final _rootSuperNavigatorKey = GlobalKey<NavigatorState>();
@@ -21,7 +21,7 @@ class AppRouter {
   static final _rootSuperNavigatorEmployee = GlobalKey<NavigatorState>(debugLabel: 'shellEmployee');
   static final _rootSuperNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
 
-  static final GoRouter superRouter = GoRouter(
+  static final GoRouter router = GoRouter(
     initialLocation: initSuperRoute,
     navigatorKey: _rootSuperNavigatorKey,
     debugLogDiagnostics: true,
