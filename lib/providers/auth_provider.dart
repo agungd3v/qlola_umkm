@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
 
@@ -20,7 +22,9 @@ class AuthProvider extends ChangeNotifier {
 
   AuthProvider() {
     final userStorage = localStorage.getItem("user");
-    _user = userStorage;
+    final tokenStorage = localStorage.getItem("token");
+    _user = jsonDecode(userStorage.toString());
+    _token = tokenStorage.toString();
 
     notifyListeners();
   }
