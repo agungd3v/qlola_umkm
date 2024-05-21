@@ -1,6 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qlola_umkm/api/request.dart';
 
 class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({super.key});
@@ -10,6 +14,24 @@ class EmployeeScreen extends StatefulWidget {
 }
 
 class _EmployeeScreenState extends State<EmployeeScreen> {
+  List<dynamic> employees = [];
+
+  Future<void> _getProduct() async {
+    final httpRequest = await get_employee();
+    if (httpRequest["status"] == 200) {
+      inspect(httpRequest);
+      setState(() {
+        employees = httpRequest["data"];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getProduct();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +86,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                   height: 10,
                   color: Theme.of(context).dividerColor.withOpacity(0.5),
                 ),
-                Expanded(
+                if (employees.isEmpty) Expanded(
                   child: Container(
                     alignment: Alignment.center,
                     child: Column(
@@ -100,7 +122,44 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                       ]
                     )
                   )
-                )
+                ),
+                if (employees.isNotEmpty) Expanded(child: GridView.count(
+                  shrinkWrap: true,
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 12,
+                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+                  children: [
+                    for (var index = 0; index < employees.length; index++) Column(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.all(Radius.circular(8))
+                          ),
+                          clipBehavior: Clip.hardEdge,
+                          child: Image.network(
+                            "${dotenv.env["ASSET_URL"]}${employees[index]["photo"]}",
+                            width: 70,
+                            height: 70,
+                            fit: BoxFit.cover
+                          )
+                        ),
+                        const SizedBox(height: 6),
+                        SizedBox(
+                          width: 70,
+                          child: Text(
+                            employees[index]["name"],
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              color: Theme.of(context).primaryColorDark,
+                              fontSize: 12
+                            )
+                          )
+                        )
+                      ]
+                    )
+                  ]
+                ))
               ]
             )
           ),
