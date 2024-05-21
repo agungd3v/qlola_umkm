@@ -65,3 +65,43 @@ Future add_product(Map<String, dynamic> request) async {
     ...json.decode(response.body)
   };
 }
+
+Future get_product() async {
+  final httpRequest = await http.get(
+    Uri.parse("${dotenv.env["API_URL"]}/product"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    }
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  }; 
+}
+
+Future add_employee(Map<String, dynamic> request) async {
+  final requestSend = http.MultipartRequest("POST", Uri.parse("${dotenv.env["API_URL"]}/employee"));
+  requestSend.headers.addAll(<String, String> {
+    "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+    "AUTHORIZATION": "Bearer ${auth_provider.token}"
+  });
+  requestSend.fields.addAll(<String, String> {
+    "name": request["name"],
+    "phone": request["phone"]
+  });
+  requestSend.files.add(await http.MultipartFile.fromPath("photo", request["photo"]));
+
+  final httpRequest = await requestSend.send();
+  final response = await http.Response.fromStream(httpRequest);
+
+  return <String, dynamic> {
+    "status": response.statusCode,
+    ...json.decode(response.body)
+  };
+}

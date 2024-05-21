@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:qlola_umkm/api/request.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({super.key});
@@ -16,6 +17,20 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final employeeName = TextEditingController();
   final employeePhone = TextEditingController();
   File? imageTemp;
+  String? imagePath;
+
+  Future<void> _addproduct() async {
+    final Map<String, dynamic> data = {
+      "name": employeeName.text,
+      "phone": "+62${employeePhone.text}",
+      "photo": imagePath
+    };
+
+    final httpRequest = await add_employee(data);
+    if (httpRequest["status"] == 200) {
+      Navigator.pop(context);
+    }
+  }
 
   Future<void> _pickFromGallery() async {
     try {
@@ -23,7 +38,10 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       if (image == null) return;
 
       final imageFile = File(image.path);
-      setState(() => imageTemp = imageFile);
+      setState(() {
+        imageTemp = imageFile;
+        imagePath = image.path;
+      });
 
       FocusScope.of(context).unfocus();
     } on PlatformException catch (e) {
@@ -339,7 +357,10 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: GestureDetector(
-                  onTap: () => debugPrint("store image"),
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    _addproduct();
+                  },
                   child: Container(
                     height: 40,
                     alignment: Alignment.center,
