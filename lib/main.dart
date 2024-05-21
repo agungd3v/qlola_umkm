@@ -7,6 +7,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/routes/auth_router.dart';
+import 'package:qlola_umkm/routes/employee/employee_router.dart';
 import 'package:qlola_umkm/routes/super/super_router.dart';
 
 Future<void> main() async {
@@ -42,7 +43,12 @@ class MyApp extends StatelessWidget {
     if (auth_provider.user == null) {
       router = AuthRouter.router;
     } else {
-      router = SuperRouter.router;
+      if (auth_provider.user["role"] == "owner") {
+        router = SuperRouter.router;
+      }
+      if (auth_provider.user["role"] == "karyawan") {
+        router = EmployeeRouter.router;
+      }
     }
 
     return Theme(
