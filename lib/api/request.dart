@@ -44,6 +44,24 @@ Future sign_in(Map<String, dynamic> request) async {
   };
 }
 
+Future sign_out() async {
+  final httpRequest = await http.post(
+    Uri.parse("${dotenv.env["API_URL"]}/logout"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}"
+    }
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}
+
 Future add_product(Map<String, dynamic> request) async {
   final requestSend = http.MultipartRequest("POST", Uri.parse("${dotenv.env["API_URL"]}/product"));
   requestSend.headers.addAll(<String, String> {
