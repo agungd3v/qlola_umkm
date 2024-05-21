@@ -50,7 +50,8 @@ Future sign_out() async {
     headers: <String, String> {
       "ACCEPT": "application/json",
       "CONTENT-TYPE": "application/json; charset=UTF-8",
-      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}"
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
     }
   );
 
