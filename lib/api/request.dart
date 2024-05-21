@@ -143,3 +143,22 @@ Future get_employee() async {
     ...response
   }; 
 }
+
+Future get_outlet_product() async {
+  final httpRequest = await http.get(
+    Uri.parse("${dotenv.env["API_URL"]}/outlet/product"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    }
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  }; 
+}

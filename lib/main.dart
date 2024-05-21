@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
+import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/routes/auth_router.dart';
 import 'package:qlola_umkm/routes/employee/employee_router.dart';
 import 'package:qlola_umkm/routes/super/super_router.dart';
@@ -24,7 +25,8 @@ Future<void> main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (create) => AuthProvider())
+        ChangeNotifierProvider(create: (create) => AuthProvider()),
+        ChangeNotifierProvider(create: (create) => CheckoutProvider())
       ],
       child: MyApp()
     )
