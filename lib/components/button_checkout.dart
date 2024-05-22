@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 
@@ -17,7 +18,9 @@ class _ButtonCheckoutState extends State<ButtonCheckout> {
     checkout_provider = Provider.of<CheckoutProvider>(context);
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        context.pushNamed("Checkout");
+      },
       child: Container(
         width: 150,
         height: 40,

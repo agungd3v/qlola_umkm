@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/routes/employee/tab_index.dart';
+import 'package:qlola_umkm/screens/employee/employee_checkout.dart';
 import 'package:qlola_umkm/screens/employee/employee_home.dart';
 import 'package:qlola_umkm/screens/employee/employee_order.dart';
 import 'package:qlola_umkm/screens/employee/employee_transaction.dart';
@@ -62,14 +63,14 @@ class EmployeeRouter {
           )
         ]
       ),
-      // GoRoute(
-      //   path: '/home',
-      //   name: 'Home',
-      //   parentNavigatorKey: _rootNavigatorKey,
-      //   builder: (context, state) {
-      //     return EmployeeHomeScreen(key: state.pageKey);
-      //   }
-      // )
+      GoRoute(
+        path: '/checkout',
+        name: 'Checkout',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) {
+          return EmployeeCheckoutScreen(key: state.pageKey);
+        }
+      )
     ]
   );
 }
