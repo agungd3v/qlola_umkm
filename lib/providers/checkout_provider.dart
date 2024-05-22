@@ -11,6 +11,7 @@ class CheckoutProvider extends ChangeNotifier {
     _cart_total = 0;
 
     if (_carts.any((item) => item["id"] == param["id"])) {
+      param["quantity"] += _carts[_carts.indexWhere((item) => item["id"] == param["id"])]["quantity"];
       _carts[_carts.indexWhere((item) => item["id"] == param["id"])] = param;
     } else {
       _carts.add(param);
