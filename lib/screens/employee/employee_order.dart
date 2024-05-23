@@ -92,7 +92,19 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
                                 "${dotenv.env["ASSET_URL"]}${products[index]["product_image"]}",
                                 width: 70,
                                 height: 70,
-                                fit: BoxFit.cover
+                                fit: BoxFit.cover,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    width: 70,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: Theme.of(context).primaryColor.withOpacity(0.2)
+                                    ),
+                                    child: Center(
+                                      child: Image.asset("assets/icons/image_crash.png", width: 25, height: 25)
+                                    )
+                                  );
+                                }
                               )
                             ),
                             const SizedBox(width: 12),

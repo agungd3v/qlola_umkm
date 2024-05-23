@@ -67,6 +67,18 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.2)
+                  ),
+                  child: Center(
+                    child: Image.asset("assets/icons/image_crash.png", width: 50, height: 50)
+                  )
+                );
+              },
             )
           ),
           const SizedBox(height: 10),
