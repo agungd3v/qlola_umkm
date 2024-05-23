@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -10,6 +11,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  dynamic transaction;
+
+  Future getHistory() async {
+    final httpRequest = await owner_transaction();
+    if (httpRequest["status"] == 200) {
+      setState(() {
+        transaction = httpRequest;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,25 +47,15 @@ class _HomeScreenState extends State<HomeScreen> {
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
         child: SafeArea(
           child: Container(
-            padding: const EdgeInsets.all(12),
+            padding: const EdgeInsets.all(20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "Laporan",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColorDark,
-                    fontSize: 14
-                  )
-                ),
-                const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                    color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.all(Radius.circular(6))
                   ),
                   child: Column(
@@ -57,18 +65,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Penjualan Mei 2024",
                         style: TextStyle(
                           fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 11
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white
                         )
                       ),
-                      const SizedBox(height: 4),
-                      Text(
+                      if (transaction == null) Text(
                         transformPrice(0),
                         style: TextStyle(
                           fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 20
+                        )
+                      ),
+                      if (transaction != null) Text(
+                        transformPrice(double.parse(transaction["transaction_nominal_month"])),
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 20
                         )
                       )
                     ]
@@ -77,9 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 const SizedBox(height: 12),
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(12),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
                   decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                    color: Theme.of(context).primaryColor,
                     borderRadius: BorderRadius.all(Radius.circular(6))
                   ),
                   child: Column(
@@ -89,82 +106,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         "Penjualan hari ini",
                         style: TextStyle(
                           fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 11
+                          fontWeight: FontWeight.w500,
+                          color: Colors.white
                         )
                       ),
-                      const SizedBox(height: 4),
-                      Text(
+                      if (transaction == null) Text(
                         transformPrice(0),
                         style: TextStyle(
                           fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
-                        )
-                      )
-                    ]
-                  )
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Saldo Wallet",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 11
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 20
                         )
                       ),
-                      const SizedBox(height: 4),
-                      Text(
-                        transformPrice(0),
+                      if (transaction != null) Text(
+                        transformPrice(double.parse(transaction["transaction_nominal_today"])),
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
-                        )
-                      )
-                    ]
-                  )
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Pengeluaran hari ini",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 11
-                        )
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        transformPrice(0),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w600,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          fontSize: 20
                         )
                       )
                     ]
