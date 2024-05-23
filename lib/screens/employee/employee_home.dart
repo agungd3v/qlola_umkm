@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:localstorage/localstorage.dart';
+import 'package:qlola_umkm/api/request.dart';
+import 'package:restart_app/restart_app.dart';
 
 class EmployeeHomeScreen extends StatefulWidget {
   const EmployeeHomeScreen({super.key});
@@ -9,6 +12,16 @@ class EmployeeHomeScreen extends StatefulWidget {
 }
 
 class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
+  Future<void> _signout() async {
+    final httpRequest = await sign_out();
+    if (httpRequest["status"] == 200) {
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+
+      Restart.restartApp();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -28,6 +41,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
         color: Colors.white,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Container(
               width: double.infinity,
@@ -57,6 +71,28 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                     )
                   )
                 ]
+              )
+            ),
+            GestureDetector(
+              onTap: () {
+                _signout();
+              },
+              child: Container(
+                width: double.infinity,
+                height: 40,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(6))
+                ),
+                child: Text(
+                  "Keluar",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white
+                  )
+                )
               )
             )
           ]
