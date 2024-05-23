@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -19,7 +17,6 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
   Future<void> _getProduct() async {
     final httpRequest = await get_employee();
     if (httpRequest["status"] == 200) {
-      inspect(httpRequest);
       setState(() {
         employees = httpRequest["data"];
       });
@@ -140,7 +137,17 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                             "${dotenv.env["ASSET_URL"]}${employees[index]["photo"]}",
                             width: 70,
                             height: 70,
-                            fit: BoxFit.cover
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 70,
+                                height: 70,
+                                color: Theme.of(context).primaryColor.withOpacity(0.2),
+                                child: Center(
+                                  child: Image.asset("assets/icons/profile.png", width: 30, height: 30)
+                                )
+                              );
+                            },
                           )
                         ),
                         const SizedBox(height: 6),

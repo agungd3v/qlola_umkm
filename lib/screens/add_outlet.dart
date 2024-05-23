@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:qlola_umkm/api/request.dart';
 
 class AddOutletScreen extends StatefulWidget {
   const AddOutletScreen({super.key});
@@ -12,6 +13,20 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
   final outletName = TextEditingController();
   final outletPhone = TextEditingController();
   final outletAddress = TextEditingController();
+
+  Future<void> _addoutlet() async {
+    final Map<String, dynamic> data = {
+      "outlet_name": outletName.text,
+      "outlet_phone": "+62${outletPhone.text}",
+      "outlet_address": outletAddress.text
+      // "outlet_image": imagePath
+    };
+
+    final httpRequest = await add_outlet(data);
+    if (httpRequest["status"] == 200) {
+      Navigator.pop(context);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +181,7 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 border: InputBorder.none,
-                                hintText: "Detail Alamat",
+                                hintText: "Detail Alamat (Optional)",
                                 hintStyle: TextStyle(
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
@@ -195,7 +210,10 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: GestureDetector(
-                  onTap: () => debugPrint("store image"),
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                    _addoutlet();
+                  },
                   child: Container(
                     height: 40,
                     alignment: Alignment.center,

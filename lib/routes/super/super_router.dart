@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/routes/super/tab_index.dart';
 import 'package:qlola_umkm/screens/add_employee.dart';
 import 'package:qlola_umkm/screens/add_outlet.dart';
+import 'package:qlola_umkm/screens/add_outlet_employee.dart';
 import 'package:qlola_umkm/screens/add_product.dart';
 import 'package:qlola_umkm/screens/employee.dart';
 import 'package:qlola_umkm/screens/home.dart';
@@ -107,6 +108,19 @@ class SuperRouter {
         parentNavigatorKey: _rootSuperNavigatorKey,
         builder: (context, state) {
           return AddOutletScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/add_outlet_employee',
+        name: 'Add Outlet Employee',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          final outlet = state.extra! as dynamic;
+
+          return AddOutletEmployeeScreen(
+            key: state.pageKey,
+            outlet: outlet,
+          );
         }
       ),
       GoRoute(

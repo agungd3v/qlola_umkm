@@ -144,9 +144,50 @@ Future get_employee() async {
   }; 
 }
 
+Future get_outlet() async {
+  final httpRequest = await http.get(
+    Uri.parse("${dotenv.env["API_URL"]}/outlet"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    }
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  }; 
+}
+
+Future add_outlet(Map<String, dynamic> request) async {
+  final requestSend = http.MultipartRequest("POST", Uri.parse("${dotenv.env["API_URL"]}/outlet"));
+  requestSend.headers.addAll(<String, String> {
+    "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+    "AUTHORIZATION": "Bearer ${auth_provider.token}"
+  });
+  requestSend.fields.addAll(<String, String> {
+    "outlet_name": request["outlet_name"],
+    "outlet_phone": request["outlet_phone"],
+    "outlet_address": request["outlet_address"]
+  });
+  // requestSend.files.add(await http.MultipartFile.fromPath("product_image", request["product_image"]));
+
+  final httpRequest = await requestSend.send();
+  final response = await http.Response.fromStream(httpRequest);
+
+  return <String, dynamic> {
+    "status": response.statusCode,
+    ...json.decode(response.body)
+  };
+}
+
 Future get_outlet_product() async {
   final httpRequest = await http.get(
-    Uri.parse("${dotenv.env["API_URL"]}/outlet/product"),
+    Uri.parse("${dotenv.env["API_URL"]}/employee/product"),
     headers: <String, String> {
       "ACCEPT": "application/json",
       "CONTENT-TYPE": "application/json; charset=UTF-8",

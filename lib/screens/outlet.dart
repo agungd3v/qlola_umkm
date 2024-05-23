@@ -1,6 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qlola_umkm/api/request.dart';
 
 class OutletScreen extends StatefulWidget {
   const OutletScreen({super.key});
@@ -10,6 +13,24 @@ class OutletScreen extends StatefulWidget {
 }
 
 class _OutletScreenState extends State<OutletScreen> {
+  List<dynamic> outlets = [];
+
+  Future<void> _getProduct() async {
+    final httpRequest = await get_outlet();
+    inspect(httpRequest);
+    if (httpRequest["status"] == 200) {
+      setState(() {
+        outlets = httpRequest["data"];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getProduct();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +85,7 @@ class _OutletScreenState extends State<OutletScreen> {
                   height: 10,
                   color: Theme.of(context).dividerColor.withOpacity(0.5),
                 ),
-                Expanded(
+                if (outlets.isEmpty) Expanded(
                   child: Container(
                     alignment: Alignment.center,
                     child: Column(
@@ -97,6 +118,121 @@ class _OutletScreenState extends State<OutletScreen> {
                             )
                           ]
                         )
+                      ]
+                    )
+                  )
+                ),
+                if (outlets.isNotEmpty) SingleChildScrollView(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 16),
+                        for (var index = 0; index < outlets.length; index++) GestureDetector(
+                          onTap: () {},
+                          child: Container(
+                            margin: index > 0 ? const EdgeInsets.only(top: 14) : const EdgeInsets.only(top: 0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 70,
+                                  height: 70,
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor.withOpacity(0.2),
+                                    borderRadius: BorderRadius.all(Radius.circular(8))
+                                  ),
+                                  clipBehavior: Clip.hardEdge,
+                                  child: Center(
+                                    child: Image.asset("assets/icons/outlet.png", width: 25, height: 25)
+                                  )
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(child: Container(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        outlets[index]["outlet_phone"],
+                                        style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).primaryColor,
+                                          fontSize: 12
+                                        )
+                                      ),
+                                      Text(
+                                        outlets[index]["outlet_name"],
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w700,
+                                          color: Theme.of(context).primaryColorDark
+                                        )
+                                      ),
+                                      const SizedBox(height: 10),
+                                      Row(
+                                        children: [
+                                          GestureDetector(
+                                            onTap: () {
+                                              context.pushNamed(
+                                                "Add Outlet Employee",
+                                                extra: outlets[index]
+                                              );
+                                            },
+                                            child: Container(
+                                              height: 24,
+                                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).primaryColor,
+                                                borderRadius: BorderRadius.all(Radius.circular(6))
+                                              ),
+                                              alignment: Alignment.center,
+                                              clipBehavior: Clip.hardEdge,
+                                              child: Text(
+                                                "Tambah Karyawan",
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.white,
+                                                  fontSize: 10
+                                                )
+                                              )
+                                            )
+                                          ),
+                                          const SizedBox(width: 6),
+                                          GestureDetector(
+                                            onTap: () {},
+                                            child: Container(
+                                              height: 24,
+                                              padding: const EdgeInsets.symmetric(horizontal: 12),
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).primaryColor,
+                                                borderRadius: BorderRadius.all(Radius.circular(6))
+                                              ),
+                                              alignment: Alignment.center,
+                                              clipBehavior: Clip.hardEdge,
+                                              child: Text(
+                                                "Tambah Produk",
+                                                style: TextStyle(
+                                                  fontFamily: "Poppins",
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.white,
+                                                  fontSize: 10
+                                                )
+                                              )
+                                            )
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                ))
+                              ]
+                            )
+                          )
+                        ),
+                        const SizedBox(height: 16)
                       ]
                     )
                   )
