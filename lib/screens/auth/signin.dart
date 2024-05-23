@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:another_flushbar/flushbar.dart';
 
 class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
@@ -31,7 +32,32 @@ class _SigninScreenState extends State<SigninScreen> {
       localStorage.setItem("token", httpRequest["token"]);
 
       Restart.restartApp();
+      return;
     }
+
+    Flushbar(
+      backgroundColor: Theme.of(context).primaryColor,
+      duration: Duration(seconds: 3),
+      reverseAnimationCurve: Curves.fastOutSlowIn,
+      flushbarPosition: FlushbarPosition.TOP,
+      titleText: Text(
+        "Autentikasi gagal",
+        style: TextStyle(
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+      messageText: Text(
+        httpRequest["message"],
+        style: TextStyle(
+          fontFamily: "Poppins",
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+    ).show(context);
   }
 
   @override
