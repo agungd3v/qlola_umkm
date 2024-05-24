@@ -10,6 +10,7 @@ import 'package:qlola_umkm/screens/home.dart';
 import 'package:qlola_umkm/screens/outlet.dart';
 import 'package:qlola_umkm/screens/product.dart';
 import 'package:qlola_umkm/screens/profile.dart';
+import 'package:qlola_umkm/screens/transaction.dart';
 
 class SuperRouter {
   SuperRouter._();
@@ -129,6 +130,14 @@ class SuperRouter {
         parentNavigatorKey: _rootSuperNavigatorKey,
         builder: (context, state) {
           return AddEmployeeScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/transaction',
+        name: 'Transaction',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          return TransactionScreen(key: state.pageKey);
         }
       )
     ]
