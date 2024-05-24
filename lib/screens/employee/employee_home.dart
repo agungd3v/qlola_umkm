@@ -24,11 +24,6 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: false,

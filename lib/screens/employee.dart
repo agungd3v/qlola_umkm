@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/components/employee/employee_item.dart';
 
 class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({super.key});
@@ -12,21 +12,13 @@ class EmployeeScreen extends StatefulWidget {
 }
 
 class _EmployeeScreenState extends State<EmployeeScreen> {
-  List<dynamic> employees = [];
-
-  Future<void> _getProduct() async {
+  Future<List> _getEmployee() async {
     final httpRequest = await get_employee();
     if (httpRequest["status"] == 200) {
-      setState(() {
-        employees = httpRequest["data"];
-      });
+      return httpRequest["data"] as List;
     }
-  }
 
-  @override
-  void initState() {
-    super.initState();
-    _getProduct();
+    return List.empty();
   }
 
   @override
@@ -83,90 +75,77 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                   height: 10,
                   color: Theme.of(context).dividerColor.withOpacity(0.5),
                 ),
-                if (employees.isEmpty) Expanded(
-                  child: Container(
-                    alignment: Alignment.center,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset("assets/icons/employee_empty.png", width: 400, height: 200, fit: BoxFit.contain),
-                        Column(
+                FutureBuilder(
+                  future: _getEmployee(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return Container(
+                        margin: const EdgeInsets.all(16),
+                        child: Text("Waiting connection...")
+                      );
+                    }
+                    if (snapshot.data!.isEmpty) {
+                      return Expanded(
+                        child: Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset("assets/icons/employee_empty.png", width: 400, height: 200, fit: BoxFit.contain),
+                              Column(
+                                children: [
+                                  const SizedBox(height: 12),
+                                  Text(
+                                    "Belum ada Pegawai",
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w700,
+                                      color: Theme.of(context).primaryColorDark
+                                    )
+                                  ),
+                                  const SizedBox(height: 12),
+                                  SizedBox(
+                                    width: 320,
+                                    child: Text(
+                                      'Tekan "Icon Plus" untuk menambahkan pegawai',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        color: Theme.of(context).primaryColorDark,
+                                        fontSize: 12
+                                      )
+                                    )
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        )
+                      );
+                    }
+                    if (snapshot.data!.isNotEmpty) {
+                      return Expanded(
+                        child: GridView.count(
+                          shrinkWrap: true,
+                          crossAxisCount: 4,
+                          mainAxisSpacing: 12,
+                          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 12),
                           children: [
-                            const SizedBox(height: 12),
-                            Text(
-                              "Belum ada Pegawai",
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w700,
-                                color: Theme.of(context).primaryColorDark
-                              )
-                            ),
-                            const SizedBox(height: 12),
-                            SizedBox(
-                              width: 320,
-                              child: Text(
-                                'Tekan "Icon Plus" untuk menambahkan pegawai',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontSize: 12
-                                )
-                              )
+                            for (var index = 0; index < snapshot.data!.length; index++) EmployeeItem(
+                              employee: snapshot.data![index],
+                              index: index
                             )
                           ]
                         )
-                      ]
-                    )
-                  )
-                ),
-                if (employees.isNotEmpty) Expanded(child: GridView.count(
-                  shrinkWrap: true,
-                  crossAxisCount: 4,
-                  mainAxisSpacing: 12,
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 12),
-                  children: [
-                    for (var index = 0; index < employees.length; index++) Column(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8))
-                          ),
-                          clipBehavior: Clip.hardEdge,
-                          child: Image.network(
-                            "${dotenv.env["ASSET_URL"]}${employees[index]["photo"]}",
-                            width: 70,
-                            height: 70,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) {
-                              return Container(
-                                width: 70,
-                                height: 70,
-                                color: Theme.of(context).primaryColor.withOpacity(0.2),
-                                child: Center(
-                                  child: Image.asset("assets/icons/profile.png", width: 30, height: 30)
-                                )
-                              );
-                            },
-                          )
-                        ),
-                        const SizedBox(height: 6),
-                        SizedBox(
-                          width: 70,
-                          child: Text(
-                            employees[index]["name"],
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              color: Theme.of(context).primaryColorDark,
-                              fontSize: 12
-                            )
-                          )
-                        )
-                      ]
-                    )
-                  ]
-                ))
+                      );
+                    }
+
+                    return Container(
+                      margin: const EdgeInsets.all(16),
+                      child: Text("Error connection...")
+                    );
+                  }
+                )
               ]
             )
           ),
