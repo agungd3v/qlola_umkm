@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ),
                       if (transaction != null) Text(
-                        transformPrice(double.parse(transaction["transaction_nominal_month"])),
+                        transformPrice(double.parse(transaction["transaction_nominal_month"].toString())),
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: "Poppins",
@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         )
                       ),
                       if (transaction != null) Text(
-                        transformPrice(double.parse(transaction["transaction_nominal_today"])),
+                        transformPrice(double.parse(transaction["transaction_nominal_today"].toString())),
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                           fontFamily: "Poppins",
