@@ -238,7 +238,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
                         color: Colors.white
-                      ),
+                      )
                     )
                   ]
                 )

@@ -1,5 +1,7 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -16,6 +18,7 @@ class _SignupScreenState extends State<SignupScreen> {
   final password = TextEditingController();
   final business = TextEditingController();
   bool show_password = false;
+  bool proccess = false;
 
   Future<void> _signup() async {
     final Map<String, dynamic> data = {
@@ -26,10 +29,62 @@ class _SignupScreenState extends State<SignupScreen> {
       "business_name": business.text
     };
 
+    setState(() => proccess = true);
+
     final httpRequest = await sign_up(data);
     if (httpRequest["status"] == 200) {
-      Navigator.pop(context);
+      // Flushbar(
+      //   backgroundColor: Color(0xff00880d),
+      //   duration: Duration(seconds: 5),
+      //   reverseAnimationCurve: Curves.fastOutSlowIn,
+      //   flushbarPosition: FlushbarPosition.TOP,
+      //   titleText: Text(
+      //     "Registrasi Akun",
+      //     style: TextStyle(
+      //       fontFamily: "Poppins",
+      //       fontWeight: FontWeight.w600,
+      //       color: Colors.white,
+      //       fontSize: 12
+      //     )
+      //   ),
+      //   messageText: Text(
+      //     httpRequest["message"],
+      //     style: TextStyle(
+      //       fontFamily: "Poppins",
+      //       color: Colors.white,
+      //       fontSize: 12
+      //     )
+      //   ),
+      // ).show(context);
+
+      return Navigator.pop(context);
     }
+
+    setState(() => proccess = false);
+
+    Flushbar(
+      backgroundColor: Theme.of(context).primaryColor,
+      duration: Duration(seconds: 5),
+      reverseAnimationCurve: Curves.fastOutSlowIn,
+      flushbarPosition: FlushbarPosition.TOP,
+      titleText: Text(
+        "Registrasi gagal",
+        style: TextStyle(
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+      messageText: Text(
+        httpRequest["message"],
+        style: TextStyle(
+          fontFamily: "Poppins",
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+    ).show(context);
   }
 
   @override
@@ -286,7 +341,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 )
               ),
               const SizedBox(height: 40),
-              Container(
+              if (!proccess) Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
                 child: GestureDetector(
                   onTap: () {
@@ -312,7 +367,35 @@ class _SignupScreenState extends State<SignupScreen> {
                   )
                 )
               ),
-              Container(
+              if (proccess) Container(
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                height: 38,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(6))
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LoadingAnimationWidget.fourRotatingDots(
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      "Daftar...",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white
+                      )
+                    )
+                  ]
+                )
+              ),
+              if (!proccess) Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
                 child: GestureDetector(
                   onTap: () => Navigator.pop(context),
