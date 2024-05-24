@@ -9,3 +9,27 @@ String transformPrice(num price) {
 
   return transform;
 }
+
+String transformDate(String dateString) {
+  // final newDate = dateString.substring(0, 10) + " " + dateString.substring(11, 23);
+  DateTime dateTime = DateFormat("yyyy-MM-dd HH:mm").parse(dateString).toLocal();
+  var date = DateFormat("dd").format(dateTime);
+  var month = DateFormat("MMMM").format(dateTime);
+  var year = DateFormat("yyyy").format(dateTime);
+  var time = DateFormat("hh:mm").format(dateTime);
+
+  if (month == "January") month = "Januari";
+  if (month == "February") month = "Februari";
+  if (month == "March") month = "Maret";
+  if (month == "April") month = "April";
+  if (month == "May") month = "Mei";
+  if (month == "June") month = "Juni";
+  if (month == "July") month = "Juli";
+  if (month == "August") month = "Agustus";
+  if (month == "September") month = "September";
+  if (month == "October") month = "Oktober";
+  if (month == "November") month = "November";
+  if (month == "December") month = "Desember";
+
+  return "$date $month $year $time";
+}
