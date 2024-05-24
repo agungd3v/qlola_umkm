@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:restart_app/restart_app.dart';
 
 class EmployeeHomeScreen extends StatefulWidget {
@@ -12,6 +13,17 @@ class EmployeeHomeScreen extends StatefulWidget {
 }
 
 class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
+  dynamic transaction;
+
+  Future getHistory() async {
+    final httpRequest = await outlet_transaction();
+    if (httpRequest["status"] == 200) {
+      setState(() {
+        transaction = httpRequest;
+      });
+    }
+  }
+
   Future<void> _signout() async {
     final httpRequest = await sign_out();
     if (httpRequest["status"] == 200) {
@@ -20,6 +32,12 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
 
       Restart.restartApp();
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getHistory();
   }
 
   @override
@@ -61,8 +79,17 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                       color: Colors.white
                     )
                   ),
-                  Text(
-                    "Rp 0",
+                  if (transaction == null) Text(
+                    transformPrice(0),
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      fontSize: 20
+                    )
+                  ),
+                  if (transaction != null) Text(
+                    transformPrice(double.parse(transaction["transaction_nominal_today"].toString())),
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
