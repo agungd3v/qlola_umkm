@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:restart_app/restart_app.dart';
@@ -19,12 +20,15 @@ class _SigninScreenState extends State<SigninScreen> {
   final phone = TextEditingController();
   final password = TextEditingController();
   bool show_password = false;
+  bool proccess = false;
 
   Future<void> _signin() async {
     final Map<String, dynamic> data = {
       "phone": "+62${phone.text}",
       "password": password.text
     };
+
+    setState(() => proccess = true);
 
     final httpRequest = await sign_in(data);
     if (httpRequest["status"] == 200) {
@@ -34,6 +38,8 @@ class _SigninScreenState extends State<SigninScreen> {
       Restart.restartApp();
       return;
     }
+
+    setState(() => proccess = false);
 
     Flushbar(
       backgroundColor: Theme.of(context).primaryColor,
@@ -183,7 +189,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 )
               ),
               const SizedBox(height: 20),
-              Container(
+              if (!proccess) Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
                 child: GestureDetector(
                   onTap: () {
@@ -209,7 +215,35 @@ class _SigninScreenState extends State<SigninScreen> {
                   )
                 )
               ),
-              Container(
+              if (proccess) Container(
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                height: 38,
+                width: double.infinity,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(6))
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LoadingAnimationWidget.fourRotatingDots(
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    const SizedBox(width: 5),
+                    Text(
+                      "Masuk...",
+                      style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white
+                      ),
+                    )
+                  ]
+                )
+              ),
+              if (!proccess) Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
                 child: GestureDetector(
                   onTap: () => context.pushNamed("Sign Up"),
