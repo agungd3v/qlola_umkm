@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -40,6 +42,7 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
   void initState() {
     super.initState();
     _getProduct();
+    inspect("hello world");
   }
 
   @override

@@ -1,10 +1,10 @@
-import 'dart:developer';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
@@ -22,6 +22,8 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
   CheckoutProvider? checkout_provider;
   AuthProvider? auth_provider;
 
+  bool proccess = false;
+
   Future _orderProduct() async {
     Map<String, dynamic> data = {
       "total": checkout_provider?.cart_total,
@@ -29,13 +31,43 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
       "business_id": int.parse(auth_provider?.user["outlet"]["business_id"]),
       "products": checkout_provider?.carts
     };
-    inspect(data);
+
+    setState(() => proccess = true);
 
     final httpRequest = await proses_checkout(data);
     if (httpRequest["status"] == 200) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Flushbar(
+          backgroundColor: Color(0xff00880d),
+          duration: Duration(seconds: 3),
+          reverseAnimationCurve: Curves.fastOutSlowIn,
+          flushbarPosition: FlushbarPosition.TOP,
+          titleText: Text(
+            auth_provider!.user["outlet"]["outlet_name"],
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+              fontSize: 12
+            )
+          ),
+          messageText: Text(
+            "Berhasil melakukan pemesanan",
+            style: TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.white,
+              fontSize: 12
+            )
+          ),
+        ).show(context);
+      });
+
       checkout_provider?.reset();
       return context.go("/order");
     }
+
+    setState(() => proccess = false);
 
     Flushbar(
       backgroundColor: Theme.of(context).primaryColor,
@@ -296,7 +328,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                       )
                     ]
                   ),
-                  GestureDetector(
+                  if (!proccess) GestureDetector(
                     onTap: () => _orderProduct(),
                     child: Container(
                       height: 32,
@@ -315,6 +347,32 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                           fontSize: 12
                         )
                       )
+                    )
+                  ),
+                  if (proccess) Container(
+                    height: 32,
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(6))
+                    ),
+                    child: Row(
+                      children: [
+                        LoadingAnimationWidget.fourRotatingDots(
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          "Memproses",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                            fontSize: 12
+                          )
+                        )
+                      ]
                     )
                   )
                 ]
