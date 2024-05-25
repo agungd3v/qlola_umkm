@@ -1,5 +1,7 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
 
 class AddOutletScreen extends StatefulWidget {
@@ -13,19 +15,71 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
   final outletName = TextEditingController();
   final outletPhone = TextEditingController();
   final outletAddress = TextEditingController();
+  bool proccess = false;
 
   Future<void> _addoutlet() async {
     final Map<String, dynamic> data = {
       "outlet_name": outletName.text,
       "outlet_phone": "+62${outletPhone.text}",
       "outlet_address": outletAddress.text
-      // "outlet_image": imagePath
     };
+
+    setState(() => proccess = true);
 
     final httpRequest = await add_outlet(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
+
+      return Flushbar(
+        backgroundColor: Color(0xff00880d),
+        duration: Duration(seconds: 5),
+        reverseAnimationCurve: Curves.fastOutSlowIn,
+        flushbarPosition: FlushbarPosition.TOP,
+        titleText: Text(
+          "Informasi",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+        messageText: Text(
+          "Berhasil menambahkan outlet baru",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+      ).show(context);
     }
+
+    setState(() => proccess = false);
+
+    Flushbar(
+      backgroundColor: Theme.of(context).primaryColor,
+      duration: Duration(seconds: 5),
+      reverseAnimationCurve: Curves.fastOutSlowIn,
+      flushbarPosition: FlushbarPosition.TOP,
+      titleText: Text(
+        "Informasi",
+        style: TextStyle(
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+      messageText: Text(
+        httpRequest["message"],
+        style: TextStyle(
+          fontFamily: "Poppins",
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+    ).show(context);
   }
 
   @override
@@ -206,7 +260,7 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                   ]
                 )
               )),
-              Container(
+              if (!proccess) Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: GestureDetector(
@@ -229,6 +283,36 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                         color: Colors.white
                       )
                     )
+                  )
+                )
+              ),
+              if (proccess) Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Container(
+                  height: 40,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.all(Radius.circular(6))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoadingAnimationWidget.fourRotatingDots(
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "Proses Simpan...",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white
+                        )
+                      )
+                    ]
                   )
                 )
               )

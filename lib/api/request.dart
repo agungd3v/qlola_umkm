@@ -6,6 +6,25 @@ import 'package:qlola_umkm/providers/auth_provider.dart';
 
 final auth_provider = AuthProvider();
 
+Future check_user() async {
+  final httpRequest = await http.get(
+    Uri.parse("${dotenv.env["API_URL"]}/check"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    }
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}
+
 Future sign_up(Map<String, dynamic> request) async {
   final httpRequest = await http.post(
     Uri.parse("${dotenv.env["API_URL"]}/signup"),
@@ -76,7 +95,7 @@ Future add_product(Map<String, dynamic> request) async {
     "product_price": request["product_price"],
     "product_favorite": "0"
   });
-  if (request["product_image"] != null || request["product_image"] != "") {
+  if (request["product_image"] != null) {
     requestSend.files.add(await http.MultipartFile.fromPath("product_image", request["product_image"]));
   }
 
@@ -120,7 +139,7 @@ Future add_employee(Map<String, dynamic> request) async {
     "name": request["name"],
     "phone": request["phone"]
   });
-  if (request["photo"] != "") {
+  if (request["photo"] != null) {
     requestSend.files.add(await http.MultipartFile.fromPath("photo", request["photo"]));
   }
 

@@ -19,7 +19,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final employeeName = TextEditingController();
   final employeePhone = TextEditingController();
   File? imageTemp;
-  String imagePath = "";
+  String? imagePath;
   bool proccess = false;
 
   Future<void> _addproduct() async {
@@ -34,17 +34,41 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     final httpRequest = await add_employee(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
+
+      return Flushbar(
+        backgroundColor: Color(0xff00880d),
+        duration: Duration(seconds: 5),
+        reverseAnimationCurve: Curves.fastOutSlowIn,
+        flushbarPosition: FlushbarPosition.TOP,
+        titleText: Text(
+          "Informasi",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+        messageText: Text(
+          "Berhasil menambahkan karyawan baru",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+      ).show(context);
     }
 
     setState(() => proccess = false);
 
     Flushbar(
       backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 3),
+      duration: Duration(seconds: 5),
       reverseAnimationCurve: Curves.fastOutSlowIn,
       flushbarPosition: FlushbarPosition.TOP,
       titleText: Text(
-        "Tambah Karyawan",
+        "Informasi",
         style: TextStyle(
           fontFamily: "Poppins",
           fontWeight: FontWeight.w600,
