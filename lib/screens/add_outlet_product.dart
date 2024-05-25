@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -90,7 +88,6 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
 
   Future _showProduct() async {
     final httpRequest = await get_outlet_products(widget.outlet["id"]);
-    inspect(httpRequest["data"]);
     if (httpRequest["status"] == 200) {
       owner_provider!.init_product = httpRequest["data"] as List;
     }
@@ -99,7 +96,7 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
   void _showListProduct () {
     showDialog(
       context: context,
-      builder: (context) => AddProductDialog()
+      builder: (context) => AddProductDialog(outlet: widget.outlet)
     );
   }
 

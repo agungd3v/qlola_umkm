@@ -1,10 +1,16 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
 
 class AddProductDialog extends StatefulWidget {
-  AddProductDialog({super.key});
+  dynamic outlet;
+
+  AddProductDialog({super.key,
+    required this.outlet
+  });
 
   @override
   State<AddProductDialog> createState() => _AddProductDialogState();
@@ -15,7 +21,12 @@ class _AddProductDialogState extends State<AddProductDialog> {
   List productDump = [];
 
   Future getProduct() async {
-    final httpRequest = await get_product();
+    final Map<String, dynamic> data = {
+      "outlet_id": widget.outlet["id"],
+    };
+
+    final httpRequest = await get_available_products(data);
+    inspect(httpRequest);
     if (httpRequest["status"] == 200) {
       setState(() {
         productDump = httpRequest["data"].map((data) {
