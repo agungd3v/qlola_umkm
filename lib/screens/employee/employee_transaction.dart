@@ -1,9 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qlola_umkm/api/request.dart';
-import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:qlola_umkm/components/history/employee_transaction_daily.dart';
 
 class EmployeeTransactionScreen extends StatefulWidget {
   const EmployeeTransactionScreen({super.key});
@@ -17,7 +15,6 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
 
   Future getHistory() async {
     final httpRequest = await outlet_transaction();
-    inspect(httpRequest);
     if (httpRequest["status"] == 200) {
       setState(() {
         transactions = httpRequest["transactions"];
@@ -82,106 +79,58 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
               ]
             )
           ),
-          Expanded(child: SingleChildScrollView(
-            child: Container(
-              child: Column(
-                children: [
-                  for(var index = 0; index < transactions.length; index++) Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          Expanded(child: LayoutBuilder(builder: (context, constraints) => RefreshIndicator(
+            color: Theme.of(context).indicatorColor,
+            onRefresh: () => Future.delayed(Duration(seconds: 1), () => getHistory()),
+            child: SingleChildScrollView(
+              physics: AlwaysScrollableScrollPhysics(),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraints.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    mainAxisAlignment: transactions.isEmpty ? MainAxisAlignment.center : MainAxisAlignment.start,
                     children: [
-                      const SizedBox(width: 12),
-                      SizedBox(
-                        width: 70,
-                        height: 70,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Center(
-                              child: Image.asset("assets/icons/transaction.png", width: 25, height: 25)
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              transformPrice(double.parse(transactions[index]["grand_total"])),
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w700,
-                                color: Theme.of(context).primaryColor,
-                                fontSize: 10
-                              )
-                            )
-                          ]
-                        )
+                      if (transactions.isNotEmpty) for(var index = 0; index < transactions.length; index++) EmployeeTransactionDaily(
+                        item: transactions[index]
                       ),
-                      Expanded(child: ExpansionTile(
-                        dense: true,
-                        shape: Border(),
-                        title: Text(
-                          transactions[index]["transaction_code"],
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            color: Theme.of(context).primaryColorDark
-                          )
-                        ),
-                        subtitle: Text(
-                          transformDate(transactions[index]["created_at"]),
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            color: Theme.of(context).disabledColor
-                          )
-                        ),
+                      if (transactions.isEmpty) Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          for (var index2 = 0; index2 < transactions[index]["checkouts"].length; index2++) Container(
-                            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                            color: Theme.of(context).dividerColor,
-                            width: double.infinity,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  transactions[index]["checkouts"][index2]["product"]["product_name"],
-                                  overflow: TextOverflow.ellipsis,
+                          Image.asset("assets/icons/transaction_empty.png", width: 300, height: 200, fit: BoxFit.contain),
+                          Column(
+                            children: [
+                              const SizedBox(height: 12),
+                              Text(
+                                "Belum ada Transaksi",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).primaryColorDark
+                                )
+                              ),
+                              const SizedBox(height: 12),
+                              SizedBox(
+                                width: 320,
+                                child: Text(
+                                  'Oops... belum ada transaksi di hari ini',
+                                  textAlign: TextAlign.center,
                                   style: TextStyle(
                                     fontFamily: "Poppins",
                                     color: Theme.of(context).primaryColorDark,
-                                    fontSize: 13
+                                    fontSize: 12
                                   )
-                                ),
-                                Row(
-                                  children: [
-                                    Text(
-                                      transformPrice(double.parse(transactions[index]["checkouts"][index2]["total"])),
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w700,
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 12
-                                      )
-                                    ),
-                                    const SizedBox(width: 5),
-                                    Text(
-                                      "(x${transactions[index]["checkouts"][index2]["quantity"]})",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w700,
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 10
-                                      )
-                                    ),
-                                  ]
                                 )
-                              ]
-                            )
+                              )
+                            ]
                           )
                         ]
-                      ))
+                      )
                     ]
                   )
-                ]
+                )
               )
             )
-          ))
+          )))
         ]
       )
     );

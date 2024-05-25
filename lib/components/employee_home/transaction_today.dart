@@ -10,6 +10,8 @@ class EmployeeTransactionToday extends StatefulWidget {
 }
 
 class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
+  Future? future;
+
   Future getHistory() async {
     final httpRequest = await outlet_transaction();
     if (httpRequest["status"] == 200) {
