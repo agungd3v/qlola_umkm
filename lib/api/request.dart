@@ -182,7 +182,6 @@ Future add_outlet(Map<String, dynamic> request) async {
     "outlet_phone": request["outlet_phone"],
     "outlet_address": request["outlet_address"]
   });
-  // requestSend.files.add(await http.MultipartFile.fromPath("product_image", request["product_image"]));
 
   final httpRequest = await requestSend.send();
   final response = await http.Response.fromStream(httpRequest);
@@ -191,25 +190,6 @@ Future add_outlet(Map<String, dynamic> request) async {
     "status": response.statusCode,
     ...json.decode(response.body)
   };
-}
-
-Future get_outlet_product() async {
-  final httpRequest = await http.get(
-    Uri.parse("${dotenv.env["API_URL"]}/employee/product"),
-    headers: <String, String> {
-      "ACCEPT": "application/json",
-      "CONTENT-TYPE": "application/json; charset=UTF-8",
-      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
-      "AUTHORIZATION": "Bearer ${auth_provider.token}"
-    }
-  );
-
-  Map<String, dynamic> response = json.decode(httpRequest.body);
-
-  return <String, dynamic> {
-    "status": httpRequest.statusCode,
-    ...response
-  }; 
 }
 
 Future proses_checkout(Map<String, dynamic> request) async {
@@ -308,9 +288,48 @@ Future get_outlet_employees(int param) async {
   };
 }
 
-Future add_outlet_employess(Map<String, dynamic> request) async {
+Future add_outlet_employees(Map<String, dynamic> request) async {
   final httpRequest = await http.post(
     Uri.parse("${dotenv.env["API_URL"]}/outlet/add-employee"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    },
+    body: jsonEncode(request)
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}
+
+Future get_outlet_products(int param) async {
+  final httpRequest = await http.get(
+    Uri.parse("${dotenv.env["API_URL"]}/outlet/products/$param"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    }
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  }; 
+}
+
+Future add_outlet_products(Map<String, dynamic> request) async {
+  final httpRequest = await http.post(
+    Uri.parse("${dotenv.env["API_URL"]}/outlet/add-product"),
     headers: <String, String> {
       "ACCEPT": "application/json",
       "CONTENT-TYPE": "application/json; charset=UTF-8",

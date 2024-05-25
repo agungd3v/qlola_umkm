@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
-import 'package:qlola_umkm/components/employee_add_dialog.dart';
+import 'package:qlola_umkm/components/outlet/add_employee_dialog.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
 
 class AddOutletEmployeeScreen extends StatefulWidget {
@@ -22,10 +22,6 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
   OwnerProvider? owner_provider;
   bool proccess = false;
 
-  final outletName = TextEditingController();
-  final outletPhone = TextEditingController();
-  final outletAddress = TextEditingController();
-
   Future<void> _addEmployee() async {
     final Map<String, dynamic> data = {
       "outlet_id": widget.outlet["id"],
@@ -34,7 +30,7 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
 
     setState(() => proccess = true);
 
-    final httpRequest = await add_outlet_employess(data);
+    final httpRequest = await add_outlet_employees(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
 
@@ -53,7 +49,7 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
           )
         ),
         messageText: Text(
-          "Berhasil Memperbarui karyawan pada ${widget.outlet["outlet_name"]}",
+          "Berhasil memperbarui karyawan pada ${widget.outlet["outlet_name"]}",
           style: TextStyle(
             fontFamily: "Poppins",
             color: Colors.white,
@@ -100,7 +96,7 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
   void _showListEmployee () {
     showDialog(
       context: context,
-      builder: (context) => EmployeeAddDialog()
+      builder: (context) => AddEmployeeDialog()
     );
   }
 
@@ -163,7 +159,7 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      widget.outlet["outlet_name"],
+                      "Karyawan - ${widget.outlet["outlet_name"]}",
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
                         fontFamily: "Poppins",

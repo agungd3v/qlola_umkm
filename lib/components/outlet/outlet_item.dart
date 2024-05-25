@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -92,7 +91,12 @@ class _OutletItemState extends State<OutletItem> {
                       ),
                       const SizedBox(width: 6),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          context.pushNamed(
+                            "Add Outlet Product",
+                            extra: widget.outlet
+                          );
+                        },
                         child: Container(
                           height: 24,
                           padding: const EdgeInsets.symmetric(horizontal: 12),

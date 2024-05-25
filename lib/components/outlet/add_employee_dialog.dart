@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
 
-class EmployeeAddDialog extends StatefulWidget {
-  EmployeeAddDialog({super.key});
+class AddEmployeeDialog extends StatefulWidget {
+  AddEmployeeDialog({super.key});
 
   @override
-  State<EmployeeAddDialog> createState() => _EmployeeAddDialogState();
+  State<AddEmployeeDialog> createState() => _AddEmployeeDialogState();
 }
 
-class _EmployeeAddDialogState extends State<EmployeeAddDialog> {
+class _AddEmployeeDialogState extends State<AddEmployeeDialog> {
   OwnerProvider? owner_provider;
   List employeeDump = [];
 

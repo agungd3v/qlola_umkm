@@ -22,7 +22,7 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
   List<dynamic> products = [];
 
   Future<void> _getProduct() async {
-    final httpRequest = await get_outlet_product();
+    final httpRequest = await get_outlet_products(1);
     if (httpRequest["status"] == 200) {
       setState(() {
         products = httpRequest["data"];
