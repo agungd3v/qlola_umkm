@@ -32,41 +32,39 @@ class _TransactionDailyState extends State<TransactionDaily> {
         }
         if (snapshot.data != null) {
           if (snapshot.data["transaction_count_today"] < 1) {
-            return Expanded(
-              child: Container(
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset("assets/icons/transaction_empty.png", width: 300, height: 200, fit: BoxFit.contain),
-                    Column(
-                      children: [
-                        const SizedBox(height: 12),
-                        Text(
-                          "Belum ada Transaksi",
+            return Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset("assets/icons/transaction_empty.png", width: 300, height: 200, fit: BoxFit.contain),
+                  Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      Text(
+                        "Belum ada Transaksi",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColorDark
+                        )
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: 320,
+                        child: Text(
+                          'Oops... belum ada transaksi di hari ini',
+                          textAlign: TextAlign.center,
                           style: TextStyle(
                             fontFamily: "Poppins",
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColorDark
-                          )
-                        ),
-                        const SizedBox(height: 12),
-                        SizedBox(
-                          width: 320,
-                          child: Text(
-                            'Oops... belum ada transaksi di hari ini',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              color: Theme.of(context).primaryColorDark,
-                              fontSize: 12
-                            )
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 12
                           )
                         )
-                      ]
-                    )
-                  ]
-                )
+                      )
+                    ]
+                  )
+                ]
               )
             );
           }

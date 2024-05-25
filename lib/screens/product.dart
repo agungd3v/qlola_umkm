@@ -124,7 +124,7 @@ class _ProductScreenState extends State<ProductScreen> {
                       );
                     }
                     if (snapshot.data!.isNotEmpty) {
-                      return SingleChildScrollView(
+                      return Expanded(child: SingleChildScrollView(
                         child: Container(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Column(
@@ -138,7 +138,7 @@ class _ProductScreenState extends State<ProductScreen> {
                             ]
                           )
                         )
-                      );
+                      ));
                     }
 
                     return Container(

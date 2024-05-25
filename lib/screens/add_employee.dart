@@ -1,9 +1,11 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
@@ -17,7 +19,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
   final employeeName = TextEditingController();
   final employeePhone = TextEditingController();
   File? imageTemp;
-  String? imagePath;
+  String imagePath = "";
+  bool proccess = false;
 
   Future<void> _addproduct() async {
     final Map<String, dynamic> data = {
@@ -26,10 +29,38 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
       "photo": imagePath
     };
 
+    setState(() => proccess = true);
+
     final httpRequest = await add_employee(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
     }
+
+    setState(() => proccess = false);
+
+    Flushbar(
+      backgroundColor: Theme.of(context).primaryColor,
+      duration: Duration(seconds: 3),
+      reverseAnimationCurve: Curves.fastOutSlowIn,
+      flushbarPosition: FlushbarPosition.TOP,
+      titleText: Text(
+        "Tambah Karyawan",
+        style: TextStyle(
+          fontFamily: "Poppins",
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+      messageText: Text(
+        httpRequest["message"],
+        style: TextStyle(
+          fontFamily: "Poppins",
+          color: Colors.white,
+          fontSize: 12
+        )
+      ),
+    ).show(context);
   }
 
   Future<void> _pickFromGallery() async {
@@ -165,7 +196,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      "Tambah Produk",
+                      "Tambah Karyawan",
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
@@ -353,7 +384,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                   ]
                 )
               )),
-              Container(
+              if (!proccess) Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: GestureDetector(
@@ -376,6 +407,36 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                         color: Colors.white
                       )
                     )
+                  )
+                )
+              ),
+              if (proccess) Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Container(
+                  height: 40,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor,
+                    borderRadius: BorderRadius.all(Radius.circular(6))
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoadingAnimationWidget.fourRotatingDots(
+                        color: Colors.white,
+                        size: 22,
+                      ),
+                      const SizedBox(width: 5),
+                      Text(
+                        "Proses simpan...",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white
+                        )
+                      )
+                    ]
                   )
                 )
               )

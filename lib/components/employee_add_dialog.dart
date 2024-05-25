@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/providers/owner_provider.dart';
 
 class EmployeeAddDialog extends StatefulWidget {
   EmployeeAddDialog({super.key});
@@ -9,10 +11,11 @@ class EmployeeAddDialog extends StatefulWidget {
 }
 
 class _EmployeeAddDialogState extends State<EmployeeAddDialog> {
+  OwnerProvider? owner_provider;
   List employeeDump = [];
 
   Future getEmployee() async {
-    final httpRequest = await get_employee();
+    final httpRequest = await get_available_employees();
     if (httpRequest["status"] == 200) {
       setState(() {
         employeeDump = httpRequest["data"].map((data) {
@@ -20,6 +23,15 @@ class _EmployeeAddDialogState extends State<EmployeeAddDialog> {
         }).toList();
       });
     }
+  }
+
+  Future _tempEmployee() async {
+    final employeeChecked = employeeDump.where((data) => data["checked"]).toList();
+    for (var i = 0; i < employeeChecked.length; i++) {
+      owner_provider!.add_employee = employeeChecked[i];
+    }
+
+    Navigator.pop(context);
   }
 
   @override
@@ -30,6 +42,8 @@ class _EmployeeAddDialogState extends State<EmployeeAddDialog> {
 
   @override
   Widget build(BuildContext context) {
+    owner_provider = Provider.of<OwnerProvider>(context);
+
     return AlertDialog(
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(
@@ -63,44 +77,47 @@ class _EmployeeAddDialogState extends State<EmployeeAddDialog> {
             margin: const EdgeInsets.only(bottom: 20),
             child: Column(
               children: [
-                for (var index = 0; index < employeeDump.length; index++) Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      employeeDump[index]["name"],
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        color: Theme.of(context).primaryColorDark,
-                        fontSize: 12
-                      )
-                    ),
-                    SizedBox(
-                      width: 10,
-                      height: 10,
-                      child: Checkbox(
-                        value: employeeDump[index]["checked"],
-                        onChanged: (bool? value) {
-                          setState(() {
-                            employeeDump[index]["checked"] = value;
-                          });
-                        },
-                        activeColor: Theme.of(context).primaryColor,
-                        side: BorderSide(
-                          width: 1,
-                          color: Theme.of(context).dividerColor
+                for (var index = 0; index < employeeDump.length; index++) Container(
+                  margin: const EdgeInsets.only(bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        employeeDump[index]["name"],
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          color: Theme.of(context).primaryColorDark,
+                          fontSize: 12
+                        )
+                      ),
+                      SizedBox(
+                        width: 10,
+                        height: 10,
+                        child: Checkbox(
+                          value: employeeDump[index]["checked"],
+                          onChanged: (bool? value) {
+                            setState(() {
+                              employeeDump[index]["checked"] = value;
+                            });
+                          },
+                          activeColor: Theme.of(context).primaryColor,
+                          side: BorderSide(
+                            width: 1,
+                            color: Theme.of(context).dividerColor
+                          )
                         )
                       )
-                    )
-                  ]
+                    ]
+                  )
                 )
               ]
             )
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () => _tempEmployee(),
             child: Container(
-              height: 28,
+              height: 40,
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(6))
