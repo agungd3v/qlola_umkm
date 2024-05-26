@@ -41,7 +41,7 @@ class _TransactionInfoState extends State<TransactionInfo> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Penjualan Mei 2024",
+                      "Penjualan ${getThisMonth()}",
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w500,

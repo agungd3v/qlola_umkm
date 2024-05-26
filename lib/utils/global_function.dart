@@ -33,3 +33,24 @@ String transformDate(String dateString) {
 
   return "$date $month $year $time";
 }
+
+String getThisMonth() {
+  DateTime dateTime = DateTime.now();
+  var month = DateFormat("MMMM").format(dateTime);
+  var year = DateFormat("yyyy").format(dateTime);
+
+  if (month == "January") month = "Januari";
+  if (month == "February") month = "Februari";
+  if (month == "March") month = "Maret";
+  if (month == "April") month = "April";
+  if (month == "May") month = "Mei";
+  if (month == "June") month = "Juni";
+  if (month == "July") month = "Juli";
+  if (month == "August") month = "Agustus";
+  if (month == "September") month = "September";
+  if (month == "October") month = "Oktober";
+  if (month == "November") month = "November";
+  if (month == "December") month = "Desember";
+
+  return "$month $year";
+}
