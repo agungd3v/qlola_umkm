@@ -2,8 +2,9 @@ flutter_native_splash:
   web: false
   android: true
   ios: true
-  android_gravity: fill
-  ios_content_mode: scaleAspectFill
+
+  # android_gravity: fill
+  # ios_content_mode: scaleAspectFill
 
   fullscreen: true
 
