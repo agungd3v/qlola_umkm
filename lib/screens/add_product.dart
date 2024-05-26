@@ -329,44 +329,44 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       color: Theme.of(context).dividerColor.withOpacity(0.5),
                     ),
                     const SizedBox(height: 20),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Row(
-                        children: [
-                          Expanded(child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Produk Favorit",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w600,
-                                  color: Theme.of(context).primaryColor
-                                )
-                              ),
-                              Text(
-                                "Tampilkan produk di posisi teratas",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  color: Theme.of(context).primaryColorDark,
-                                  fontSize: 12
-                                )
-                              )
-                            ]
-                          )),
-                          const SizedBox(width: 12),
-                          Transform.scale(
-                            scale: 0.7,
-                            child: CupertinoSwitch(
-                              activeColor: Theme.of(context).primaryColor,
-                              trackColor: Theme.of(context).dividerColor,
-                              value: favorite,
-                              onChanged: (value) => setState(() => favorite = value),
-                            )
-                          )
-                        ]
-                      )
-                    ),
+                    // Container(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: Row(
+                    //     children: [
+                    //       Expanded(child: Column(
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text(
+                    //             "Produk Favorit",
+                    //             style: TextStyle(
+                    //               fontFamily: "Poppins",
+                    //               fontWeight: FontWeight.w600,
+                    //               color: Theme.of(context).primaryColor
+                    //             )
+                    //           ),
+                    //           Text(
+                    //             "Tampilkan produk di posisi teratas",
+                    //             style: TextStyle(
+                    //               fontFamily: "Poppins",
+                    //               color: Theme.of(context).primaryColorDark,
+                    //               fontSize: 12
+                    //             )
+                    //           )
+                    //         ]
+                    //       )),
+                    //       const SizedBox(width: 12),
+                    //       Transform.scale(
+                    //         scale: 0.7,
+                    //         child: CupertinoSwitch(
+                    //           activeColor: Theme.of(context).primaryColor,
+                    //           trackColor: Theme.of(context).dividerColor,
+                    //           value: favorite,
+                    //           onChanged: (value) => setState(() => favorite = value),
+                    //         )
+                    //       )
+                    //     ]
+                    //   )
+                    // ),
                     const SizedBox(height: 20)
                   ]
                 )

@@ -47,6 +47,7 @@ class _EmployeeItemState extends State<EmployeeItem> {
           child: Text(
             widget.employee["name"],
             overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
             style: TextStyle(
               fontFamily: "Poppins",
               color: Theme.of(context).primaryColorDark,

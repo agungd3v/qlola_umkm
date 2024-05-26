@@ -20,6 +20,7 @@ class _ProductItemState extends State<ProductItem> {
   Widget build(BuildContext context) {
     return Container(
       margin: widget.index > 0 ? const EdgeInsets.only(top: 14) : const EdgeInsets.only(top: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
           Container(

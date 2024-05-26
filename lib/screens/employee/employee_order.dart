@@ -22,11 +22,13 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
 
   void _getProduct() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final httpRequest = await get_outlet_products(auth_provider!.user["outlet"]["id"]);
-      if (httpRequest["status"] == 200) {
-        setState(() {
-          products = httpRequest["data"];
-        });
+      if (auth_provider!.user["outlet"] != null) {
+        final httpRequest = await get_outlet_products(auth_provider!.user["outlet"]["id"]);
+        if (httpRequest["status"] == 200) {
+          setState(() {
+            products = httpRequest["data"];
+          });
+        }
       }
     });
   }
@@ -74,9 +76,40 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
                     Container(
                       margin: const EdgeInsets.symmetric(horizontal: 20),
                       child: Column(
+                        mainAxisAlignment: products.isNotEmpty ? MainAxisAlignment.start : MainAxisAlignment.center,
                         children: [
                           const SizedBox(height: 16),
-                          for (var index = 0; index < products.length; index++) OrderItem(item: products[index], index: index),
+                          if (products.isNotEmpty) for (var index = 0; index < products.length; index++) OrderItem(
+                            item: products[index],
+                            index: index
+                          ),
+                          if (products.isEmpty) Container(
+                            child: Column(
+                              children: [
+                                Image.asset("assets/icons/no_data.png", width: 300, height: 300, fit: BoxFit.fill),
+                                Text(
+                                  'Produk tidak di temukan',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 14
+                                  )
+                                ),
+                                const SizedBox(height: 12),
+                                Text(
+                                  'Oops... produk tidak ditemukan atau kamu belum di daftarkan pada outlet ini, hubungi owner bisnis untuk memastikannya!',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 12
+                                  )
+                                )
+                              ]
+                            )
+                          ),
                           const SizedBox(height: 16)
                         ]
                       )

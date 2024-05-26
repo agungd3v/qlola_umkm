@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
@@ -16,8 +17,11 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   AuthProvider? auth_provider;
+  bool proccess = false;
 
   Future<void> _signout() async {
+    setState(() => proccess = true);
+
     final httpRequest = await sign_out();
     if (httpRequest["status"] == 200) {
       localStorage.removeItem("user");
@@ -25,6 +29,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       Restart.restartApp();
     }
+
+    setState(() => proccess = false);
   }
 
   @override
@@ -123,7 +129,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ]
             )
           )),
-          Container(
+          if (!proccess) Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             child: GestureDetector(
               onTap: () => _signout(),
@@ -144,6 +150,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 )
               )
+            )
+          ),
+          if (proccess) Container(
+            width: double.infinity,
+            height: 40,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              borderRadius: BorderRadius.all(Radius.circular(6))
+            ),
+            margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                LoadingAnimationWidget.fourRotatingDots(
+                  color: Colors.white,
+                  size: 22,
+                ),
+                const SizedBox(width: 5),
+                Text(
+                  "Keluar",
+                  style: TextStyle(
+                    fontFamily: "Poppins",
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white
+                  )
+                )
+              ]
             )
           )
         ]

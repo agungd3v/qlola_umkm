@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/employee_home/transaction_today.dart';
@@ -13,7 +14,11 @@ class EmployeeHomeScreen extends StatefulWidget {
 }
 
 class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
+  bool proccess = false;
+
   Future<void> _signout() async {
+    setState(() => proccess = true);
+
     final httpRequest = await sign_out();
     if (httpRequest["status"] == 200) {
       localStorage.removeItem("user");
@@ -21,6 +26,8 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
 
       Restart.restartApp();
     }
+
+    setState(() => proccess = false);
   }
 
   @override
@@ -66,7 +73,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                 ]
               )
             ),
-            GestureDetector(
+            if (!proccess) GestureDetector(
               onTap: () {
                 _signout();
               },
@@ -86,6 +93,33 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                     color: Colors.white
                   )
                 )
+              )
+            ),
+            if (proccess) Container(
+              width: double.infinity,
+              height: 40,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.all(Radius.circular(6))
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  LoadingAnimationWidget.fourRotatingDots(
+                    color: Colors.white,
+                    size: 22,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    "Keluar...",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white
+                    )
+                  )
+                ]
               )
             )
           ]

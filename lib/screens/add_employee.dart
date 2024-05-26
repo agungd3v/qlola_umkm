@@ -350,60 +350,60 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                       color: Theme.of(context).dividerColor.withOpacity(0.5),
                     ),
                     const SizedBox(height: 20),
-                    Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 20),
-                      child: Column(
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Outlet",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColorDark
-                                )
-                              ),
-                              GestureDetector(
-                                onTap: () {},
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-                                  decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius: BorderRadius.all(Radius.circular(4))
-                                  ),
-                                  child: Text(
-                                    "Pilih outlet",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                      fontSize: 10
-                                    )
-                                  )
-                                )
-                              )
-                            ]
-                          ),
-                          const SizedBox(height: 20),
-                          Container(
-                            width: 300,
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Text(
-                              'Tekan "Pilih Outlet" untuk memilih tempat pegawai bekerja',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                color: Theme.of(context).disabledColor,
-                                fontSize: 10
-                              )
-                            )
-                          )
-                        ]
-                      )
-                    ),
+                    // Container(
+                    //   margin: const EdgeInsets.symmetric(horizontal: 20),
+                    //   child: Column(
+                    //     children: [
+                    //       Row(
+                    //         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    //         crossAxisAlignment: CrossAxisAlignment.start,
+                    //         children: [
+                    //           Text(
+                    //             "Outlet",
+                    //             style: TextStyle(
+                    //               fontFamily: "Poppins",
+                    //               fontWeight: FontWeight.w700,
+                    //               color: Theme.of(context).primaryColorDark
+                    //             )
+                    //           ),
+                    //           GestureDetector(
+                    //             onTap: () {},
+                    //             child: Container(
+                    //               padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+                    //               decoration: BoxDecoration(
+                    //                 color: Theme.of(context).primaryColor,
+                    //                 borderRadius: BorderRadius.all(Radius.circular(4))
+                    //               ),
+                    //               child: Text(
+                    //                 "Pilih outlet",
+                    //                 style: TextStyle(
+                    //                   fontFamily: "Poppins",
+                    //                   fontWeight: FontWeight.w700,
+                    //                   color: Colors.white,
+                    //                   fontSize: 10
+                    //                 )
+                    //               )
+                    //             )
+                    //           )
+                    //         ]
+                    //       ),
+                    //       const SizedBox(height: 20),
+                    //       Container(
+                    //         width: 300,
+                    //         padding: const EdgeInsets.symmetric(horizontal: 10),
+                    //         child: Text(
+                    //           'Tekan "Pilih Outlet" untuk memilih tempat pegawai bekerja',
+                    //           textAlign: TextAlign.center,
+                    //           style: TextStyle(
+                    //             fontFamily: "Poppins",
+                    //             color: Theme.of(context).disabledColor,
+                    //             fontSize: 10
+                    //           )
+                    //         )
+                    //       )
+                    //     ]
+                    //   )
+                    // ),
                     const SizedBox(height: 20)
                   ]
                 )
