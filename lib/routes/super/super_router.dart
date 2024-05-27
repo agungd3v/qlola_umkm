@@ -11,6 +11,7 @@ import 'package:qlola_umkm/screens/home.dart';
 import 'package:qlola_umkm/screens/outlet.dart';
 import 'package:qlola_umkm/screens/product.dart';
 import 'package:qlola_umkm/screens/profile.dart';
+import 'package:qlola_umkm/screens/report/report.dart';
 import 'package:qlola_umkm/screens/transaction.dart';
 
 class SuperRouter {
@@ -152,6 +153,14 @@ class SuperRouter {
         parentNavigatorKey: _rootSuperNavigatorKey,
         builder: (context, state) {
           return TransactionScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/report',
+        name: 'Report',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          return ReportScreen(key: state.pageKey);
         }
       )
     ]

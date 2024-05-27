@@ -13,6 +13,7 @@ import 'package:qlola_umkm/routes/auth_router.dart';
 import 'package:qlola_umkm/routes/employee/employee_router.dart';
 import 'package:qlola_umkm/routes/super/super_router.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -81,9 +82,16 @@ class MyApp extends StatelessWidget {
         routerConfig: router,
         localizationsDelegates: [
           DefaultMaterialLocalizations.delegate,
-          // DefaultCupertinoLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate
-        ]
+          DefaultCupertinoLocalizations.delegate,
+          DefaultWidgetsLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale("en"),
+          Locale("id")
+        ],
       )
     );
   }

@@ -101,20 +101,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ]
                   )
                 ),
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
-                    )
-                  ),
-                  child: GestureDetector(
-                    onTap: () => context.pushNamed("Transaction"),
+                GestureDetector(
+                  onTap: () => context.pushNamed("Transaction"),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+                      )
+                    ),
                     child: Row(
                       children: [
                         Expanded(child: Text(
-                          "History Transaksi",
+                          "History Transaksi Hari & Bulan ini",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 12
+                          )
+                        )),
+                        Image.asset("assets/icons/arrow_right_black.png", width: 13, height: 13)
+                      ]
+                    )
+                  )
+                ),
+                GestureDetector(
+                  onTap: () => context.pushNamed("Report"),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    height: 50,
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+                      )
+                    ),
+                    child: Row(
+                      children: [
+                        Expanded(child: Text(
+                          "Laporan",
                           style: TextStyle(
                             fontFamily: "Poppins",
                             color: Theme.of(context).primaryColorDark,

@@ -1,0 +1,296 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+
+class SheetDate extends StatefulWidget {
+  const SheetDate({super.key});
+
+  @override
+  State<SheetDate> createState() => _SheetDateState();
+}
+
+class _SheetDateState extends State<SheetDate> {
+  List listDates = [
+    "Hari ini",
+    "1 Bulan",
+    "3 Bulan",
+    "6 Bulan",
+    "1 Tahun",
+    "Custom"
+  ];
+
+  String selectedDate = "Hari ini";
+
+  void _changeSelectedDate(String param) {
+    setState(() {
+      selectedDate = param;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SafeArea(
+      child: Wrap(
+        children: [
+          Column(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width / 4,
+                height: 6,
+                margin: const EdgeInsets.only(top: 6),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).dividerColor,
+                  borderRadius: BorderRadius.all(Radius.circular(99))
+                )
+              ),
+              const SizedBox(height: 10),
+              Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: GridView.count(
+                      crossAxisCount: 3,
+                      shrinkWrap: true,
+                      childAspectRatio: 16/5,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      children: [
+                        for (var index = 0; index < listDates.length; index++) GestureDetector(
+                            onTap: () => _changeSelectedDate(listDates[index]),
+                            child: Container(
+                              width: double.infinity,
+                              height: 40,
+                              // margin: index < 1 ? EdgeInsets.only(left: 20, right: 20) : EdgeInsets.only(left: 20, right: 20, top: 7),
+                              padding: EdgeInsets.symmetric(horizontal: 16),
+                              decoration: BoxDecoration(
+                                border: Border.all(
+                                  width: 1,
+                                  color: listDates[index] == selectedDate ? Theme.of(context).primaryColor : Theme.of(context).dividerColor
+                                ),
+                                borderRadius: BorderRadius.all(Radius.circular(8)),
+                                color: listDates[index] == selectedDate ? Theme.of(context).primaryColor.withOpacity(0.2) : Colors.white
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    listDates[index],
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: listDates[index] == selectedDate ? FontWeight.w700 : FontWeight.w400,
+                                      color: listDates[index] == selectedDate ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
+                                      fontSize: 12
+                                    )
+                                  )
+                                ]
+                              )
+                            )
+                          )
+                      ]
+                    )
+                  ),
+                  if (selectedDate == "Custom") CustomDateRange(),
+                  const SizedBox(height: 15),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      children: [
+                        SizedBox(
+                          width: 80,
+                          height: 30,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.all(Radius.circular(6))
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Terapkan",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w700,
+                                    color: Colors.white,
+                                    fontSize: 10
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        ),
+                        SizedBox(
+                          width: 80,
+                          height: 30,
+                          child: GestureDetector(
+                            onTap: () {},
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(Radius.circular(6))
+                              ),
+                              child: Center(
+                                child: Text(
+                                  "Cancel",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 10
+                                  )
+                                )
+                              )
+                            )
+                          )
+                        )
+                      ]
+                    )
+                  ),
+                  const SizedBox(height: 20)
+                ]
+              )
+            ]
+          )
+        ]
+      )
+    );
+  }
+
+  Widget CustomDateRange() {
+    return Container(
+      margin: const EdgeInsets.only(left: 20, right: 20, top: 15),
+      child: Row(
+        children: [
+          Expanded(child: GestureDetector(
+            onTap: () {
+              showDatePicker(
+                context: context,
+                firstDate: DateTime(2024),
+                lastDate: DateTime(2024).add(Duration(days: 365 * 5)),
+                initialDate: DateTime.now(),
+                locale: Locale("id", "ID"),
+                confirmText: "Simpan",
+                initialEntryMode: DatePickerEntryMode.calendarOnly,
+                builder: (context, child) => Theme(
+                  data: ThemeData.dark().copyWith(
+                    colorScheme: ColorScheme.dark(
+                      primary: Colors.white,
+                      onPrimary: Theme.of(context).primaryColor,
+                      surface: Theme.of(context).primaryColor,
+                      onSurface: Colors.white,
+                    ),
+                    datePickerTheme: DatePickerThemeData(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                      headerHelpStyle: TextStyle(fontFamily: "Poppins"),
+                      headerHeadlineStyle: TextStyle(fontFamily: "Poppins", fontSize: 30),
+                      dayStyle: TextStyle(fontFamily: "Poppins"),
+                      yearStyle: TextStyle(fontFamily: "Poppins"),
+                      weekdayStyle: TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.w600, fontSize: 16),
+                      rangePickerHeaderHelpStyle: TextStyle(fontFamily: "Poppins"),
+                      rangePickerHeaderHeadlineStyle: TextStyle(fontFamily: "Poppins"),
+                      cancelButtonStyle: ButtonStyle(
+                        textStyle: WidgetStateProperty.resolveWith((callback) => TextStyle(fontFamily: "Poppins"))
+                      ),
+                      confirmButtonStyle: ButtonStyle(
+                        textStyle: WidgetStateProperty.resolveWith((callback) => TextStyle(fontFamily: "Poppins"))
+                      )
+                    )
+                  ),
+                  child: child!,
+                )
+              );
+            },
+            child: Container(
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+                color: Theme.of(context).dividerColor.withOpacity(0.6)
+              ),
+              child: Row(
+                children: [
+                  Image.asset("assets/icons/calendar_outline.png", width: 18, height: 18),
+                  const SizedBox(width: 5),
+                  Text(
+                    "Start Date",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      color: Theme.of(context).disabledColor,
+                      fontSize: 12
+                    )
+                  )
+                ]
+              )
+            )
+          )),
+          const SizedBox(width: 10),
+          Expanded(child: GestureDetector(
+            onTap: () {
+              showDatePicker(
+                context: context,
+                firstDate: DateTime(2024),
+                lastDate: DateTime(2024).add(Duration(days: 365 * 5)),
+                initialDate: DateTime.now(),
+                locale: Locale("id", "ID"),
+                confirmText: "Simpan",
+                initialEntryMode: DatePickerEntryMode.calendarOnly,
+                builder: (context, child) => Theme(
+                  data: ThemeData.dark().copyWith(
+                    colorScheme: ColorScheme.dark(
+                      primary: Colors.white,
+                      onPrimary: Theme.of(context).primaryColor,
+                      surface: Theme.of(context).primaryColor,
+                      onSurface: Colors.white,
+                    ),
+                    datePickerTheme: DatePickerThemeData(
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                      headerHelpStyle: TextStyle(fontFamily: "Poppins"),
+                      headerHeadlineStyle: TextStyle(fontFamily: "Poppins", fontSize: 30),
+                      dayStyle: TextStyle(fontFamily: "Poppins"),
+                      yearStyle: TextStyle(fontFamily: "Poppins"),
+                      weekdayStyle: TextStyle(fontFamily: "Poppins", fontWeight: FontWeight.w600, fontSize: 16),
+                      rangePickerHeaderHelpStyle: TextStyle(fontFamily: "Poppins"),
+                      rangePickerHeaderHeadlineStyle: TextStyle(fontFamily: "Poppins"),
+                      cancelButtonStyle: ButtonStyle(
+                        textStyle: WidgetStateProperty.resolveWith((callback) => TextStyle(fontFamily: "Poppins"))
+                      ),
+                      confirmButtonStyle: ButtonStyle(
+                        textStyle: WidgetStateProperty.resolveWith((callback) => TextStyle(fontFamily: "Poppins"))
+                      )
+                    )
+                  ),
+                  child: child!,
+                )
+              );
+            },
+            child: Container(
+              height: 32,
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+              decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                borderRadius: BorderRadius.all(Radius.circular(6)),
+                color: Theme.of(context).dividerColor.withOpacity(0.6)
+              ),
+              child: Row(
+                children: [
+                  Image.asset("assets/icons/calendar_outline.png", width: 18, height: 18),
+                  const SizedBox(width: 5),
+                  Text(
+                    "End Date",
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      color: Theme.of(context).disabledColor,
+                      fontSize: 12
+                    )
+                  )
+                ]
+              )
+            )
+          ))
+        ]
+      )
+    );
+  }
+}

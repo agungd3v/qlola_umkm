@@ -40,14 +40,13 @@ class _TransactionScreenState extends State<TransactionScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                SizedBox(
+                  width: 40,
                   child: GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Image.asset("assets/icons/arrow_back_white.png", width: 16, height: 16)
                   )
                 ),
-                const SizedBox(width: 6),
                 Text(
                   "History Transaksi",
                   style: TextStyle(
