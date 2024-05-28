@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 class OwnerProvider extends ChangeNotifier {
   List _employees = [];
   List _products = [];
+  Map<String, String> _reportDate = {"label": "Hari ini", "value": DateTime.now().toString().split(" ")[0]};
 
   List get employees => _employees;
   List get products => _products;
+  Map<String, String> get reportDate => _reportDate;
 
   set init_employee(List param) {
     _employees = param;
@@ -37,9 +39,15 @@ class OwnerProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  set set_report_date(Map<String, String> param) {
+    _reportDate = param;
+    notifyListeners();
+  }
+
   void reset() {
     _employees = [];
     _products = [];
+    _reportDate = {"label": "Hari ini", "value": DateTime.now().toString().split(" ")[0]};
 
     notifyListeners();
   }

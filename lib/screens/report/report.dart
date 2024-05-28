@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 import 'package:qlola_umkm/components/report/sheet_date.dart';
+import 'package:qlola_umkm/providers/owner_provider.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -10,6 +12,8 @@ class ReportScreen extends StatefulWidget {
 }
 
 class _ReportScreenState extends State<ReportScreen> {
+  OwnerProvider? owner_provider;
+
   void _showSelectDate() {
     showModalBottomSheet(
       context: context,
@@ -21,7 +25,18 @@ class _ReportScreenState extends State<ReportScreen> {
   void _showSelectOutlet() {}
 
   @override
+  void dispose() {
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      owner_provider!.reset();
+    });
+
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    owner_provider = Provider.of<OwnerProvider>(context);
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       appBar: PreferredSize(
@@ -112,7 +127,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   Image.asset("assets/icons/calendar.png", width: 20, height: 20),
                   const SizedBox(width: 10),
                   Text(
-                    "Hari ini",
+                    owner_provider!.reportDate["label"].toString(),
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Poppins",
