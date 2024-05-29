@@ -181,7 +181,7 @@ class _SheetDateState extends State<SheetDate> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Terapkan",
+                                  "Simpan",
                                   style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w700,
