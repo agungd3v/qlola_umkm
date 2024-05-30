@@ -24,6 +24,7 @@ Future<void> main() async {
 
   await initLocalStorage();
   await dotenv.load(fileName: '.env');
+  // await PrintBluetoothThermal.pairedBluetooths;
 
   final httpRequest = await check_user();
   if (httpRequest["status"] == 401) {
