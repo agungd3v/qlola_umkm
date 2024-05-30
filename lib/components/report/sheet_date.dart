@@ -26,19 +26,19 @@ class _SheetDateState extends State<SheetDate> {
         range = {"from": "", "to": ""};
       }
       if (param == "Hari ini") {
-        range = {"from": date.toString().split(" ")[0], "to": date.toString().split(" ")[0]};
+        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year, date.month, date.day + 1).toString().split(" ")[0]};
       }
       if (param == "1 Bulan") {
-        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year, date.month - 1, date.day).toString().split(" ")[0]};
+        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year, date.month - 1, date.day + 1).toString().split(" ")[0]};
       }
       if (param == "3 Bulan") {
-        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year, date.month - 3, date.day).toString().split(" ")[0]};
+        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year, date.month - 3, date.day + 1).toString().split(" ")[0]};
       }
       if (param == "6 Bulan") {
-        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year, date.month - 6, date.day).toString().split(" ")[0]};
+        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year, date.month - 6, date.day + 1).toString().split(" ")[0]};
       }
       if (param == "1 Tahun") {
-        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year - 1, date.month, date.day).toString().split(" ")[0]};
+        range = {"from": date.toString().split(" ")[0], "to": DateTime(date.year - 1, date.month, date.day + 1).toString().split(" ")[0]};
       }
 
       selectedDate = param;

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/report/sheet_date.dart';
 import 'package:qlola_umkm/components/report/sheet_outlet.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
+import 'package:qlola_umkm/utils/global_function.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
@@ -14,6 +16,25 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   OwnerProvider? owner_provider;
+
+  Map<String, dynamic>? report;
+  bool loading = false;
+
+  Future _getReport() async {
+    setState(() => loading = true);
+
+    Map<String, dynamic> data = {
+      "outlet": owner_provider!.reportOutlet["value"],
+      "date": owner_provider!.reportDate["value"]
+    };
+
+    final httpRequest = await get_report_owner(data);
+    if (httpRequest["status"] == 200) {
+      setState(() => report = httpRequest["data"]);
+    }
+
+    setState(() => loading = false);
+  }
 
   void _showSelectDate() {
     showModalBottomSheet(
@@ -34,6 +55,15 @@ class _ReportScreenState extends State<ReportScreen> {
         content: SheetOutlet()
       )
     );
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      _getReport();
+    });
+
+    super.initState();
   }
 
   @override
@@ -154,12 +184,12 @@ class _ReportScreenState extends State<ReportScreen> {
             )
           ),
           GestureDetector(
-            onTap: () {},
+            onTap: () => _getReport(),
             child: Container(
               width: 100,
               height: 35,
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 20),
+              margin: const EdgeInsets.only(left: 20, right: 20, top: 18, bottom: 20),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 borderRadius: BorderRadius.all(Radius.circular(8))
@@ -173,6 +203,148 @@ class _ReportScreenState extends State<ReportScreen> {
                   fontSize: 12
                 )
               )
+            )
+          ),
+          if (loading) Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              "Loading...",
+              style: TextStyle(
+                fontFamily: "Poppins",
+                color: Theme.of(context).primaryColorDark
+              )
+            ),
+          ),
+          if (!loading && report != null) Container(
+            margin: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 65,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).dividerColor,
+                        spreadRadius: 0.1,
+                        blurRadius: 7,
+                        offset: Offset(0, 3)
+                      )
+                    ]
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Total Penjualan",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12
+                        )
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        transformPrice(report!["sales"]),
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                        )
+                      )
+                    ]
+                  )
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  height: 65,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).dividerColor,
+                        spreadRadius: 0.1,
+                        blurRadius: 7,
+                        offset: Offset(0, 3)
+                      )
+                    ]
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Total Transaksi",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12
+                        )
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        "${report!["count"]}",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                        )
+                      )
+                    ]
+                  )
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  height: 65,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).dividerColor,
+                        spreadRadius: 0.1,
+                        blurRadius: 7,
+                        offset: Offset(0, 3)
+                      )
+                    ]
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Produk Terjual",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12
+                        )
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        "${report!["product_sales"]}",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                        )
+                      )
+                    ]
+                  )
+                )
+              ]
             )
           )
         ]

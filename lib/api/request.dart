@@ -385,3 +385,23 @@ Future get_available_products(Map<String, dynamic> request) async {
     ...response
   };
 }
+
+Future get_report_owner(Map<String, dynamic> request) async {
+  final httpRequest = await http.post(
+    Uri.parse("${dotenv.env["API_URL"]}/report/quick"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    },
+    body: jsonEncode(request)
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}

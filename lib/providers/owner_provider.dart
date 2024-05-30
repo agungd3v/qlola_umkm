@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-String dateNow = DateTime.now().toString().split(" ")[0];
+DateTime dateNow = DateTime.now();
 
 class OwnerProvider extends ChangeNotifier {
   List _employees = [];
   List _products = [];
-  Map<String, String> _reportDate = {"label": "Hari ini", "value": "$dateNow - $dateNow"};
+  Map<String, String> _reportDate = {"label": "Hari ini", "value": "${dateNow.toString().split(" ")[0]} - ${DateTime(dateNow.year, dateNow.month, dateNow.day + 1).toString().split(" ")[0]}"};
   Map<String, dynamic> _reportOutlet = {"label": "Semua Outlet", "value": null};
 
   List get employees => _employees;
@@ -56,7 +56,7 @@ class OwnerProvider extends ChangeNotifier {
   void reset() {
     _employees = [];
     _products = [];
-    _reportDate = {"label": "Hari ini", "value": "$dateNow - $dateNow"};
+    _reportDate = {"label": "Hari ini", "value": "${dateNow.toString().split(" ")[0]} - ${DateTime(dateNow.year, dateNow.month, dateNow.day + 1).toString().split(" ")[0]}"};
     _reportOutlet = {"label": "Semua Outlet", "value": null};
 
     notifyListeners();
