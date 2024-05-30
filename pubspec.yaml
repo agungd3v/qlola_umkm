@@ -45,10 +45,11 @@ dependencies:
   restart_app: ^1.2.1
   another_flushbar: ^1.12.30
   loading_animation_widget: ^1.2.1
-  flutter_native_splash: ^2.4.0
   flutter_localization: ^0.2.0
   flutter_localizations:
     sdk: flutter
+  print_bluetooth_thermal: ^1.1.0
+  esc_pos_utils: ^1.1.0
 
 dev_dependencies:
   flutter_test:

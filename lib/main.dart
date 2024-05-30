@@ -12,11 +12,10 @@ import 'package:qlola_umkm/providers/owner_provider.dart';
 import 'package:qlola_umkm/routes/auth_router.dart';
 import 'package:qlola_umkm/routes/employee/employee_router.dart';
 import 'package:qlola_umkm/routes/super/super_router.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 Future<void> main() async {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Color(0xffc02a34),
@@ -31,8 +30,6 @@ Future<void> main() async {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
   }
-
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
   runApp(
     MultiProvider(

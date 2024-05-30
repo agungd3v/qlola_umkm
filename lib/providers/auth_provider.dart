@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:localstorage/localstorage.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 class AuthProvider extends ChangeNotifier {
   dynamic _user = null;
@@ -27,7 +26,6 @@ class AuthProvider extends ChangeNotifier {
     _user = jsonDecode(userStorage.toString());
     _token = tokenStorage.toString();
 
-    FlutterNativeSplash.remove();
     notifyListeners();
   }
 }
