@@ -7,6 +7,7 @@ import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
+import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
 import 'package:qlola_umkm/routes/auth_router.dart';
@@ -36,7 +37,8 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (create) => AuthProvider()),
         ChangeNotifierProvider(create: (create) => CheckoutProvider()),
-        ChangeNotifierProvider(create: (create) => OwnerProvider())
+        ChangeNotifierProvider(create: (create) => OwnerProvider()),
+        ChangeNotifierProvider(create: (create) => BluetoothProvider())
       ],
       child: MyApp()
     )
