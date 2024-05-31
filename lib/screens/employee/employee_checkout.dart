@@ -10,6 +10,7 @@ import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:qlola_umkm/utils/printer.dart';
 
 class EmployeeCheckoutScreen extends StatefulWidget {
   const EmployeeCheckoutScreen({super.key});
@@ -23,6 +24,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
   AuthProvider? auth_provider;
 
   bool proccess = false;
+  List<int> bytes = [];
 
   Future _orderProduct() async {
     Map<String, dynamic> data = {
@@ -63,8 +65,12 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
         ).show(context);
       });
 
-      checkout_provider?.reset();
-      return context.go("/order");
+      final generate = await generateStruck(checkout_provider!, auth_provider!, "#${httpRequest["message"]}");
+
+      if (generate) {
+        checkout_provider?.reset();
+        return context.go("/order");
+      }
     }
 
     setState(() => proccess = false);

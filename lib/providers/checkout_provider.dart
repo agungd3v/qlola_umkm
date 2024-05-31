@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 class CheckoutProvider extends ChangeNotifier {
   List _carts = [];
+  Map<String, dynamic> _printer = {"status": false, "name": "", "mac": ""};
 
   List get carts => _carts;
+  Map<String, dynamic> get printer => _printer;
 
   num get cart_total {
     num total = 0;
@@ -20,6 +23,27 @@ class CheckoutProvider extends ChangeNotifier {
       _carts[_carts.indexWhere((item) => item["id"] == param["id"])] = param;
     } else {
       _carts.add(param);
+    }
+
+    notifyListeners();
+  }
+
+  set set_printer(Map<String, dynamic> param) {
+    _printer = param;
+
+    notifyListeners();
+  }
+
+  CheckoutProvider() {
+    final printerNameStorage = localStorage.getItem("printer_name");
+    final printerMacStorage = localStorage.getItem("printer_mac");
+
+    if (printerNameStorage != null && printerMacStorage != null) {
+      _printer = {
+        "status": true,
+        "name": printerNameStorage,
+        "mac": printerMacStorage
+      };
     }
 
     notifyListeners();
