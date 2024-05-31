@@ -10,24 +10,38 @@ class EmployeeTransactionToday extends StatefulWidget {
 }
 
 class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
-  Future? future;
+  dynamic transaction;
 
   Future getHistory() async {
     final httpRequest = await outlet_transaction();
     if (httpRequest["status"] == 200) {
-      return httpRequest;
+      setState(() {
+        transaction = httpRequest;
+      });
     }
+  }
 
-    return null;
+  @override
+  void initState() {
+    getHistory();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-      future: getHistory(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text(
+    return Container(
+      child: Column(
+        children: [
+          if (transaction != null) Text(
+            transformPrice(double.parse(transaction["transaction_nominal_today"].toString())),
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              fontSize: 20
+            )
+          ),
+          if (transaction == null) Text(
             transformPrice(0),
             style: TextStyle(
               fontFamily: "Poppins",
@@ -35,29 +49,9 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
               color: Colors.white,
               fontSize: 20
             )
-          );
-        }
-        if (snapshot.data != null) {
-          return Text(
-            transformPrice(double.parse(snapshot.data["transaction_nominal_today"].toString())),
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-              fontSize: 20
-            )
-          );
-        }
-        return Text(
-          transformPrice(0),
-          style: TextStyle(
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.w700,
-            color: Colors.white,
-            fontSize: 20
           )
-        );
-      }
+        ]
+      )
     );
   }
 }

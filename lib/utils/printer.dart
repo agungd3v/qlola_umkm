@@ -29,13 +29,26 @@ Future testGenerateStruck() async {
           await PrintBluetoothThermal.writeBytes(bytes);
           await PrintBluetoothThermal.disconnect;
 
-          return true;
+          return {
+            "status": true,
+            "message": "Testing print berhasil"
+          };
         } catch (e) {
           inspect(e);
           await PrintBluetoothThermal.disconnect;
 
-          return true;
+          return {
+            "status": false,
+            "message": e.toString()
+          };
         }
+      } else {
+        await PrintBluetoothThermal.disconnect;
+
+        return {
+          "status": false,
+          "message": "MAC Address tidak ditemukan, cek kembali mac address yang ditulis!"
+        };
       }
     }
   }

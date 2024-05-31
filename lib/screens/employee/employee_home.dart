@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
@@ -63,9 +64,33 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     localStorage.setItem("printer_mac", inputMacAddress.text);
     final generate = await testGenerateStruck();
 
-    if (generate) {
-      setState(() => testPrint = false);
+    if (generate != null && generate["status"] == false) {
+      Flushbar(
+        backgroundColor: Theme.of(context).primaryColor,
+        duration: Duration(seconds: 3),
+        reverseAnimationCurve: Curves.fastOutSlowIn,
+        flushbarPosition: FlushbarPosition.TOP,
+        titleText: Text(
+          "Autentikasi gagal",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+        messageText: Text(
+          generate["message"],
+          style: TextStyle(
+            fontFamily: "Poppins",
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+      ).show(context);
     }
+
+    setState(() => testPrint = false);
   }
 
   @override
@@ -96,13 +121,13 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     checkout_provider = Provider.of<CheckoutProvider>(context);
     bluetooth_provider = Provider.of<BluetoothProvider>(context);
 
-    // WidgetsBinding.instance.addPostFrameCallback((callback) {
-    //   if (_adapterState == BluetoothAdapterState.on) {
-    //     _scanPrinter();
-    //   } else {
-    //     bluetooth_provider?.set_status = false;
-    //   }
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      if (_adapterState == BluetoothAdapterState.on) {
+        _scanPrinter();
+      } else {
+        bluetooth_provider?.set_status = false;
+      }
+    });
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -155,7 +180,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                   Row(
                     children: [
                       Text(
-                        "Printer Status: ",
+                        "Bluetooth Status: ",
                         style: TextStyle(
                           fontFamily: "Poppins",
                           color: Theme.of(context).primaryColorDark,
@@ -202,6 +227,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                               fontSize: 12
                             ),
                             cursorColor: Theme.of(context).focusColor,
+                            textCapitalization: TextCapitalization.sentences,
                             controller: inputMacAddress,
                           )
                         ),
