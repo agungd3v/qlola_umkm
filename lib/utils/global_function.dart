@@ -62,18 +62,18 @@ String getDateTimeNow() {
   var year = DateFormat("yyyy").format(dateTime);
   var time = DateFormat("hh:mm").format(dateTime);
 
-  if (month == "January") month = "Januari";
-  if (month == "February") month = "Februari";
-  if (month == "March") month = "Maret";
-  if (month == "April") month = "April";
+  if (month == "January") month = "Jan";
+  if (month == "February") month = "Feb";
+  if (month == "March") month = "Mar";
+  if (month == "April") month = "Apr";
   if (month == "May") month = "Mei";
-  if (month == "June") month = "Juni";
-  if (month == "July") month = "Juli";
-  if (month == "August") month = "Agustus";
-  if (month == "September") month = "September";
-  if (month == "October") month = "Oktober";
-  if (month == "November") month = "November";
-  if (month == "December") month = "Desember";
+  if (month == "June") month = "Jun";
+  if (month == "July") month = "Jul";
+  if (month == "August") month = "Agu";
+  if (month == "September") month = "Sep";
+  if (month == "October") month = "Okt";
+  if (month == "November") month = "Nov";
+  if (month == "December") month = "Des";
 
   return "$date $month $year, $time";
 }
