@@ -96,13 +96,13 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     checkout_provider = Provider.of<CheckoutProvider>(context);
     bluetooth_provider = Provider.of<BluetoothProvider>(context);
 
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
-      if (_adapterState == BluetoothAdapterState.on) {
-        _scanPrinter();
-      } else {
-        bluetooth_provider?.set_status = false;
-      }
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((callback) {
+    //   if (_adapterState == BluetoothAdapterState.on) {
+    //     _scanPrinter();
+    //   } else {
+    //     bluetooth_provider?.set_status = false;
+    //   }
+    // });
 
     return Scaffold(
       extendBodyBehindAppBar: false,
