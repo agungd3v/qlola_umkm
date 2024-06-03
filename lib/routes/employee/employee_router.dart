@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/routes/employee/tab_index.dart';
+import 'package:qlola_umkm/screens/employee/complete_oreder.dart';
 import 'package:qlola_umkm/screens/employee/employee_checkout.dart';
 import 'package:qlola_umkm/screens/employee/employee_home.dart';
 import 'package:qlola_umkm/screens/employee/employee_order.dart';
@@ -69,6 +70,14 @@ class EmployeeRouter {
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) {
           return EmployeeCheckoutScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/complete',
+        name: 'Complete',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) {
+          return CompleteOrederScreen(key: state.pageKey);
         }
       )
     ]

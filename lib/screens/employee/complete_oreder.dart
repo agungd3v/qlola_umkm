@@ -1,0 +1,254 @@
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:go_router/go_router.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:qlola_umkm/providers/auth_provider.dart';
+import 'package:qlola_umkm/providers/checkout_provider.dart';
+import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:widgets_to_image/widgets_to_image.dart';
+
+class CompleteOrederScreen extends StatefulWidget {
+  const CompleteOrederScreen({super.key});
+
+  @override
+  State<CompleteOrederScreen> createState() => _CompleteOrederScreenState();
+}
+
+class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
+  CheckoutProvider? checkout_provider;
+  AuthProvider? auth_provider;
+
+  WidgetsToImageController widgetsToImageController = WidgetsToImageController();
+
+  Future _printShare() async {
+    final bytes = await widgetsToImageController.capture();
+    final tempDir = await getTemporaryDirectory();
+    File file = await File('${tempDir.path}/image.png').create();
+    file.writeAsBytesSync(bytes!);
+
+    await Share.shareXFiles([XFile(file.path)], text: "Resi Pembelian");
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    checkout_provider = Provider.of<CheckoutProvider>(context);
+    auth_provider = Provider.of<AuthProvider>(context);
+
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        extendBodyBehindAppBar: false,
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Theme.of(context).primaryColor,
+              statusBarIconBrightness: Brightness.light
+            )
+          )
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              WidgetsToImage(
+                controller: widgetsToImageController,
+                child: Container(
+                  width: (MediaQuery.of(context).size.width - 92) < 320 ? (MediaQuery.of(context).size.width - 92) : 320,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.white
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                        auth_provider!.user["outlet"]["business"]["business_name"],
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          color: Theme.of(context).primaryColorDark,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                        )
+                      ),
+                      Text(
+                        auth_provider!.user["outlet"]["outlet_name"],
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          color: Theme.of(context).primaryColorDark,
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14
+                        )
+                      ),
+                      const SizedBox(height: 25),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+                          )
+                        )
+                      ),
+                      const SizedBox(height: 10),
+                      for (var index = 0; index < checkout_provider!.carts.length; index++) Container(
+                        margin: const EdgeInsets.only(top: 5),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.end,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  checkout_provider!.carts[index]["product_name"],
+                                  style: TextStyle(
+                                    fontFamily: "Poppins"
+                                  )
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      transformPrice(double.parse(checkout_provider!.carts[index]["product_price"])),
+                                      style: TextStyle(
+                                        fontFamily: "Poppins"
+                                      )
+                                    ),
+                                    Text(
+                                      " x ${checkout_provider!.carts[index]["quantity"]}",
+                                      style: TextStyle(
+                                        fontFamily: "Poppins"
+                                      )
+                                    )
+                                  ]
+                                )
+                              ]
+                            ),
+                            Text(
+                              transformPrice(
+                                double.parse(checkout_provider!.carts[index]["product_price"]) * checkout_provider!.carts[index]["quantity"]
+                              ),
+                              style: TextStyle(
+                                fontFamily: "Poppins"
+                              )
+                            )
+                          ]
+                        )
+                      ),
+                      const SizedBox(height: 15),
+                      Container(
+                        decoration: BoxDecoration(
+                          border: Border(
+                            bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+                          )
+                        )
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Total",
+                            style: TextStyle(
+                              fontFamily: "Poppins"
+                            )
+                          ),
+                          Text(
+                            transformPrice(checkout_provider!.cart_total),
+                            style: TextStyle(
+                              fontFamily: "Poppins"
+                            )
+                          )
+                        ]
+                      ),
+                      const SizedBox(height: 35),
+                      Text(
+                        "Terimakasih ^_^",
+                        style: TextStyle(
+                          fontFamily: "Poppins"
+                        )
+                      )
+                    ]
+                  )
+                )
+              ),
+              Column(
+                children: [
+                  Row(
+                    children: [
+                      Expanded(child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                            borderRadius: BorderRadius.all(Radius.circular(8))
+                          ),
+                          child: Text(
+                            "Bluetooth print",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              color: Theme.of(context).primaryColorDark
+                            )
+                          )
+                        )
+                      )),
+                      const SizedBox(width: 10),
+                      Expanded(child: GestureDetector(
+                        onTap: () => _printShare(),
+                        child: Container(
+                          height: 40,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                            borderRadius: BorderRadius.all(Radius.circular(8))
+                          ),
+                          child: Text(
+                            "Share print",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              color: Theme.of(context).primaryColorDark
+                            )
+                          )
+                        )
+                      ))
+                    ]
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      context.go("/order");
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      height: 40,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.all(Radius.circular(8))
+                      ),
+                      child: Text(
+                        "Kembali memesan",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                          fontSize: 16
+                        )
+                      )
+                    )
+                  )
+                ]
+              )
+            ]
+          )
+        )
+      )
+    );
+  }
+}

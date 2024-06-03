@@ -38,39 +38,40 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
 
     final httpRequest = await proses_checkout(data);
     if (httpRequest["status"] == 200) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Flushbar(
-          backgroundColor: Color(0xff00880d),
-          duration: Duration(seconds: 3),
-          reverseAnimationCurve: Curves.fastOutSlowIn,
-          flushbarPosition: FlushbarPosition.TOP,
-          titleText: Text(
-            auth_provider!.user["outlet"]["outlet_name"],
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12
-            )
-          ),
-          messageText: Text(
-            "Berhasil melakukan pemesanan",
-            style: TextStyle(
-              fontFamily: "Poppins",
-              color: Colors.white,
-              fontSize: 12
-            )
-          ),
-        ).show(context);
-      });
+      // SchedulerBinding.instance.addPostFrameCallback((_) {
+      //   Flushbar(
+      //     backgroundColor: Color(0xff00880d),
+      //     duration: Duration(seconds: 3),
+      //     reverseAnimationCurve: Curves.fastOutSlowIn,
+      //     flushbarPosition: FlushbarPosition.TOP,
+      //     titleText: Text(
+      //       auth_provider!.user["outlet"]["outlet_name"],
+      //       overflow: TextOverflow.ellipsis,
+      //       style: TextStyle(
+      //         fontFamily: "Poppins",
+      //         fontWeight: FontWeight.w600,
+      //         color: Colors.white,
+      //         fontSize: 12
+      //       )
+      //     ),
+      //     messageText: Text(
+      //       "Berhasil melakukan pemesanan",
+      //       style: TextStyle(
+      //         fontFamily: "Poppins",
+      //         color: Colors.white,
+      //         fontSize: 12
+      //       )
+      //     ),
+      //   ).show(context);
+      // });
 
-      final generate = await generateStruck(checkout_provider!, auth_provider!, "#${httpRequest["message"]}");
+      // final generate = await generateStruck(checkout_provider!, auth_provider!, "#${httpRequest["message"]}");
 
-      if (generate) {
-        checkout_provider?.reset();
-        return context.go("/order");
-      }
+      // if (generate) {
+      //   checkout_provider?.reset();
+      //   return context.go("/order");
+      // }
+      context.pushNamed("Complete");
     }
 
     setState(() => proccess = false);
@@ -156,6 +157,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                 children: [
                   const SizedBox(height: 16),
                   for (var index = 0; index < checkout_provider!.carts.length; index++) Container(
+                    padding: const EdgeInsets.only(bottom: 15),
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     child: Row(
                       children: [
