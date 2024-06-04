@@ -70,11 +70,12 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                     children: [
                       Text(
                         auth_provider!.user["outlet"]["business"]["business_name"],
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontFamily: "Poppins",
                           color: Theme.of(context).primaryColorDark,
                           fontWeight: FontWeight.w700,
-                          fontSize: 16
+                          fontSize: 12
                         )
                       ),
                       Text(
@@ -83,18 +84,18 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                           fontFamily: "Poppins",
                           color: Theme.of(context).primaryColorDark,
                           fontWeight: FontWeight.w500,
-                          fontSize: 14
+                          fontSize: 10
                         )
                       ),
                       const SizedBox(height: 25),
                       Container(
                         decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+                            bottom: BorderSide(width: 1)
                           )
                         )
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 5),
                       for (var index = 0; index < checkout_provider!.carts.length; index++) Container(
                         margin: const EdgeInsets.only(top: 5),
                         child: Row(
@@ -106,8 +107,10 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                               children: [
                                 Text(
                                   checkout_provider!.carts[index]["product_name"],
+                                  overflow: TextOverflow.ellipsis,
                                   style: TextStyle(
-                                    fontFamily: "Poppins"
+                                    fontFamily: "Poppins",
+                                    fontSize: 10
                                   )
                                 ),
                                 Row(
@@ -115,13 +118,15 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                     Text(
                                       transformPrice(double.parse(checkout_provider!.carts[index]["product_price"])),
                                       style: TextStyle(
-                                        fontFamily: "Poppins"
+                                        fontFamily: "Poppins",
+                                        fontSize: 10
                                       )
                                     ),
                                     Text(
                                       " x ${checkout_provider!.carts[index]["quantity"]}",
                                       style: TextStyle(
-                                        fontFamily: "Poppins"
+                                        fontFamily: "Poppins",
+                                        fontSize: 10
                                       )
                                     )
                                   ]
@@ -133,17 +138,18 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                 double.parse(checkout_provider!.carts[index]["product_price"]) * checkout_provider!.carts[index]["quantity"]
                               ),
                               style: TextStyle(
-                                fontFamily: "Poppins"
+                                fontFamily: "Poppins",
+                                fontSize: 10
                               )
                             )
                           ]
                         )
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
                       Container(
                         decoration: BoxDecoration(
                           border: Border(
-                            bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+                            bottom: BorderSide(width: 1)
                           )
                         )
                       ),
@@ -154,13 +160,15 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                           Text(
                             "Total",
                             style: TextStyle(
-                              fontFamily: "Poppins"
+                              fontFamily: "Poppins",
+                              fontSize: 12
                             )
                           ),
                           Text(
                             transformPrice(checkout_provider!.cart_total),
                             style: TextStyle(
-                              fontFamily: "Poppins"
+                              fontFamily: "Poppins",
+                              fontSize: 12
                             )
                           )
                         ]
