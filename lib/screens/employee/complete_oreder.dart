@@ -61,7 +61,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
               WidgetsToImage(
                 controller: widgetsToImageController,
                 child: Container(
-                  width: (MediaQuery.of(context).size.width - 92) < 320 ? (MediaQuery.of(context).size.width - 92) : 320,
+                  width: 218,
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                     color: Colors.white
