@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:sizer/sizer.dart';
 
 class TransactionInfo extends StatefulWidget {
   const TransactionInfo({super.key});
@@ -45,7 +46,8 @@ class _TransactionInfoState extends State<TransactionInfo> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w500,
-                        color: Colors.white
+                        color: Colors.white,
+                        fontSize: 4.w
                       )
                     ),
                     Text(
@@ -55,7 +57,7 @@ class _TransactionInfoState extends State<TransactionInfo> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
-                        fontSize: 20
+                        fontSize: 5.w
                       )
                     )
                   ]
@@ -77,7 +79,8 @@ class _TransactionInfoState extends State<TransactionInfo> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w500,
-                        color: Colors.white
+                        color: Colors.white,
+                        fontSize: 4.w
                       )
                     ),
                     Text(
@@ -87,7 +90,7 @@ class _TransactionInfoState extends State<TransactionInfo> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
-                        fontSize: 20
+                        fontSize: 5.w
                       )
                     )
                   ]

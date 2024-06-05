@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qlola_umkm/components/history/transaction_daily.dart';
 import 'package:qlola_umkm/components/history/transaction_monthly.dart';
+import 'package:sizer/sizer.dart';
 
 class TransactionScreen extends StatefulWidget {
   const TransactionScreen({super.key});
@@ -40,11 +41,11 @@ class _TransactionScreenState extends State<TransactionScreen> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(
-                  width: 40,
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Image.asset("assets/icons/arrow_back_white.png", width: 16, height: 16)
+                GestureDetector(
+                  onTap: () => Navigator.pop(context),
+                  child: SizedBox(
+                    width: 40,
+                    child: Image.asset("assets/icons/arrow_back_white.png", width: 4.5.w, height: 4.5.w)
                   )
                 ),
                 Text(
@@ -52,7 +53,8 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontWeight: FontWeight.w700,
-                    color: Colors.white
+                    color: Colors.white,
+                    fontSize: 3.6.w
                   )
                 ),
               ]

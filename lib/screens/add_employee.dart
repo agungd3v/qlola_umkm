@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:sizer/sizer.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({super.key});
@@ -211,11 +212,11 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Image.asset("assets/icons/arrow_back_gray.png", width: 16, height: 16)
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Image.asset("assets/icons/arrow_back_gray.png", width: 4.5.w, height: 4.5.w)
                       )
                     ),
                     const SizedBox(width: 6),
@@ -224,9 +225,10 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 3.6.w
                       )
-                    ),
+                    )
                   ]
                 )
               ),
@@ -275,14 +277,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context).disabledColor,
-                                  fontSize: 12
+                                  fontSize: 3.w
                                 )
                               ),
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 12
+                                fontSize: 3.w
                               ),
                               cursorColor: Theme.of(context).focusColor,
                               controller: employeeName,
@@ -303,7 +305,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context).primaryColorDark,
-                                    fontSize: 12
+                                    fontSize: 3.w
                                   )
                                 ),
                                 const SizedBox(width: 8),
@@ -316,14 +318,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context).disabledColor,
-                                      fontSize: 12
+                                      fontSize: 3.w
                                     )
                                   ),
                                   style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context).primaryColorDark,
-                                    fontSize: 12
+                                    fontSize: 3.w
                                   ),
                                   keyboardType: TextInputType.number,
                                   cursorColor: Theme.of(context).focusColor,
@@ -338,7 +340,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                             style: TextStyle(
                               fontFamily: "Poppins",
                               color: Theme.of(context).disabledColor,
-                              fontSize: 10
+                              fontSize: 2.5.w
                             )
                           )
                         ]

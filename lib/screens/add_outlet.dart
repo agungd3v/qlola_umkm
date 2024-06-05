@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:sizer/sizer.dart';
 
 class AddOutletScreen extends StatefulWidget {
   const AddOutletScreen({super.key});
@@ -114,11 +115,11 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Image.asset("assets/icons/arrow_back_gray.png", width: 16, height: 16)
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Image.asset("assets/icons/arrow_back_gray.png", width: 4.5.w, height: 4.5.w)
                       )
                     ),
                     const SizedBox(width: 6),
@@ -127,9 +128,10 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 3.6.w
                       )
-                    ),
+                    )
                   ]
                 )
               ),
@@ -148,7 +150,8 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w700,
-                              color: Theme.of(context).primaryColorDark
+                              color: Theme.of(context).primaryColorDark,
+                              fontSize: 3.6.w
                             )
                           ),
                           const SizedBox(height: 14),
@@ -167,14 +170,14 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context).disabledColor,
-                                  fontSize: 12
+                                  fontSize: 3.w
                                 )
                               ),
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 12
+                                fontSize: 3.w
                               ),
                               cursorColor: Theme.of(context).focusColor,
                               controller: outletName,
@@ -195,7 +198,7 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context).primaryColorDark,
-                                    fontSize: 12
+                                    fontSize: 3.w
                                   )
                                 ),
                                 const SizedBox(width: 8),
@@ -208,14 +211,14 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.w400,
                                       color: Theme.of(context).disabledColor,
-                                      fontSize: 12
+                                      fontSize: 3.w
                                     )
                                   ),
                                   style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w400,
                                     color: Theme.of(context).primaryColorDark,
-                                    fontSize: 12
+                                    fontSize: 3.w
                                   ),
                                   keyboardType: TextInputType.number,
                                   cursorColor: Theme.of(context).focusColor,
@@ -240,14 +243,14 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context).disabledColor,
-                                  fontSize: 12
+                                  fontSize: 3.w
                                 )
                               ),
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 12
+                                fontSize: 3.w
                               ),
                               cursorColor: Theme.of(context).focusColor,
                               controller: outletAddress,

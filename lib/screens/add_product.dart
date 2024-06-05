@@ -2,12 +2,12 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:sizer/sizer.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -137,7 +137,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    Image.asset("assets/icons/camera_red.png", width: 20, height: 20),
+                    Image.asset("assets/icons/camera_red.png", width: 5.w, height: 5.w),
                     const SizedBox(width: 12),
                     Text(
                       "Kamera",
@@ -145,7 +145,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColorDark,
-                        fontSize: 12
+                        fontSize: 3.w
                       )
                     )
                   ]
@@ -161,7 +161,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: Row(
                   children: [
-                    Image.asset("assets/icons/gallery_red.png", width: 20, height: 20),
+                    Image.asset("assets/icons/gallery_red.png", width: 5.w, height: 5.w),
                     const SizedBox(width: 12),
                     Text(
                       "Pilih dari galeri",
@@ -169,7 +169,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColorDark,
-                        fontSize: 12
+                        fontSize: 3.w
                       )
                     )
                   ]
@@ -214,11 +214,11 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6),
-                      child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Image.asset("assets/icons/arrow_back_gray.png", width: 16, height: 16)
+                    GestureDetector(
+                      onTap: () => Navigator.pop(context),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Image.asset("assets/icons/arrow_back_gray.png", width: 4.5.w, height: 4.5.w)
                       )
                     ),
                     const SizedBox(width: 6),
@@ -227,9 +227,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 3.6.w
                       )
-                    ),
+                    )
                   ]
                 )
               ),
@@ -277,14 +278,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context).disabledColor,
-                                  fontSize: 12
+                                  fontSize: 3.w
                                 )
                               ),
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 12
+                                fontSize: 3.w
                               ),
                               cursorColor: Theme.of(context).focusColor,
                               controller: productName,
@@ -306,14 +307,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w400,
                                   color: Theme.of(context).disabledColor,
-                                  fontSize: 12
+                                  fontSize: 3.w
                                 )
                               ),
                               style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w400,
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 12
+                                fontSize: 3.w
                               ),
                               keyboardType: TextInputType.number,
                               cursorColor: Theme.of(context).focusColor,

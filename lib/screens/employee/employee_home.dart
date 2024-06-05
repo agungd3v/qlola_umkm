@@ -300,7 +300,8 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
-                      color: Colors.white
+                      color: Colors.white,
+                      fontSize: 4.5.w
                     )
                   )
                 )
@@ -318,7 +319,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                   children: [
                     LoadingAnimationWidget.fourRotatingDots(
                       color: Colors.white,
-                      size: 22,
+                      size: 4.5.w,
                     ),
                     const SizedBox(width: 5),
                     Text(
@@ -327,7 +328,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
-                        fontSize: 5.w
+                        fontSize: 4.5.w
                       )
                     )
                   ]

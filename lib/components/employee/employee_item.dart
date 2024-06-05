@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:sizer/sizer.dart';
 
 class EmployeeItem extends StatefulWidget {
   dynamic employee;
@@ -26,13 +27,13 @@ class _EmployeeItemState extends State<EmployeeItem> {
           clipBehavior: Clip.hardEdge,
           child: Image.network(
             "${dotenv.env["ASSET_URL"]}${widget.employee["photo"]}",
-            width: 70,
-            height: 70,
+            width: 17.5.w,
+            height: 17.5.w,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return Container(
-                width: 70,
-                height: 70,
+                width: 17.5.w,
+                height: 17.5.w,
                 color: Theme.of(context).primaryColor.withOpacity(0.2),
                 child: Center(
                   child: Image.asset("assets/icons/profile.png", width: 30, height: 30)
@@ -43,7 +44,7 @@ class _EmployeeItemState extends State<EmployeeItem> {
         ),
         const SizedBox(height: 6),
         SizedBox(
-          width: 70,
+          width: 17.5.w,
           child: Text(
             widget.employee["name"],
             overflow: TextOverflow.ellipsis,
@@ -51,7 +52,7 @@ class _EmployeeItemState extends State<EmployeeItem> {
             style: TextStyle(
               fontFamily: "Poppins",
               color: Theme.of(context).primaryColorDark,
-              fontSize: 12
+              fontSize: 3.w
             )
           )
         )
