@@ -22,12 +22,11 @@ class _ButtonCheckoutState extends State<ButtonCheckout> {
         context.pushNamed("Checkout");
       },
       child: Container(
-        width: 150,
-        height: 40,
-        padding: const EdgeInsets.symmetric(horizontal: 12),
+        width: MediaQuery.of(context).size.width,
+        height: 50,
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
-          borderRadius: BorderRadius.all(Radius.circular(8))
+          // borderRadius: BorderRadius.all(Radius.circular(8))
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,

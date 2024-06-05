@@ -231,6 +231,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                   GestureDetector(
                     onTap: () {
                       context.go("/order");
+                      checkout_provider?.reset();
                     },
                     child: Container(
                       width: double.infinity,

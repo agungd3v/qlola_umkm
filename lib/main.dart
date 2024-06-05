@@ -14,6 +14,7 @@ import 'package:qlola_umkm/routes/auth_router.dart';
 import 'package:qlola_umkm/routes/employee/employee_router.dart';
 import 'package:qlola_umkm/routes/super/super_router.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,11 +27,11 @@ Future<void> main() async {
   await initLocalStorage();
   await dotenv.load(fileName: '.env');
 
-  final httpRequest = await check_user();
-  if (httpRequest["status"] == 401) {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-  }
+  // final httpRequest = await check_user();
+  // if (httpRequest["status"] == 401) {
+  //   localStorage.removeItem("user");
+  //   localStorage.removeItem("token");
+  // }
 
   runApp(
     MultiProvider(
@@ -65,33 +66,37 @@ class MyApp extends StatelessWidget {
       }
     }
 
-    return Theme(
-      data: ThemeData(
-        primaryColor: Color(0xffc02a34),
-        indicatorColor: Color(0xffc02a34),
-        focusColor: Color(0xffc02a34),
-        dividerColor: Color(0xffd6dfeb),
-        disabledColor: Color(0xff6d7588),
-        primaryColorDark: Color(0xff292929),
-        scaffoldBackgroundColor: Colors.white
-      ),
-      child: CupertinoApp.router(
-        title: 'Qlola UMKM',
-        debugShowCheckedModeBanner: false,
-        routerConfig: router,
-        localizationsDelegates: [
-          DefaultMaterialLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: [
-          Locale("en"),
-          Locale("id")
-        ],
-      )
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return Theme(
+          data: ThemeData(
+            primaryColor: Color(0xffc02a34),
+            indicatorColor: Color(0xffc02a34),
+            focusColor: Color(0xffc02a34),
+            dividerColor: Color(0xffd6dfeb),
+            disabledColor: Color(0xff6d7588),
+            primaryColorDark: Color(0xff292929),
+            scaffoldBackgroundColor: Colors.white
+          ),
+          child: CupertinoApp.router(
+            title: 'Qlola UMKM',
+            debugShowCheckedModeBanner: false,
+            routerConfig: router,
+            localizationsDelegates: [
+              DefaultMaterialLocalizations.delegate,
+              DefaultCupertinoLocalizations.delegate,
+              DefaultWidgetsLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: [
+              Locale("en"),
+              Locale("id")
+            ],
+          )
+        );
+      }
     );
   }
 }

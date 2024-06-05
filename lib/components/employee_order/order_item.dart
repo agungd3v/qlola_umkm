@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qlola_umkm/components/employee_product_sheet.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:sizer/sizer.dart';
 
 class OrderItem extends StatefulWidget {
   dynamic item;
@@ -42,13 +43,13 @@ class _OrderItemState extends State<OrderItem> {
               clipBehavior: Clip.hardEdge,
               child: Image.network(
                 "${dotenv.env["ASSET_URL"]}${widget.item["product_image"]}",
-                width: 70,
-                height: 70,
+                width: 18.w,
+                height: 18.w,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    width: 70,
-                    height: 70,
+                    width: 18.w,
+                    height: 18.w,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor.withOpacity(0.2)
                     ),
@@ -66,10 +67,13 @@ class _OrderItemState extends State<OrderItem> {
                 children: [
                   Text(
                     widget.item["product_name"],
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColorDark
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 3.5.w
                     )
                   ),
                   Text(
@@ -77,7 +81,8 @@ class _OrderItemState extends State<OrderItem> {
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColor
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 3.w
                     )
                   )
                 ]

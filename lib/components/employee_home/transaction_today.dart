@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:sizer/sizer.dart';
 
 class EmployeeTransactionToday extends StatefulWidget {
   const EmployeeTransactionToday({super.key});
@@ -38,7 +39,7 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
               fontFamily: "Poppins",
               fontWeight: FontWeight.w700,
               color: Colors.white,
-              fontSize: 20
+              fontSize: 5.w
             )
           ),
           if (transaction == null) Text(
@@ -47,7 +48,7 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
               fontFamily: "Poppins",
               fontWeight: FontWeight.w700,
               color: Colors.white,
-              fontSize: 20
+              fontSize: 5.w
             )
           )
         ]

@@ -15,6 +15,7 @@ import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/printer.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:sizer/sizer.dart';
 
 class EmployeeHomeScreen extends StatefulWidget {
   const EmployeeHomeScreen({super.key});
@@ -169,7 +170,8 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                           style: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w500,
-                            color: Colors.white
+                            color: Colors.white,
+                            fontSize: 4.w
                           )
                         ),
                         EmployeeTransactionToday()
@@ -177,108 +179,108 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                     )
                   ),
                   const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Text(
-                        "Bluetooth Status: ",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
-                        )
-                      ),
-                      Text(
-                        bluetooth_provider!.status ? "Connected" : "Not Connected",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          color: bluetooth_provider!.status ? Color(0xff00880d) : Colors.orangeAccent,
-                          fontSize: 12
-                        )
-                      )
-                    ]
-                  ),
-                  const SizedBox(height: 10),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                      borderRadius: BorderRadius.all(Radius.circular(6))
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                              isDense: true,
-                              border: InputBorder.none,
-                              hintText: "Masukan printer mac address",
-                              hintStyle: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w400,
-                                color: Theme.of(context).disabledColor,
-                                fontSize: 12
-                              )
-                            ),
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w400,
-                              color: Theme.of(context).primaryColorDark,
-                              fontSize: 12
-                            ),
-                            cursorColor: Theme.of(context).focusColor,
-                            textCapitalization: TextCapitalization.sentences,
-                            controller: inputMacAddress,
-                          )
-                        ),
-                        const SizedBox(width: 10),
-                        if (!testPrint) GestureDetector(
-                          onTap: () => _testPrinter(),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: BorderRadius.all(Radius.circular(4))
-                            ),
-                            child: Text(
-                              "TEST PRINTER",
-                              style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                                fontSize: 10
-                              )
-                            )
-                          )
-                        ),
-                        if (testPrint) Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(4))
-                          ),
-                          child: Row(
-                            children: [
-                              LoadingAnimationWidget.fourRotatingDots(
-                                color: Colors.white,
-                                size: 14,
-                              ),
-                              const SizedBox(width: 5),
-                              Text(
-                                "TEST PRINTER",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.white,
-                                  fontSize: 10
-                                )
-                              )
-                            ]
-                          )
-                        )
-                      ]
-                    )
-                  )
+                  // Row(
+                  //   children: [
+                  //     Text(
+                  //       "Bluetooth Status: ",
+                  //       style: TextStyle(
+                  //         fontFamily: "Poppins",
+                  //         color: Theme.of(context).primaryColorDark,
+                  //         fontSize: 12
+                  //       )
+                  //     ),
+                  //     Text(
+                  //       bluetooth_provider!.status ? "Connected" : "Not Connected",
+                  //       style: TextStyle(
+                  //         fontFamily: "Poppins",
+                  //         fontWeight: FontWeight.w700,
+                  //         color: bluetooth_provider!.status ? Color(0xff00880d) : Colors.orangeAccent,
+                  //         fontSize: 12
+                  //       )
+                  //     )
+                  //   ]
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Container(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                  //     borderRadius: BorderRadius.all(Radius.circular(6))
+                  //   ),
+                  //   child: Row(
+                  //     children: [
+                  //       Expanded(
+                  //         child: TextField(
+                  //           decoration: InputDecoration(
+                  //             isDense: true,
+                  //             border: InputBorder.none,
+                  //             hintText: "Masukan printer mac address",
+                  //             hintStyle: TextStyle(
+                  //               fontFamily: "Poppins",
+                  //               fontWeight: FontWeight.w400,
+                  //               color: Theme.of(context).disabledColor,
+                  //               fontSize: 12
+                  //             )
+                  //           ),
+                  //           style: TextStyle(
+                  //             fontFamily: "Poppins",
+                  //             fontWeight: FontWeight.w400,
+                  //             color: Theme.of(context).primaryColorDark,
+                  //             fontSize: 12
+                  //           ),
+                  //           cursorColor: Theme.of(context).focusColor,
+                  //           textCapitalization: TextCapitalization.sentences,
+                  //           controller: inputMacAddress,
+                  //         )
+                  //       ),
+                  //       const SizedBox(width: 10),
+                  //       if (!testPrint) GestureDetector(
+                  //         onTap: () => _testPrinter(),
+                  //         child: Container(
+                  //           padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  //           decoration: BoxDecoration(
+                  //             color: Theme.of(context).primaryColor,
+                  //             borderRadius: BorderRadius.all(Radius.circular(4))
+                  //           ),
+                  //           child: Text(
+                  //             "TEST PRINTER",
+                  //             style: TextStyle(
+                  //               fontFamily: "Poppins",
+                  //               fontWeight: FontWeight.w700,
+                  //               color: Colors.white,
+                  //               fontSize: 10
+                  //             )
+                  //           )
+                  //         )
+                  //       ),
+                  //       if (testPrint) Container(
+                  //         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  //         decoration: BoxDecoration(
+                  //           color: Theme.of(context).primaryColor,
+                  //           borderRadius: BorderRadius.all(Radius.circular(4))
+                  //         ),
+                  //         child: Row(
+                  //           children: [
+                  //             LoadingAnimationWidget.fourRotatingDots(
+                  //               color: Colors.white,
+                  //               size: 14,
+                  //             ),
+                  //             const SizedBox(width: 5),
+                  //             Text(
+                  //               "TEST PRINTER",
+                  //               style: TextStyle(
+                  //                 fontFamily: "Poppins",
+                  //                 fontWeight: FontWeight.w700,
+                  //                 color: Colors.white,
+                  //                 fontSize: 10
+                  //               )
+                  //             )
+                  //           ]
+                  //         )
+                  //       )
+                  //     ]
+                  //   )
+                  // )
                 ]
               ),
               if (!proccess) GestureDetector(
@@ -324,7 +326,8 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
-                        color: Colors.white
+                        color: Colors.white,
+                        fontSize: 5.w
                       )
                     )
                   ]

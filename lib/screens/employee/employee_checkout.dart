@@ -10,7 +10,8 @@ import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
-import 'package:qlola_umkm/utils/printer.dart';
+// import 'package:qlola_umkm/utils/printer.dart';
+import 'package:sizer/sizer.dart';
 
 class EmployeeCheckoutScreen extends StatefulWidget {
   const EmployeeCheckoutScreen({super.key});
@@ -38,32 +39,32 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
 
     final httpRequest = await proses_checkout(data);
     if (httpRequest["status"] == 200) {
-      // SchedulerBinding.instance.addPostFrameCallback((_) {
-      //   Flushbar(
-      //     backgroundColor: Color(0xff00880d),
-      //     duration: Duration(seconds: 3),
-      //     reverseAnimationCurve: Curves.fastOutSlowIn,
-      //     flushbarPosition: FlushbarPosition.TOP,
-      //     titleText: Text(
-      //       auth_provider!.user["outlet"]["outlet_name"],
-      //       overflow: TextOverflow.ellipsis,
-      //       style: TextStyle(
-      //         fontFamily: "Poppins",
-      //         fontWeight: FontWeight.w600,
-      //         color: Colors.white,
-      //         fontSize: 12
-      //       )
-      //     ),
-      //     messageText: Text(
-      //       "Berhasil melakukan pemesanan",
-      //       style: TextStyle(
-      //         fontFamily: "Poppins",
-      //         color: Colors.white,
-      //         fontSize: 12
-      //       )
-      //     ),
-      //   ).show(context);
-      // });
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Flushbar(
+          backgroundColor: Color(0xff00880d),
+          duration: Duration(seconds: 3),
+          reverseAnimationCurve: Curves.fastOutSlowIn,
+          flushbarPosition: FlushbarPosition.TOP,
+          titleText: Text(
+            auth_provider!.user["outlet"]["outlet_name"],
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+              fontSize: 12
+            )
+          ),
+          messageText: Text(
+            "Berhasil melakukan pemesanan",
+            style: TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.white,
+              fontSize: 12
+            )
+          ),
+        ).show(context);
+      });
 
       // final generate = await generateStruck(checkout_provider!, auth_provider!, "#${httpRequest["message"]}");
 
@@ -106,6 +107,12 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
     checkout_provider = Provider.of<CheckoutProvider>(context);
     auth_provider = Provider.of<AuthProvider>(context);
 
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      if (checkout_provider!.carts.isEmpty) {
+        Navigator.pop(context);
+      }
+    });
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
@@ -132,21 +139,21 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6),
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
-                      child: Image.asset("assets/icons/arrow_back_gray.png", width: 16, height: 16)
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Image.asset("assets/icons/arrow_back_gray.png", width: 4.5.w, height: 4.5.w)
                     )
                   ),
-                  const SizedBox(width: 6),
                   Text(
                     "Checkout ${auth_provider!.user["outlet"]["outlet_name"]}",
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColorDark
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 3.8.w
                     )
                   )
                 ]
@@ -168,13 +175,13 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                           clipBehavior: Clip.hardEdge,
                           child: Image.network(
                             "${dotenv.env["ASSET_URL"]}${checkout_provider!.carts[index]["product_image"]}",
-                            width: 70,
-                            height: 70,
+                            width: 19.w,
+                            height: 19.w,
                             fit: BoxFit.cover,
                             errorBuilder: (context, error, stackTrace) {
                               return Container(
-                                width: 70,
-                                height: 70,
+                                width: 19.w,
+                                height: 19.w,
                                 decoration: BoxDecoration(
                                   color: Theme.of(context).primaryColor.withOpacity(0.2)
                                 ),
@@ -197,7 +204,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w700,
                                   color: Theme.of(context).primaryColorDark,
-                                  fontSize: 12
+                                  fontSize: 3.5.w
                                 )
                               ),
                               Text(
@@ -206,7 +213,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w700,
                                   color: Theme.of(context).primaryColor,
-                                  fontSize: 12
+                                  fontSize: 3.w
                                 )
                               ),
                               const SizedBox(height: 4),
@@ -217,7 +224,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                     style: TextStyle(
                                       fontFamily: "Poppins",
                                       color: Theme.of(context).primaryColorDark,
-                                      fontSize: 12
+                                      fontSize: 3.w
                                     )
                                   ),
                                   const SizedBox(width: 6),
@@ -227,7 +234,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.w700,
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 12
+                                      fontSize: 3.w
                                     )
                                   ),
                                   Expanded(child: Container()),
@@ -239,7 +246,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                       fontFamily: "Poppins",
                                       fontWeight: FontWeight.w700,
                                       color: Theme.of(context).primaryColor,
-                                      fontSize: 12
+                                      fontSize: 3.5.w
                                     )
                                   )
                                 ]
@@ -253,6 +260,8 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                         setState(() {
                                           checkout_provider!.carts[index]["quantity"]--;
                                         });
+                                      } else {
+                                        checkout_provider!.remove_item_carts = checkout_provider!.carts[index]["id"];
                                       }
                                     },
                                     child: Container(
@@ -260,7 +269,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                         color: Theme.of(context).primaryColor.withOpacity(0.2),
                                         borderRadius: BorderRadius.all(Radius.circular(4))
                                       ),
-                                      child: Image.asset("assets/icons/minus_red.png", width: 18, height: 18)
+                                      child: Image.asset("assets/icons/minus_red.png", width: 5.w, height: 5.w)
                                     )
                                   ),
                                   const SizedBox(width: 10),
@@ -287,7 +296,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                         color: Theme.of(context).primaryColor.withOpacity(0.2),
                                         borderRadius: BorderRadius.all(Radius.circular(4))
                                       ),
-                                      child: Image.asset("assets/icons/plus_red.png", width: 18, height: 18)
+                                      child: Image.asset("assets/icons/plus_red.png", width: 5.w, height: 5.w)
                                     )
                                   )
                                 ]
@@ -322,7 +331,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColorDark,
-                          fontSize: 10
+                          fontSize: 3.w
                         )
                       ),
                       Text(
@@ -331,7 +340,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w700,
                           color: Theme.of(context).primaryColor,
-                          fontSize: 16
+                          fontSize: 4.w
                         )
                       )
                     ]
@@ -352,7 +361,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w700,
                           color: Colors.white,
-                          fontSize: 12
+                          fontSize: 3.w
                         )
                       )
                     )
@@ -377,7 +386,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
-                            fontSize: 12
+                            fontSize: 3.w
                           )
                         )
                       ]

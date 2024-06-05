@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/history/employee_transaction_daily.dart';
+import 'package:sizer/sizer.dart';
 
 class EmployeeTransactionScreen extends StatefulWidget {
   const EmployeeTransactionScreen({super.key});
@@ -63,7 +64,8 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 3.5.w
                       )
                     ),
                     Text(
@@ -71,7 +73,7 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                       style: TextStyle(
                         fontFamily: "Poppins",
                         color: Theme.of(context).disabledColor,
-                        fontSize: 11
+                        fontSize: 3.w
                       )
                     )
                   ]
@@ -96,7 +98,7 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                       if (transactions.isEmpty) Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Image.asset("assets/icons/transaction_empty.png", width: 300, height: 200, fit: BoxFit.contain),
+                          Image.asset("assets/icons/transaction_empty.png", width: 300.w, height: 50.w, fit: BoxFit.contain),
                           Column(
                             children: [
                               const SizedBox(height: 12),
@@ -105,7 +107,8 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                                 style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w700,
-                                  color: Theme.of(context).primaryColorDark
+                                  color: Theme.of(context).primaryColorDark,
+                                  fontSize: 3.5.w
                                 )
                               ),
                               const SizedBox(height: 12),
@@ -117,7 +120,7 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                                   style: TextStyle(
                                     fontFamily: "Poppins",
                                     color: Theme.of(context).primaryColorDark,
-                                    fontSize: 12
+                                    fontSize: 3.w
                                   )
                                 )
                               )
