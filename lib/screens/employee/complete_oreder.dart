@@ -194,6 +194,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                           height: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
+                            color: Theme.of(context).dividerColor,
                             border: Border.all(width: 1, color: Theme.of(context).dividerColor),
                             borderRadius: BorderRadius.all(Radius.circular(8))
                           ),
@@ -201,7 +202,8 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                             "Bluetooth print",
                             style: TextStyle(
                               fontFamily: "Poppins",
-                              color: Theme.of(context).primaryColorDark
+                              // color: Theme.of(context).primaryColorDark
+                              color: Theme.of(context).disabledColor
                             )
                           )
                         )

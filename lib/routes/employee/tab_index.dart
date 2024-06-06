@@ -36,8 +36,8 @@ class _TabIndexState extends State<TabIndex> {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).disabledColor,
-          unselectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 2.5.w),
-          selectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 2.5.w),
+          unselectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 12),
+          selectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 12),
           elevation: 0,
           currentIndex: tabIndex,
           onTap: (index) {
@@ -49,8 +49,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: tabIndex == 0 ?
-                  Image.asset("assets/icons/home.png", width: 6.w, height: 6.w) :
-                  Image.asset("assets/icons/home_outline.png", width: 6.w, height: 6.w)
+                  Image.asset("assets/icons/home.png", width: 27, height: 27) :
+                  Image.asset("assets/icons/home_outline.png", width: 27, height: 27)
               ),
               label: 'Home'
             ),
@@ -58,8 +58,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: tabIndex == 1 ?
-                  Image.asset("assets/icons/order.png", width: 6.w, height: 6.w) :
-                  Image.asset("assets/icons/order_outline.png", width: 6.w, height: 6.w)
+                  Image.asset("assets/icons/order.png", width: 27, height: 27) :
+                  Image.asset("assets/icons/order_outline.png", width: 27, height: 27)
               ),
               label: 'Order'
             ),
@@ -67,8 +67,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: tabIndex == 2 ?
-                  Image.asset("assets/icons/transaction.png", width: 6.w, height: 6.w) :
-                  Image.asset("assets/icons/transaction_outline.png", width: 6.w, height: 6.w)
+                  Image.asset("assets/icons/transaction.png", width: 27, height: 27) :
+                  Image.asset("assets/icons/transaction_outline.png", width: 27, height: 27)
               ),
               label: 'Transaksi'
             )
