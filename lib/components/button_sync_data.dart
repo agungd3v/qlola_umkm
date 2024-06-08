@@ -1,12 +1,12 @@
 import 'dart:math' as math;
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
 
 class ButtonSyncData extends StatefulWidget {
   const ButtonSyncData({super.key});
@@ -38,63 +38,15 @@ class _ButtonSyncDataState extends State<ButtonSyncData> with SingleTickerProvid
       });
 
       if (httpRequest["status"] == 200) {
-        Flushbar(
-          backgroundColor: Color(0xff00880d),
-          duration: Duration(seconds: 3),
-          reverseAnimationCurve: Curves.fastOutSlowIn,
-          flushbarPosition: FlushbarPosition.TOP,
-          titleText: Text(
-            "Pemberitahuan",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12
-            )
-          ),
-          messageText: Text(
-            httpRequest["message"],
-            style: TextStyle(
-              fontFamily: "Poppins",
-              color: Colors.white,
-              fontSize: 12
-            )
-          ),
-        ).show(context);
-
-        Future.delayed(const Duration(seconds: 1), () {
-          _controller.reset();
-          setState(() => proccess = false);
-        });
+        successMessage(context, "Pemberitahuan", httpRequest["message"]);
+        setState(() => proccess = false);
+        _controller.reset();
 
         await database?.rawDelete("DELETE FROM orders");
         return;
       }
 
-      Flushbar(
-        backgroundColor: Theme.of(context).primaryColor,
-        duration: Duration(seconds: 3),
-        reverseAnimationCurve: Curves.fastOutSlowIn,
-        flushbarPosition: FlushbarPosition.TOP,
-        titleText: Text(
-          "Pemberitahuan",
-          style: TextStyle(
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-            fontSize: 12
-          )
-        ),
-        messageText: Text(
-          httpRequest["message"],
-          style: TextStyle(
-            fontFamily: "Poppins",
-            color: Colors.white,
-            fontSize: 12
-          )
-        ),
-      ).show(context);
+      errorMessage(context, "Pemberitahuan", httpRequest["message"]);
     }
 
     Future.delayed(const Duration(seconds: 1), () {

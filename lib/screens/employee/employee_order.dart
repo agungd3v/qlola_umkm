@@ -1,9 +1,6 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/button_checkout.dart';
 import 'package:qlola_umkm/components/employee_order/order_item.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';

@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:esc_pos_utils/esc_pos_utils.dart';
+// import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -11,10 +11,9 @@ import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:sqflite/sqflite.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
-import 'package:image/image.dart' as ImageImage;
-import 'package:path/path.dart';
+// import 'package:image/image.dart' as ImageImage;
+// import 'package:path/path.dart';
 
 class CompleteOrederScreen extends StatefulWidget {
   const CompleteOrederScreen({super.key});
@@ -32,8 +31,8 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
   final databaseHelper = DatabaseHelper.instance;
 
   Future _printShare() async {
-    final profile = await CapabilityProfile.load();
-    final generator = Generator(PaperSize.mm58, profile);
+    // final profile = await CapabilityProfile.load();
+    // final generator = Generator(PaperSize.mm58, profile);
     List<int> bytes = [];
 
     bytes += (await widgetsToImageController.capture())!;

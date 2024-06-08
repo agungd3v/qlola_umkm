@@ -11,12 +11,11 @@ String transformPrice(num price) {
 }
 
 String transformDate(String dateString) {
-  // final newDate = dateString.substring(0, 10) + " " + dateString.substring(11, 23);
   DateTime dateTime = DateFormat("yyyy-MM-dd HH:mm").parse(dateString).toLocal();
   var date = DateFormat("dd").format(dateTime);
   var month = DateFormat("MMMM").format(dateTime);
   var year = DateFormat("yyyy").format(dateTime);
-  var time = DateFormat("hh:mm").format(dateTime);
+  var time = DateFormat("HH:mm").format(dateTime);
 
   if (month == "January") month = "Januari";
   if (month == "February") month = "Februari";

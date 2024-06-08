@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:sizer/sizer.dart';
 
@@ -41,69 +41,21 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
     };
 
     final database = await databaseHelper.database;
+    final batch = database?.batch();
 
-    await database?.transaction((action) async {
-      for (var index = 0; index < data["products"].length; index++) {
-        await action.rawInsert(
-          'INSERT INTO orders(_transaction, _outletid, _productid, _quantity, _total, _status, _createdat, _updatedat) VALUES("trx_${time}", ${data["outlet_id"]}, ${data["products"][index]["id"]}, ${data["products"][index]["quantity"]}, ${(double.parse(data["products"][index]["product_price"].toString()) * data["products"][index]["quantity"])}, "paid", "${getDateTimeNow(isRequest: true)}", "${getDateTimeNow(isRequest: true)}")'
-        );
+    for (var index = 0; index < data["products"].length; index++) {
+      batch?.rawInsert(
+        'INSERT INTO orders(_transaction, _outletid, _productid, _quantity, _total, _status, _createdat, _updatedat) VALUES("trx_${time}", ${data["outlet_id"]}, ${data["products"][index]["id"]}, ${data["products"][index]["quantity"]}, ${(double.parse(data["products"][index]["product_price"].toString()) * data["products"][index]["quantity"])}, "paid", "${getDateTimeNow(isRequest: true)}", "${getDateTimeNow(isRequest: true)}")'
+      );
+    }
 
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          Flushbar(
-            backgroundColor: Color(0xff00880d),
-            duration: Duration(seconds: 3),
-            reverseAnimationCurve: Curves.fastOutSlowIn,
-            flushbarPosition: FlushbarPosition.TOP,
-            titleText: Text(
-              auth_provider!.user["outlet"]["outlet_name"],
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 12
-              )
-            ),
-            messageText: Text(
-              "Berhasil melakukan pemesanan",
-              style: TextStyle(
-                fontFamily: "Poppins",
-                color: Colors.white,
-                fontSize: 12
-              )
-            ),
-          ).show(context);
-        });
+    await batch?.commit();
 
-        context.pushNamed("Complete");
-      }
+    context.pushNamed("Complete");
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      successMessage(context, auth_provider!.user["outlet"]["outlet_name"], "Berhasil melakukan pemesanan");
+      setState(() => proccess = false);
     });
-
-    Flushbar(
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 3),
-      reverseAnimationCurve: Curves.fastOutSlowIn,
-      flushbarPosition: FlushbarPosition.BOTTOM,
-      titleText: Text(
-        "Informasi",
-        style: TextStyle(
-          fontFamily: "Poppins",
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-          fontSize: 12
-        )
-      ),
-      messageText: Text(
-        "Terjadi kesalahan pada sistem, hubungi pengembang",
-        style: TextStyle(
-          fontFamily: "Poppins",
-          color: Colors.white,
-          fontSize: 12
-        )
-      ),
-    ).show(context);
-
-    setState(() => proccess = false);
   }
 
   @override
