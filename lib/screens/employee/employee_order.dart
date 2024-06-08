@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -24,12 +26,9 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
   void _getProduct() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       if (auth_provider!.user["outlet"] != null) {
-        final httpRequest = await get_outlet_products(auth_provider!.user["outlet"]["id"]);
-        if (httpRequest["status"] == 200) {
-          setState(() {
-            products = httpRequest["data"];
-          });
-        }
+        setState(() {
+          products = auth_provider!.user["outlet"]["products"];
+        });
       }
     });
   }

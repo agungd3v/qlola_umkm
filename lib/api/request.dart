@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
@@ -269,22 +271,34 @@ Future owner_transaction() async {
 }
 
 Future outlet_transaction() async {
-  final httpRequest = await http.get(
-    Uri.parse("${dotenv.env["API_URL"]}/transaction/outlet"),
-    headers: <String, String> {
-      "ACCEPT": "application/json",
-      "CONTENT-TYPE": "application/json; charset=UTF-8",
-      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
-      "AUTHORIZATION": "Bearer ${auth_provider.token}"
-    }
-  );
+  try {
+    final httpRequest = await http.get(
+      Uri.parse("${dotenv.env["API_URL"]}/transaction/outlet"),
+      headers: <String, String> {
+        "ACCEPT": "application/json",
+        "CONTENT-TYPE": "application/json; charset=UTF-8",
+        "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+        "AUTHORIZATION": "Bearer ${auth_provider.token}"
+      }
+    ).timeout(Duration(seconds: 5));
 
-  Map<String, dynamic> response = json.decode(httpRequest.body);
+    Map<String, dynamic> response = json.decode(httpRequest.body);
 
-  return <String, dynamic> {
-    "status": httpRequest.statusCode,
-    ...response
-  };
+    return <String, dynamic> {
+      "status": httpRequest.statusCode,
+      ...response
+    };
+  } on TimeoutException catch (e) {
+    return <String, dynamic> {
+      "status": 400,
+      "message": "Request timeout, kemungkinan koneksimu mengalami pelemahan"
+    };
+  } on SocketException catch (e) {
+    return <String, dynamic> {
+      "status": 400,
+      "message": "Tidak ada koneksi internet"
+    };
+  }
 }
 
 Future get_available_employees() async {
@@ -425,21 +439,33 @@ Future get_report_owner(Map<String, dynamic> request) async {
 }
 
 Future bulk_checkout(Map<String, dynamic> request) async {
-  final httpRequest = await http.post(
-    Uri.parse("${dotenv.env["API_URL"]}/order/transaction/bulk"),
-    headers: <String, String> {
-      "ACCEPT": "application/json",
-      "CONTENT-TYPE": "application/json; charset=UTF-8",
-      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
-      "AUTHORIZATION": "Bearer ${auth_provider.token}"
-    },
-    body: jsonEncode(request)
-  );
+  try {
+    final httpRequest = await http.post(
+      Uri.parse("${dotenv.env["API_URL"]}/order/transaction/bulk"),
+      headers: <String, String> {
+        "ACCEPT": "application/json",
+        "CONTENT-TYPE": "application/json; charset=UTF-8",
+        "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+        "AUTHORIZATION": "Bearer ${auth_provider.token}"
+      },
+      body: jsonEncode(request)
+    );
 
-  Map<String, dynamic> response = json.decode(httpRequest.body);
+    Map<String, dynamic> response = json.decode(httpRequest.body);
 
-  return <String, dynamic> {
-    "status": httpRequest.statusCode,
-    ...response
-  };
+    return <String, dynamic> {
+      "status": httpRequest.statusCode,
+      ...response
+    };
+  } on TimeoutException catch (e) {
+    return <String, dynamic> {
+      "status": 400,
+      "message": "Request timeout, kemungkinan koneksimu mengalami pelemahan"
+    };
+  } on SocketException catch (e) {
+    return <String, dynamic> {
+      "status": 400,
+      "message": "Tidak ada koneksi internet"
+    };
+  }
 }

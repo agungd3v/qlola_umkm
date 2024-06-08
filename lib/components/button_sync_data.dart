@@ -76,7 +76,7 @@ class _ButtonSyncDataState extends State<ButtonSyncData> with SingleTickerProvid
         backgroundColor: Theme.of(context).primaryColor,
         duration: Duration(seconds: 3),
         reverseAnimationCurve: Curves.fastOutSlowIn,
-        flushbarPosition: FlushbarPosition.BOTTOM,
+        flushbarPosition: FlushbarPosition.TOP,
         titleText: Text(
           "Pemberitahuan",
           style: TextStyle(
