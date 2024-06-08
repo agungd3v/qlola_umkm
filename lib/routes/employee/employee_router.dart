@@ -5,6 +5,7 @@ import 'package:qlola_umkm/screens/employee/complete_oreder.dart';
 import 'package:qlola_umkm/screens/employee/employee_checkout.dart';
 import 'package:qlola_umkm/screens/employee/employee_home.dart';
 import 'package:qlola_umkm/screens/employee/employee_order.dart';
+import 'package:qlola_umkm/screens/employee/employee_profile.dart';
 import 'package:qlola_umkm/screens/employee/employee_transaction.dart';
 
 class EmployeeRouter {
@@ -15,6 +16,7 @@ class EmployeeRouter {
   static final _rootNavigatorHome = GlobalKey<NavigatorState>(debugLabel: 'shellHome');
   static final _rootNavigatorOrder = GlobalKey<NavigatorState>(debugLabel: 'shellOrder');
   static final _rootNavigatorTransaction = GlobalKey<NavigatorState>(debugLabel: 'shellTransaction');
+  static final _rootNavigatorProfile = GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
 
   static final GoRouter router = GoRouter(
     initialLocation: initRoute,
@@ -58,6 +60,18 @@ class EmployeeRouter {
                 name: 'Transaction',
                 builder: (context, state) {
                   return EmployeeTransactionScreen(key: state.pageKey);
+                }
+              )
+            ]
+          ),
+          StatefulShellBranch(
+            navigatorKey: _rootNavigatorProfile,
+            routes: [
+              GoRoute(
+                path: '/profile',
+                name: 'Profile',
+                builder: (context, state) {
+                  return EmployeeProfileScreen(key: state.pageKey);
                 }
               )
             ]

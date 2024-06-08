@@ -5,20 +5,15 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
-import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/button_sync_data.dart';
 import 'package:qlola_umkm/components/employee_home/transaction_today.dart';
 import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/printer.dart';
-import 'package:restart_app/restart_app.dart';
 import 'package:sizer/sizer.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart';
 
 class EmployeeHomeScreen extends StatefulWidget {
   const EmployeeHomeScreen({super.key});
@@ -36,25 +31,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
   late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
 
-  bool proccess = false;
   bool testPrint = false;
-
-  Future<void> _signout() async {
-    setState(() => proccess = true);
-
-    final httpRequest = await sign_out();
-    if (httpRequest["status"] == 200) {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-
-      String path = join(await getDatabasesPath(), "local.db");
-      await deleteDatabase(path);
-
-      Restart.restartApp();
-    }
-
-    setState(() => proccess = false);
-  }
 
   Future _scanPrinter() async {
     if (Platform.isAndroid) {
@@ -128,13 +105,13 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     checkout_provider = Provider.of<CheckoutProvider>(context);
     bluetooth_provider = Provider.of<BluetoothProvider>(context);
 
-    // WidgetsBinding.instance.addPostFrameCallback((callback) {
-    //   if (_adapterState == BluetoothAdapterState.on) {
-    //     _scanPrinter();
-    //   } else {
-    //     bluetooth_provider?.set_status = false;
-    //   }
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      if (_adapterState == BluetoothAdapterState.on) {
+        _scanPrinter();
+      } else {
+        bluetooth_provider?.set_status = false;
+      }
+    });
 
     return Scaffold(
       extendBodyBehindAppBar: false,
@@ -185,10 +162,6 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                     )
                   ),
                   const SizedBox(height: 10),
-                  Container(
-                    alignment: Alignment.centerRight,
-                    child: ButtonSyncData() 
-                  )
                   // Row(
                   //   children: [
                   //     Text(
@@ -293,56 +266,10 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                   // )
                 ]
               ),
-              if (!proccess) GestureDetector(
-                onTap: () {
-                  _signout();
-                },
-                child: Container(
-                  width: double.infinity,
-                  height: 10.w,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Text(
-                    "Keluar",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      fontSize: 4.5.w
-                    )
-                  )
-                )
-              ),
-              if (proccess) Container(
-                width: double.infinity,
-                height: 10.w,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(6))
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LoadingAnimationWidget.fourRotatingDots(
-                      color: Colors.white,
-                      size: 4.5.w,
-                    ),
-                    const SizedBox(width: 5),
-                    Text(
-                      "Keluar...",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 4.5.w
-                      )
-                    )
-                  ]
-                )
+              Container(
+                alignment: Alignment.centerRight,
+                margin: const EdgeInsets.only(right: 10),
+                child: ButtonSyncData() 
               )
             ]
           )

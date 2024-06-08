@@ -70,6 +70,15 @@ class _TabIndexState extends State<TabIndex> {
                   Image.asset("assets/icons/transaction_outline.png", width: 27, height: 27)
               ),
               label: 'Transaksi'
+            ),
+            BottomNavigationBarItem(
+              icon: Container(
+                padding: const EdgeInsets.only(bottom: 2),
+                child: tabIndex == 3 ?
+                  Image.asset("assets/icons/profile.png", width: 27, height: 27) :
+                  Image.asset("assets/icons/profile_outline.png", width: 27, height: 27)
+              ),
+              label: 'Saya'
             )
           ]
         )

@@ -114,7 +114,7 @@ class _ButtonSyncDataState extends State<ButtonSyncData> with SingleTickerProvid
         builder: (context, child) {
           return Transform.rotate(
             angle: _controller.value * 2 * math.pi,
-            child: Image.asset("assets/icons/sync_red.png", width: 30, height: 30)
+            child: Image.asset("assets/icons/sync_red.png", width: 45, height: 45)
           );
         }
       )
