@@ -77,7 +77,7 @@ class _OrderItemState extends State<OrderItem> {
                     )
                   ),
                   Text(
-                    transformPrice(double.parse(widget.item["product_price"])),
+                    transformPrice(double.parse(widget.item["product_price"].toString())),
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,

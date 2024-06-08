@@ -6,6 +6,24 @@ import 'package:qlola_umkm/providers/auth_provider.dart';
 
 final auth_provider = AuthProvider();
 
+Future test_api() async {
+  final httpRequest = await http.get(
+    Uri.parse("${dotenv.env["API_URL"]}"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+    }
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}
+
 Future check_user() async {
   final httpRequest = await http.get(
     Uri.parse("${dotenv.env["API_URL"]}/check"),
@@ -389,6 +407,26 @@ Future get_available_products(Map<String, dynamic> request) async {
 Future get_report_owner(Map<String, dynamic> request) async {
   final httpRequest = await http.post(
     Uri.parse("${dotenv.env["API_URL"]}/report/quick"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    },
+    body: jsonEncode(request)
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}
+
+Future bulk_checkout(Map<String, dynamic> request) async {
+  final httpRequest = await http.post(
+    Uri.parse("${dotenv.env["API_URL"]}/order/transaction/bulk"),
     headers: <String, String> {
       "ACCEPT": "application/json",
       "CONTENT-TYPE": "application/json; charset=UTF-8",

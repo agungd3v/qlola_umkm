@@ -3,7 +3,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
-import 'package:sizer/sizer.dart';
 
 class EmployeeProductSheet extends StatefulWidget {
   dynamic product;
@@ -96,18 +95,17 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                     fontFamily: "Poppins",
                     fontWeight: FontWeight.w700,
                     color: Theme.of(context).primaryColorDark,
-                    fontSize: 4.w
+                    fontSize: 16
                   )
                 ),
                 Text(
-                  transformPrice(double.parse(widget.product["product_price"])),
-                  maxLines: 2,
+                  transformPrice(double.parse(widget.product["product_price"].toString())),
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontWeight: FontWeight.w700,
                     color: Theme.of(context).primaryColor,
-                    fontSize: 4.w
+                    fontSize: 14
                   )
                 )
               ]
@@ -130,7 +128,7 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                           color: Theme.of(context).primaryColor.withOpacity(0.3),
                           borderRadius: BorderRadius.all(Radius.circular(6))
                         ),
-                        child: Image.asset("assets/icons/minus_red.png", width: 6.5.w, height: 6.5.w)
+                        child: Image.asset("assets/icons/minus_red.png", width: 28, height: 28)
                       )
                     ),
                     Expanded(child: Container(
@@ -141,7 +139,7 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w700,
                           color: Theme.of(context).primaryColorDark,
-                          fontSize: 4.5.w
+                          fontSize: 16
                         )
                       ),
                     )),
@@ -154,7 +152,7 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                           color: Theme.of(context).primaryColor.withOpacity(0.3),
                           borderRadius: BorderRadius.all(Radius.circular(6))
                         ),
-                        child: Image.asset("assets/icons/plus_red.png", width: 6.5.w, height: 6.5.w)
+                        child: Image.asset("assets/icons/plus_red.png", width: 28, height: 28)
                       )
                     )
                   ]
@@ -178,7 +176,7 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
-                        fontSize: 3.w
+                        fontSize: 14
                       )
                     )
                   )

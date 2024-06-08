@@ -5,7 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
-import 'package:qlola_umkm/api/request.dart';
+// import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';

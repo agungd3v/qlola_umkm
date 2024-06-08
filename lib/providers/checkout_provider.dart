@@ -8,7 +8,7 @@ class CheckoutProvider extends ChangeNotifier {
   num get cart_total {
     num total = 0;
     for (var index = 0; index < _carts.length; index++) {
-      total += double.parse(_carts[index]["product_price"]) * _carts[index]["quantity"];
+      total += double.parse(_carts[index]["product_price"].toString()) * _carts[index]["quantity"];
     }
 
     return total;

@@ -55,25 +55,29 @@ String getThisMonth() {
   return "$month $year";
 }
 
-String getDateTimeNow() {
+String getDateTimeNow({bool isRequest = false}) {
   DateTime dateTime = DateTime.now();
   var date = DateFormat("dd").format(dateTime);
   var month = DateFormat("MMMM").format(dateTime);
   var year = DateFormat("yyyy").format(dateTime);
-  var time = DateFormat("hh:mm").format(dateTime);
+  var time = DateFormat("HH:mm").format(dateTime);
 
-  if (month == "January") month = "Jan";
-  if (month == "February") month = "Feb";
-  if (month == "March") month = "Mar";
-  if (month == "April") month = "Apr";
-  if (month == "May") month = "Mei";
-  if (month == "June") month = "Jun";
-  if (month == "July") month = "Jul";
-  if (month == "August") month = "Agu";
-  if (month == "September") month = "Sep";
-  if (month == "October") month = "Okt";
-  if (month == "November") month = "Nov";
-  if (month == "December") month = "Des";
+  if (!isRequest) {
+    if (month == "January") month = "Jan";
+    if (month == "February") month = "Feb";
+    if (month == "March") month = "Mar";
+    if (month == "April") month = "Apr";
+    if (month == "May") month = "Mei";
+    if (month == "June") month = "Jun";
+    if (month == "July") month = "Jul";
+    if (month == "August") month = "Agu";
+    if (month == "September") month = "Sep";
+    if (month == "October") month = "Okt";
+    if (month == "November") month = "Nov";
+    if (month == "December") month = "Des";
+  } else {
+    month = DateFormat("MM").format(dateTime);
+  }
 
-  return "$date $month $year, $time";
+  return !isRequest ? "$date $month $year, $time" : "$year-$month-$date $time:00";
 }

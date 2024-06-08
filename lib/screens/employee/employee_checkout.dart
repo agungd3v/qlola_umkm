@@ -6,11 +6,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
-// import 'package:qlola_umkm/utils/printer.dart';
 import 'package:sizer/sizer.dart';
 
 class EmployeeCheckoutScreen extends StatefulWidget {
@@ -24,58 +23,61 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
   CheckoutProvider? checkout_provider;
   AuthProvider? auth_provider;
 
+  final databaseHelper = DatabaseHelper.instance;
+
   bool proccess = false;
   List<int> bytes = [];
 
-  Future _orderProduct() async {
+  Future<void> _orderProduct(BuildContext context) async {
+    setState(() => proccess = true);
+
+    final time = DateTime.now().millisecondsSinceEpoch;
+
     Map<String, dynamic> data = {
       "total": checkout_provider?.cart_total,
       "outlet_id": auth_provider?.user["outlet"]["id"],
-      "business_id": int.parse(auth_provider?.user["outlet"]["business_id"]),
+      "business_id": auth_provider?.user["outlet"]["business_id"],
       "products": checkout_provider?.carts
     };
 
-    setState(() => proccess = true);
+    final database = await databaseHelper.database;
 
-    final httpRequest = await proses_checkout(data);
-    if (httpRequest["status"] == 200) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Flushbar(
-          backgroundColor: Color(0xff00880d),
-          duration: Duration(seconds: 3),
-          reverseAnimationCurve: Curves.fastOutSlowIn,
-          flushbarPosition: FlushbarPosition.TOP,
-          titleText: Text(
-            auth_provider!.user["outlet"]["outlet_name"],
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12
-            )
-          ),
-          messageText: Text(
-            "Berhasil melakukan pemesanan",
-            style: TextStyle(
-              fontFamily: "Poppins",
-              color: Colors.white,
-              fontSize: 12
-            )
-          ),
-        ).show(context);
-      });
+    await database?.transaction((action) async {
+      for (var index = 0; index < data["products"].length; index++) {
+        await action.rawInsert(
+          'INSERT INTO orders(_transaction, _outletid, _productid, _quantity, _total, _status, _createdat, _updatedat) VALUES("trx_${time}", ${data["outlet_id"]}, ${data["products"][index]["id"]}, ${data["products"][index]["quantity"]}, ${(double.parse(data["products"][index]["product_price"].toString()) * data["products"][index]["quantity"])}, "paid", "${getDateTimeNow(isRequest: true)}", "${getDateTimeNow(isRequest: true)}")'
+        );
 
-      // final generate = await generateStruck(checkout_provider!, auth_provider!, "#${httpRequest["message"]}");
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          Flushbar(
+            backgroundColor: Color(0xff00880d),
+            duration: Duration(seconds: 3),
+            reverseAnimationCurve: Curves.fastOutSlowIn,
+            flushbarPosition: FlushbarPosition.TOP,
+            titleText: Text(
+              auth_provider!.user["outlet"]["outlet_name"],
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+                fontSize: 12
+              )
+            ),
+            messageText: Text(
+              "Berhasil melakukan pemesanan",
+              style: TextStyle(
+                fontFamily: "Poppins",
+                color: Colors.white,
+                fontSize: 12
+              )
+            ),
+          ).show(context);
+        });
 
-      // if (generate) {
-      //   checkout_provider?.reset();
-      //   return context.go("/order");
-      // }
-      context.pushNamed("Complete");
-    }
-
-    setState(() => proccess = false);
+        context.pushNamed("Complete");
+      }
+    });
 
     Flushbar(
       backgroundColor: Theme.of(context).primaryColor,
@@ -83,7 +85,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
       reverseAnimationCurve: Curves.fastOutSlowIn,
       flushbarPosition: FlushbarPosition.BOTTOM,
       titleText: Text(
-        "Pesanan",
+        "Informasi",
         style: TextStyle(
           fontFamily: "Poppins",
           fontWeight: FontWeight.w600,
@@ -92,7 +94,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
         )
       ),
       messageText: Text(
-        httpRequest["message"],
+        "Terjadi kesalahan pada sistem, hubungi pengembang",
         style: TextStyle(
           fontFamily: "Poppins",
           color: Colors.white,
@@ -100,6 +102,8 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
         )
       ),
     ).show(context);
+
+    setState(() => proccess = false);
   }
 
   @override
@@ -208,7 +212,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                 )
                               ),
                               Text(
-                                transformPrice(double.parse(checkout_provider!.carts[index]["product_price"])),
+                                transformPrice(double.parse(checkout_provider!.carts[index]["product_price"].toString())),
                                 style: TextStyle(
                                   fontFamily: "Poppins",
                                   fontWeight: FontWeight.w700,
@@ -240,7 +244,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                   Expanded(child: Container()),
                                   Text(
                                     transformPrice(
-                                      double.parse(checkout_provider!.carts[index]["product_price"]) * checkout_provider!.carts[index]["quantity"]
+                                      double.parse(checkout_provider!.carts[index]["product_price"].toString()) * checkout_provider!.carts[index]["quantity"]
                                     ),
                                     style: TextStyle(
                                       fontFamily: "Poppins",
@@ -280,7 +284,8 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                       style: TextStyle(
                                         fontFamily: "Poppins",
                                         fontWeight: FontWeight.w700,
-                                        color: Theme.of(context).primaryColorDark
+                                        color: Theme.of(context).primaryColorDark,
+                                        fontSize: 3.5.w
                                       )
                                     ),
                                   ),
@@ -335,7 +340,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                         )
                       ),
                       Text(
-                        transformPrice(checkout_provider!.cart_total),
+                        transformPrice(double.parse(checkout_provider!.cart_total.toString())),
                         style: TextStyle(
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w700,
@@ -346,9 +351,9 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                     ]
                   ),
                   if (!proccess) GestureDetector(
-                    onTap: () => _orderProduct(),
+                    onTap: () => _orderProduct(context),
                     child: Container(
-                      height: 32,
+                      height: 9.w,
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
@@ -367,7 +372,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                     )
                   ),
                   if (proccess) Container(
-                    height: 32,
+                    height: 9.w,
                     padding: const EdgeInsets.symmetric(horizontal: 12),
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
@@ -377,7 +382,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                       children: [
                         LoadingAnimationWidget.fourRotatingDots(
                           color: Colors.white,
-                          size: 20,
+                          size: 3.w,
                         ),
                         const SizedBox(width: 8),
                         Text(

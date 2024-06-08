@@ -10,12 +10,15 @@ import 'package:localstorage/localstorage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/components/button_sync_data.dart';
 import 'package:qlola_umkm/components/employee_home/transaction_today.dart';
 import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/printer.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:sizer/sizer.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
 class EmployeeHomeScreen extends StatefulWidget {
   const EmployeeHomeScreen({super.key});
@@ -44,6 +47,9 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
 
+      String path = join(await getDatabasesPath(), "local.db");
+      await deleteDatabase(path);
+
       Restart.restartApp();
     }
 
@@ -59,7 +65,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     }
   }
 
-  Future _testPrinter() async {
+  Future _testPrinter(BuildContext context) async {
     setState(() => testPrint = true);
 
     localStorage.setItem("printer_mac", inputMacAddress.text);
@@ -179,6 +185,10 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                     )
                   ),
                   const SizedBox(height: 10),
+                  Container(
+                    alignment: Alignment.centerRight,
+                    child: ButtonSyncData() 
+                  )
                   // Row(
                   //   children: [
                   //     Text(
@@ -289,7 +299,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                 },
                 child: Container(
                   width: double.infinity,
-                  height: 40,
+                  height: 10.w,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
@@ -308,7 +318,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
               ),
               if (proccess) Container(
                 width: double.infinity,
-                height: 40,
+                height: 10.w,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,

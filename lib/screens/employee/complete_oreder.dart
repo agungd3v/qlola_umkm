@@ -1,15 +1,20 @@
 import 'dart:io';
 
+import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:sqflite/sqflite.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
+import 'package:image/image.dart' as ImageImage;
+import 'package:path/path.dart';
 
 class CompleteOrederScreen extends StatefulWidget {
   const CompleteOrederScreen({super.key});
@@ -24,11 +29,25 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
 
   WidgetsToImageController widgetsToImageController = WidgetsToImageController();
 
+  final databaseHelper = DatabaseHelper.instance;
+
   Future _printShare() async {
-    final bytes = await widgetsToImageController.capture();
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm58, profile);
+    List<int> bytes = [];
+
+    bytes += (await widgetsToImageController.capture())!;
     final tempDir = await getTemporaryDirectory();
     File file = await File('${tempDir.path}/image.png').create();
-    file.writeAsBytesSync(bytes!);
+    file.writeAsBytesSync(bytes);
+
+    // final ImageImage.Image? image = ImageImage.decodeImage(bytes);
+
+    // final xx = Uint8List.fromList(generator.imageRaster(image!).toList());
+    // file.writeAsBytesSync(xx);
+    // inspect(xx);
+    // file.writeAsBytesSync(bytes);
+    // inspect(bytes);
 
     await Share.shareXFiles([XFile(file.path)], text: "Resi Pembelian");
   }
@@ -116,7 +135,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                 Row(
                                   children: [
                                     Text(
-                                      transformPrice(double.parse(checkout_provider!.carts[index]["product_price"])),
+                                      transformPrice(double.parse(checkout_provider!.carts[index]["product_price"].toString())),
                                       style: TextStyle(
                                         fontFamily: "Poppins",
                                         fontSize: 10
@@ -135,7 +154,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                             ),
                             Text(
                               transformPrice(
-                                double.parse(checkout_provider!.carts[index]["product_price"]) * checkout_provider!.carts[index]["quantity"]
+                                double.parse(checkout_provider!.carts[index]["product_price"].toString()) * checkout_provider!.carts[index]["quantity"]
                               ),
                               style: TextStyle(
                                 fontFamily: "Poppins",
