@@ -54,58 +54,62 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
             )
           ),
           subtitle: Text(
-            transformDate(widget.item["created_at"]),
+            transformDate(widget.item["checkouts"][0]["created_at"]),
             style: TextStyle(
               fontFamily: "Poppins",
               color: Theme.of(context).disabledColor
             )
           ),
           children: [
-            for (var index2 = 0; index2 < widget.item["checkouts"].length; index2++) Container(
-              padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              color: Theme.of(context).dividerColor,
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.item["checkouts"][index2]["product"]["product_name"],
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 13
-                    )
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        transformPrice(double.parse(widget.item["checkouts"][index2]["total"])),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 12
-                        )
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        "(x${widget.item["checkouts"][index2]["quantity"]})",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColor,
-                          fontSize: 10
-                        )
-                      ),
-                    ]
-                  )
-                ]
-              )
-            )
+            for (var index2 = 0; index2 < widget.item["checkouts"].length; index2++) ExpansionItem(widget.item["checkouts"][index2])
           ]
         ))
       ]
+    );
+  }
+
+  Widget ExpansionItem(item) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+      color: Theme.of(context).dividerColor,
+      width: double.infinity,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            item["product"]["product_name"],
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: "Poppins",
+              color: Theme.of(context).primaryColorDark,
+              fontSize: 13
+            )
+          ),
+          Row(
+            children: [
+              Text(
+                transformPrice(double.parse(item["total"])),
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 12
+                )
+              ),
+              const SizedBox(width: 5),
+              Text(
+                "(x${item["quantity"]})",
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 10
+                )
+              ),
+            ]
+          )
+        ]
+      )
     );
   }
 }
