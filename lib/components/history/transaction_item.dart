@@ -55,7 +55,7 @@ class _TransactionItemState extends State<TransactionItem> {
             )
           ),
           subtitle: Text(
-            "${transformDate(widget.transaction["created_at"])} | ${widget.transaction["transaction_code"]}",
+            "${transformDate(widget.transaction["checkouts"][0]["created_at"])} | ${widget.transaction["transaction_code"]}",
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontFamily: "Poppins",
