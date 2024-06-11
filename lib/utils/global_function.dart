@@ -80,3 +80,14 @@ String getDateTimeNow({bool isRequest = false}) {
 
   return !isRequest ? "$date $month $year, $time" : "$year-$month-$date $time:00";
 }
+
+List<String> splitByLength(String value, int length) {
+  List<String> pieces = [];
+
+  for (int i = 0; i < value.length; i += length) {
+    int offset = i + length;
+    pieces.add(value.substring(i, offset >= value.length ? value.length : offset));
+  }
+
+  return pieces;
+}

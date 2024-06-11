@@ -18,10 +18,17 @@ class _ReportScreenState extends State<ReportScreen> {
   OwnerProvider? owner_provider;
 
   Map<String, dynamic>? report;
+  List transactions = [];
+  String avgTime = "-";
+
   bool loading = false;
 
   Future _getReport() async {
-    setState(() => loading = true);
+    setState(() {
+      loading = true;
+      transactions = [];
+      avgTime = "-";
+    });
 
     Map<String, dynamic> data = {
       "outlet": owner_provider!.reportOutlet["value"],
@@ -31,6 +38,60 @@ class _ReportScreenState extends State<ReportScreen> {
     final httpRequest = await get_report_owner(data);
     if (httpRequest["status"] == 200) {
       setState(() => report = httpRequest["data"]);
+
+      if (httpRequest["data"]["transactions"].isNotEmpty) {
+        List trx = httpRequest["data"]["transactions"];
+        for (var index = 0; index < trx.length; index++) {
+          for (var index2 = 0; index2 < trx[index]["checkouts"].length; index2++) {
+            Map<String, dynamic> checkout = trx[index]["checkouts"][index2];
+            checkout["product"]["quantity"] = checkout["quantity"];
+
+            setState(() => transactions.add(checkout["product"]));
+          }
+        }
+      }
+    }
+
+    if (transactions.isNotEmpty) {
+      final values = <String, dynamic>{};
+      List trxTime = [];
+
+      for (var index = 0; index < transactions.length; index++) {
+        final item = transactions[index];
+        final itemId = item["id"].toString();
+        final itemQuantity = int.parse(item["quantity"]);
+
+        int preValue = 0;
+
+        if (values.containsKey(itemId)) {
+          preValue = values[itemId];
+        }
+        preValue = preValue + itemQuantity;
+        values[itemId] = preValue;
+
+        final getTime = transactions[index]["created_at"].split(" ")[1];
+        final splited = getTime.toString().split(":");
+        trxTime.add(int.parse("${splited[0]}${splited[1]}${splited[2]}"));
+      }
+
+      final results = values.values.toList();
+      List newTransactions = [];
+
+      for (var key in values.keys) {
+        final trx = transactions.where((data) => data["id"].toString() == key);
+        newTransactions.add(trx.first);
+      }
+
+      for (var index = 0; index < results.length; index++) {
+        newTransactions[index]["quantity"] = results[index];
+      }
+
+      var avg = trxTime.map((m) => m).reduce((a, b) => a + b) / trxTime.length;
+
+      setState(() {
+        transactions = newTransactions;
+        avgTime = splitByLength(int.parse(avg.toStringAsFixed(0)).toString(), 2).join(":");
+      });
     }
 
     setState(() => loading = false);
@@ -339,6 +400,116 @@ class _ReportScreenState extends State<ReportScreen> {
                           fontFamily: "Poppins",
                           fontWeight: FontWeight.w700,
                           fontSize: 16
+                        )
+                      )
+                    ]
+                  )
+                ),
+                const SizedBox(height: 12),
+                Container(
+                  width: double.infinity,
+                  height: 65,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).dividerColor,
+                        spreadRadius: 0.1,
+                        blurRadius: 7,
+                        offset: Offset(0, 3)
+                      )
+                    ]
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Rata-rata Waktu Produk Terjual",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w500,
+                          fontSize: 12
+                        )
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        avgTime,
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                        )
+                      )
+                    ]
+                  )
+                ),
+                const SizedBox(height: 12),
+                if (transactions.isNotEmpty) Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(8)),
+                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).dividerColor,
+                        spreadRadius: 0.1,
+                        blurRadius: 7,
+                        offset: Offset(0, 3)
+                      )
+                    ]
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Detail Produk Terjual",
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16
+                        )
+                      ),
+                      const SizedBox(height: 20),
+                      for (var index = 0; index < transactions.length; index++) Container(
+                        margin: const EdgeInsets.only(top: 5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              transactions[index]["product_name"],
+                              style: TextStyle(
+                                fontFamily: "Poppins"
+                              )
+                            ),
+                            const SizedBox(width: 20),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                Text(
+                                  transactions[index]["quantity"].toString() + "pcs",
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontSize: 12
+                                  )
+                                ),
+                                Text(
+                                  transformPrice(
+                                    transactions[index]["quantity"] * double.parse(transactions[index]["product_price"]),
+                                  ),
+                                  style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w700,
+                                  )
+                                )
+                              ]
+                            )
+                          ]
                         )
                       )
                     ]
