@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -115,6 +117,7 @@ class _SheetDateState extends State<SheetDate> {
   @override
   Widget build(BuildContext context) {
     owner_provider = Provider.of<OwnerProvider>(context);
+    inspect(owner_provider!.reportDate);
 
     return SafeArea(
       child: Wrap(
@@ -309,7 +312,7 @@ class _SheetDateState extends State<SheetDate> {
                   Image.asset("assets/icons/calendar_outline.png", width: 18, height: 18),
                   const SizedBox(width: 5),
                   Text(
-                    range["from"] == "" ? "Start Date" : range["from"].toString(),
+                    "Start Date",
                     style: TextStyle(
                       fontFamily: "Poppins",
                       color: Theme.of(context).disabledColor,
@@ -380,7 +383,7 @@ class _SheetDateState extends State<SheetDate> {
                   Image.asset("assets/icons/calendar_outline.png", width: 18, height: 18),
                   const SizedBox(width: 5),
                   Text(
-                    range["to"] == "" ? "End Date" : range["to"].toString(),
+                    "End Date",
                     style: TextStyle(
                       fontFamily: "Poppins",
                       color: Theme.of(context).disabledColor,
