@@ -33,7 +33,7 @@ class _ButtonSyncDataState extends State<ButtonSyncData> with SingleTickerProvid
 
     if (batches.isNotEmpty) {
       final httpRequest = await bulk_checkout(<String, dynamic> {
-        "business_id": num.parse(auth_provider?.user["outlet"]["business_id"]),
+        "business_id": num.parse(auth_provider!.user["outlet"]["business_id"].toString()),
         "data": batches
       });
 

@@ -30,7 +30,7 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
               ),
               const SizedBox(height: 5),
               Text(
-                transformPrice(double.parse(widget.item["grand_total"])),
+                transformPrice(double.parse(widget.item["grand_total"].toString())),
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: "Poppins",
@@ -88,7 +88,7 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
           Row(
             children: [
               Text(
-                transformPrice(double.parse(item["total"])),
+                transformPrice(double.parse(item["total"].toString())),
                 style: TextStyle(
                   fontFamily: "Poppins",
                   fontWeight: FontWeight.w700,

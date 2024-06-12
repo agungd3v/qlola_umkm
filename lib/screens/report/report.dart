@@ -18,7 +18,8 @@ class _ReportScreenState extends State<ReportScreen> {
   OwnerProvider? owner_provider;
 
   Map<String, dynamic>? report;
-  List transactions = [];
+  List products = [];
+  List other_products = [];
   String avgTime = "-";
 
   bool loading = false;
@@ -26,7 +27,8 @@ class _ReportScreenState extends State<ReportScreen> {
   Future _getReport() async {
     setState(() {
       loading = true;
-      transactions = [];
+      products = [];
+      other_products = [];
       avgTime = "-";
     });
 
@@ -46,20 +48,23 @@ class _ReportScreenState extends State<ReportScreen> {
             Map<String, dynamic> checkout = trx[index]["checkouts"][index2];
             checkout["product"]["quantity"] = checkout["quantity"];
 
-            setState(() => transactions.add(checkout["product"]));
+            setState(() => products.add(checkout["product"]));
+          }
+          for (var index3 = 0; index3 < trx[index]["others"].length; index3++) {
+            setState(() => other_products.add(trx[index]["others"][index3]));
           }
         }
       }
     }
 
-    if (transactions.isNotEmpty) {
+    if (products.isNotEmpty) {
       final values = <String, dynamic>{};
       List trxTime = [];
 
-      for (var index = 0; index < transactions.length; index++) {
-        final item = transactions[index];
+      for (var index = 0; index < products.length; index++) {
+        final item = products[index];
         final itemId = item["id"].toString();
-        final itemQuantity = int.parse(item["quantity"]);
+        final itemQuantity = int.parse(item["quantity"].toString());
 
         int preValue = 0;
 
@@ -69,27 +74,27 @@ class _ReportScreenState extends State<ReportScreen> {
         preValue = preValue + itemQuantity;
         values[itemId] = preValue;
 
-        final getTime = transactions[index]["created_at"].split(" ")[1];
+        final getTime = products[index]["created_at"].split(" ")[1];
         final splited = getTime.toString().split(":");
         trxTime.add(int.parse("${splited[0]}${splited[1]}${splited[2]}"));
       }
 
       final results = values.values.toList();
-      List newTransactions = [];
+      List newProducts = [];
 
       for (var key in values.keys) {
-        final trx = transactions.where((data) => data["id"].toString() == key);
-        newTransactions.add(trx.first);
+        final trx = products.where((data) => data["id"].toString() == key);
+        newProducts.add(trx.first);
       }
 
       for (var index = 0; index < results.length; index++) {
-        newTransactions[index]["quantity"] = results[index];
+        newProducts[index]["quantity"] = results[index];
       }
 
       var avg = trxTime.map((m) => m).reduce((a, b) => a + b) / trxTime.length;
 
       setState(() {
-        transactions = newTransactions;
+        products = newProducts;
         avgTime = splitByLength(int.parse(avg.toStringAsFixed(0)).toString(), 2).join(":");
       });
     }
@@ -276,248 +281,288 @@ class _ReportScreenState extends State<ReportScreen> {
               )
             ),
           ),
-          if (!loading && report != null) Container(
-            margin: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              children: [
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).dividerColor,
-                        spreadRadius: 0.1,
-                        blurRadius: 7,
-                        offset: Offset(0, 3)
-                      )
-                    ]
+          if (!loading && report != null) Expanded(child: SingleChildScrollView(
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    height: 65,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).dividerColor,
+                          spreadRadius: 0.1,
+                          blurRadius: 7,
+                          offset: Offset(0, 3)
+                        )
+                      ]
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Total Penjualan",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12
+                          )
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          transformPrice(report!["sales"]),
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16
+                          )
+                        )
+                      ]
+                    )
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Total Penjualan",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    height: 65,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).dividerColor,
+                          spreadRadius: 0.1,
+                          blurRadius: 7,
+                          offset: Offset(0, 3)
                         )
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        transformPrice(report!["sales"]),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16
+                      ]
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Total Transaksi",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12
+                          )
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "${report!["count"]}",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16
+                          )
                         )
-                      )
-                    ]
-                  )
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).dividerColor,
-                        spreadRadius: 0.1,
-                        blurRadius: 7,
-                        offset: Offset(0, 3)
-                      )
-                    ]
+                      ]
+                    )
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Total Transaksi",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    height: 65,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).dividerColor,
+                          spreadRadius: 0.1,
+                          blurRadius: 7,
+                          offset: Offset(0, 3)
                         )
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        "${report!["count"]}",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16
+                      ]
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Produk Terjual",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12
+                          )
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          "${report!["product_sales"] + report!["product_other_sales"]}",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16
+                          )
                         )
-                      )
-                    ]
-                  )
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).dividerColor,
-                        spreadRadius: 0.1,
-                        blurRadius: 7,
-                        offset: Offset(0, 3)
-                      )
-                    ]
+                      ]
+                    )
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Produk Terjual",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12
+                  const SizedBox(height: 12),
+                  Container(
+                    width: double.infinity,
+                    height: 65,
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).dividerColor,
+                          spreadRadius: 0.1,
+                          blurRadius: 7,
+                          offset: Offset(0, 3)
                         )
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        "${report!["product_sales"]}",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16
+                      ]
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Rata-rata Waktu Produk Terjual",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w500,
+                            fontSize: 12
+                          )
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          avgTime,
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16
+                          )
                         )
-                      )
-                    ]
-                  )
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  width: double.infinity,
-                  height: 65,
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).dividerColor,
-                        spreadRadius: 0.1,
-                        blurRadius: 7,
-                        offset: Offset(0, 3)
-                      )
-                    ]
+                      ]
+                    )
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Rata-rata Waktu Produk Terjual",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12
+                  const SizedBox(height: 12),
+                  if (products.isNotEmpty) Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
+                      border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).dividerColor,
+                          spreadRadius: 0.1,
+                          blurRadius: 7,
+                          offset: Offset(0, 3)
                         )
-                      ),
-                      const SizedBox(height: 2),
-                      Text(
-                        avgTime,
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16
-                        )
-                      )
-                    ]
-                  )
-                ),
-                const SizedBox(height: 12),
-                if (transactions.isNotEmpty) Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(8)),
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Theme.of(context).dividerColor,
-                        spreadRadius: 0.1,
-                        blurRadius: 7,
-                        offset: Offset(0, 3)
-                      )
-                    ]
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Detail Produk Terjual",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16
-                        )
-                      ),
-                      const SizedBox(height: 20),
-                      for (var index = 0; index < transactions.length; index++) Container(
-                        margin: const EdgeInsets.only(top: 5),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              transactions[index]["product_name"],
-                              style: TextStyle(
-                                fontFamily: "Poppins"
-                              )
-                            ),
-                            const SizedBox(width: 20),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Text(
-                                  transactions[index]["quantity"].toString() + "pcs",
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontSize: 12
-                                  )
-                                ),
-                                Text(
-                                  transformPrice(
-                                    transactions[index]["quantity"] * double.parse(transactions[index]["product_price"]),
-                                  ),
-                                  style: TextStyle(
-                                    fontFamily: "Poppins",
-                                    fontWeight: FontWeight.w700,
-                                  )
+                      ]
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Detail Produk Terjual",
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16
+                          )
+                        ),
+                        const SizedBox(height: 20),
+                        for (var index = 0; index < products.length; index++) Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                products[index]["product_name"],
+                                style: TextStyle(
+                                  fontFamily: "Poppins"
                                 )
-                              ]
-                            )
-                          ]
+                              ),
+                              const SizedBox(width: 20),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    products[index]["quantity"].toString() + "pcs",
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 12
+                                    )
+                                  ),
+                                  Text(
+                                    transformPrice(
+                                      products[index]["quantity"] * double.parse(products[index]["product_price"].toString()),
+                                    ),
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w700,
+                                    )
+                                  )
+                                ]
+                              )
+                            ]
+                          )
+                        ),
+                        for (var index = 0; index < other_products.length; index++) Container(
+                          margin: const EdgeInsets.only(top: 5),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                other_products[index]["product_name"],
+                                style: TextStyle(
+                                  fontFamily: "Poppins"
+                                )
+                              ),
+                              const SizedBox(width: 20),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  Text(
+                                    other_products[index]["quantity"].toString() + "pcs",
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontSize: 12
+                                    )
+                                  ),
+                                  Text(
+                                    transformPrice(
+                                      other_products[index]["quantity"] * double.parse(other_products[index]["product_price"].toString()),
+                                    ),
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w700,
+                                    )
+                                  )
+                                ]
+                              )
+                            ]
+                          )
                         )
-                      )
-                    ]
-                  )
-                )
-              ]
+                      ]
+                    )
+                  ),
+                  const SizedBox(height: 20),
+                ]
+              )
             )
-          )
+          ))
         ]
       )
     );
