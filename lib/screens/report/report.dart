@@ -506,7 +506,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   ),
                                   Text(
                                     transformPrice(
-                                      products[index]["quantity"] * double.parse(products[index]["product_price"].toString()),
+                                      int.parse(products[index]["quantity"].toString()) * double.parse(products[index]["product_price"].toString()),
                                     ),
                                     style: TextStyle(
                                       fontFamily: "Poppins",
@@ -543,7 +543,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   ),
                                   Text(
                                     transformPrice(
-                                      other_products[index]["quantity"] * double.parse(other_products[index]["product_price"].toString()),
+                                      int.parse(other_products[index]["quantity"].toString()) * double.parse(other_products[index]["product_price"].toString()),
                                     ),
                                     style: TextStyle(
                                       fontFamily: "Poppins",
