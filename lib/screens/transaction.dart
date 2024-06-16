@@ -49,7 +49,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                   )
                 ),
                 Text(
-                  "History Transaksi",
+                  "History transaksi hari ini & bulan ini",
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontWeight: FontWeight.w700,

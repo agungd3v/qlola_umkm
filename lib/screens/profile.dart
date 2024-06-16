@@ -102,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 ),
                 GestureDetector(
-                  onTap: () => context.pushNamed("Transaction"),
+                  onTap: () => context.pushNamed("HistoryTransaction"),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -115,7 +115,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Row(
                       children: [
                         Expanded(child: Text(
-                          "History Transaksi Hari & Bulan ini",
+                          "History Transaksi",
                           style: TextStyle(
                             fontFamily: "Poppins",
                             color: Theme.of(context).primaryColorDark,

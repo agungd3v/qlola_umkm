@@ -6,7 +6,9 @@ import 'package:qlola_umkm/screens/add_outlet.dart';
 import 'package:qlola_umkm/screens/add_outlet_employee.dart';
 import 'package:qlola_umkm/screens/add_outlet_product.dart';
 import 'package:qlola_umkm/screens/add_product.dart';
+import 'package:qlola_umkm/screens/delete_transaction.dart';
 import 'package:qlola_umkm/screens/employee.dart';
+import 'package:qlola_umkm/screens/history_transaction.dart';
 import 'package:qlola_umkm/screens/home.dart';
 import 'package:qlola_umkm/screens/outlet.dart';
 import 'package:qlola_umkm/screens/product.dart';
@@ -145,6 +147,22 @@ class SuperRouter {
         parentNavigatorKey: _rootSuperNavigatorKey,
         builder: (context, state) {
           return AddEmployeeScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/history_transaction',
+        name: 'HistoryTransaction',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          return HistoryTransactionScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/delete_transaction',
+        name: 'DeleteTransaction',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          return DeleteTransactionScreen(key: state.pageKey);
         }
       ),
       GoRoute(

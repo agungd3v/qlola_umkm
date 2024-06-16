@@ -469,3 +469,43 @@ Future bulk_checkout(Map<String, dynamic> request) async {
     };
   }
 }
+
+Future search_transaction(String request) async {
+  final httpRequest = await http.post(
+    Uri.parse("${dotenv.env["API_URL"]}/transaction/check"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    },
+    body: jsonEncode({"code": request})
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}
+
+Future delete_transaction(int request) async {
+  final httpRequest = await http.delete(
+    Uri.parse("${dotenv.env["API_URL"]}/transaction/delete"),
+    headers: <String, String> {
+      "ACCEPT": "application/json",
+      "CONTENT-TYPE": "application/json; charset=UTF-8",
+      "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+      "AUTHORIZATION": "Bearer ${auth_provider.token}"
+    },
+    body: jsonEncode({"id": request})
+  );
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic> {
+    "status": httpRequest.statusCode,
+    ...response
+  };
+}
