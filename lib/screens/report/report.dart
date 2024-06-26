@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/components/charts/pie/line_chart.dart';
 import 'package:qlola_umkm/components/charts/pie/pie_chart.dart';
 import 'package:qlola_umkm/components/report/sheet_date.dart';
 import 'package:qlola_umkm/components/report/sheet_outlet.dart';
@@ -287,9 +290,10 @@ class _ReportScreenState extends State<ReportScreen> {
               margin: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
-                  if (products.isNotEmpty) PieChartComponent(
-                    products: [...products, ...other_products],
-                  ),
+                  // if (products.isNotEmpty) PieChartComponent(
+                  //   products: [...products, ...other_products],
+                  // ),
+                  if (products.isNotEmpty) LineChartComponent(report: report!),
                   Container(
                     width: double.infinity,
                     height: 65,
