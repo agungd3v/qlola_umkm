@@ -61,7 +61,7 @@ class _ProductItemState extends State<ProductItem> {
                   )
                 ),
                 Text(
-                  transformPrice(double.parse(widget.product["product_price"])),
+                  transformPrice(double.parse(widget.product["product_price"].toString())),
                   style: TextStyle(
                     fontFamily: "Poppins",
                     fontWeight: FontWeight.w700,

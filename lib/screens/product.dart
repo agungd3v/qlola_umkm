@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/product/product_item.dart';
+import 'package:qlola_umkm/providers/owner_provider.dart';
 
 class ProductScreen extends StatefulWidget {
   const ProductScreen({super.key});
@@ -12,6 +14,7 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  OwnerProvider? owner_provider;
   List products = [];
 
   Future _getProduct() async {
@@ -23,6 +26,11 @@ class _ProductScreenState extends State<ProductScreen> {
     }
   }
 
+  void _editProduct(dynamic data) {
+    owner_provider!.set_product_edit = data;
+    context.pushNamed("Edit Product");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -31,6 +39,8 @@ class _ProductScreenState extends State<ProductScreen> {
 
   @override
   Widget build(BuildContext context) {
+    owner_provider = Provider.of<OwnerProvider>(context);
+
     return Scaffold(
       extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
@@ -93,9 +103,9 @@ class _ProductScreenState extends State<ProductScreen> {
                       child: Column(
                         children: [
                           const SizedBox(height: 16),
-                          if (products.isNotEmpty) for (var index = 0; index < products.length; index++) ProductItem(
-                            product: products[index],
-                            index: index
+                          if (products.isNotEmpty) for (var index = 0; index < products.length; index++) GestureDetector(
+                            onTap: () => _editProduct(products[index]),
+                            child: ProductItem(product: products[index], index: index)
                           ),
                           if (products.isEmpty) Expanded(child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,

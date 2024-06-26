@@ -7,6 +7,7 @@ import 'package:qlola_umkm/screens/add_outlet_employee.dart';
 import 'package:qlola_umkm/screens/add_outlet_product.dart';
 import 'package:qlola_umkm/screens/add_product.dart';
 import 'package:qlola_umkm/screens/delete_transaction.dart';
+import 'package:qlola_umkm/screens/edit_product.dart';
 import 'package:qlola_umkm/screens/employee.dart';
 import 'package:qlola_umkm/screens/history_transaction.dart';
 import 'package:qlola_umkm/screens/home.dart';
@@ -105,6 +106,14 @@ class SuperRouter {
         parentNavigatorKey: _rootSuperNavigatorKey,
         builder: (context, state) {
           return AddProductScreen(key: state.pageKey);
+        }
+      ),
+      GoRoute(
+        path: '/edit_product',
+        name: 'Edit Product',
+        parentNavigatorKey: _rootSuperNavigatorKey,
+        builder: (context, state) {
+          return EditProductScreen(key: state.pageKey);
         }
       ),
       GoRoute(

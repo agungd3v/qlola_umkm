@@ -67,7 +67,8 @@ class _LineChartComponentState extends State<LineChartComponent> {
           ls.add(
             FlSpot(
               0,
-              double.parse(total.toString()) / 1000)
+              double.parse(total.toString()) / 1000
+            )
           );
         } else {
           ls.add(
@@ -142,7 +143,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
               ),
             ],
             minY: 0,
-            maxY: double.parse(totalMax.toString()) / 300,
+            maxY: double.parse(totalMax.toString()) / 400,
             titlesData: FlTitlesData(
               show: true,
               topTitles: const AxisTitles(
@@ -153,9 +154,8 @@ class _LineChartComponentState extends State<LineChartComponent> {
               ),
               bottomTitles: AxisTitles(
                 sideTitles: SideTitles(
-                  showTitles: true,
+                  // showTitles: true,
                   // reservedSize: 18,
-                  reservedSize: 1,
                   interval: 1,
                   getTitlesWidget: bottomTitleWidgets,
                 ),
@@ -163,10 +163,9 @@ class _LineChartComponentState extends State<LineChartComponent> {
               leftTitles: AxisTitles(
                 axisNameSize: 20,
                 sideTitles: SideTitles(
-                  showTitles: true,
-                  interval: 1,
+                  // showTitles: true,
                   // reservedSize: 40,
-                  reservedSize: 1,
+                  interval: 1,
                   getTitlesWidget: leftTitleWidgets,
                 ),
               ),
@@ -178,10 +177,13 @@ class _LineChartComponentState extends State<LineChartComponent> {
               )
             ),
             gridData: FlGridData(
-              show: false,
+              show: true,
               drawVerticalLine: false,
-              horizontalInterval: 1
-            )
+              horizontalInterval: 1,
+              checkToShowHorizontalLine: (double value) {
+                return value == 1 || value == 6 || value == 4 || value == 5;
+              },
+            ),
           )
         )
       )
