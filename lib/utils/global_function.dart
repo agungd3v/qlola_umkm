@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 String transformPrice(num price) {
@@ -90,4 +91,9 @@ List<String> splitByLength(String value, int length) {
   }
 
   return pieces;
+}
+
+String getDeviceType() {
+  final media = MediaQueryData.fromView(WidgetsBinding.instance.window);
+  return media.size.shortestSide < 600 ? "phone" : "tablet";
 }

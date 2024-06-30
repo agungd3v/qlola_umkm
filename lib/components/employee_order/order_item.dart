@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qlola_umkm/components/employee_product_sheet.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
-import 'package:sizer/sizer.dart';
 
 class OrderItem extends StatefulWidget {
   dynamic item;
@@ -26,10 +25,15 @@ class _OrderItemState extends State<OrderItem> {
     );
   }
 
+  Future _addProductToCart(dynamic data) async {
+    debugPrint(data.toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        // getDeviceType() == "tablet" ? _addProductToCart(widget.item) : _openSheetProduct(widget.item);
         _openSheetProduct(widget.item);
       },
         child: Container(
@@ -43,13 +47,13 @@ class _OrderItemState extends State<OrderItem> {
               clipBehavior: Clip.hardEdge,
               child: Image.network(
                 "${dotenv.env["ASSET_URL"]}${widget.item["product_image"]}",
-                width: 18.w,
-                height: 18.w,
+                width: 90,
+                height: 90,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    width: 18.w,
-                    height: 18.w,
+                    width: 90,
+                    height: 90,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor.withOpacity(0.2)
                     ),
@@ -68,12 +72,12 @@ class _OrderItemState extends State<OrderItem> {
                   Text(
                     widget.item["product_name"],
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                    maxLines: 1,
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColorDark,
-                      fontSize: 3.5.w
+                      fontSize: 18
                     )
                   ),
                   Text(
@@ -82,7 +86,7 @@ class _OrderItemState extends State<OrderItem> {
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
-                      fontSize: 3.w
+                      fontSize: 14
                     )
                   )
                 ]
