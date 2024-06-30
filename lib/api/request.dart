@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:http/http.dart' as http;
 import 'package:qlola_umkm/providers/auth_provider.dart';
@@ -130,26 +129,6 @@ Future add_product(Map<String, dynamic> request) async {
 }
 
 Future update_product(Map<String, dynamic> request) async {
-  // final requestSend = http.MultipartRequest("PUT", Uri.parse("${dotenv.env["API_URL"]}/product"));
-
-  // requestSend.headers.addAll(<String, String> {
-  //   "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
-  //   "AUTHORIZATION": "Bearer ${auth_provider.token}"
-  // });
-
-  // requestSend.fields.addAll(<String, String> {
-  //   "id": request["id"],
-  //   "product_name": request["product_name"],
-  //   "product_price": request["product_price"]
-  // });
-
-  // final httpRequest = await requestSend.send();
-  // final response = await http.Response.fromStream(httpRequest);
-
-  // return <String, dynamic> {
-  //   "status": response.statusCode,
-  //   ...json.decode(response.body)
-  // };
   final httpRequest = await http.put(
     Uri.parse("${dotenv.env["API_URL"]}/product"),
     headers: <String, String> {
