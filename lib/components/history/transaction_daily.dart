@@ -74,7 +74,8 @@ class _TransactionDailyState extends State<TransactionDaily> {
               children: [
                 const SizedBox(height: 6),
                 for (var index = 0; index < snapshot.data["transaction_count_today"]; index++) TransactionItem(
-                  transaction: snapshot.data["daily_transactions"][index]
+                  transaction: snapshot.data["daily_transactions"][index],
+                  isDaily: true
                 ),
                 const SizedBox(height: 6)
               ]

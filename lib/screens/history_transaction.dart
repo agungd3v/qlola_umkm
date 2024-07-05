@@ -101,50 +101,50 @@ class _HistoryTransactionScreenState extends State<HistoryTransactionScreen> {
               )
             )
           ),
-          GestureDetector(
-            onTap: () => context.pushNamed("DeleteTransaction"),
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              height: 50,
-              decoration: BoxDecoration(
-                border: Border(
-                  bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
-                )
-              ),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Hapus Transaksi",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12
-                        )
-                      ),
-                      Text(
-                        "hapus transaksi tertentu bila di perlukan",
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark.withOpacity(0.6),
-                          fontSize: 12
-                        )
-                      )
-                    ]
-                  ),
-                  Image.asset("assets/icons/arrow_right_black.png", width: 13, height: 13)
-                ]
-              )
-            )
-          )
+          // GestureDetector(
+          //   onTap: () => context.pushNamed("DeleteTransaction"),
+          //   child: Container(
+          //     width: double.infinity,
+          //     padding: const EdgeInsets.symmetric(horizontal: 20),
+          //     height: 50,
+          //     decoration: BoxDecoration(
+          //       border: Border(
+          //         bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
+          //       )
+          //     ),
+          //     child: Row(
+          //       crossAxisAlignment: CrossAxisAlignment.center,
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Column(
+          //           mainAxisAlignment: MainAxisAlignment.center,
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: [
+          //             Text(
+          //               "Hapus Transaksi",
+          //               style: TextStyle(
+          //                 fontFamily: "Poppins",
+          //                 color: Theme.of(context).primaryColorDark,
+          //                 fontWeight: FontWeight.w700,
+          //                 fontSize: 12
+          //               )
+          //             ),
+          //             Text(
+          //               "hapus transaksi tertentu bila di perlukan",
+          //               overflow: TextOverflow.ellipsis,
+          //               style: TextStyle(
+          //                 fontFamily: "Poppins",
+          //                 color: Theme.of(context).primaryColorDark.withOpacity(0.6),
+          //                 fontSize: 12
+          //               )
+          //             )
+          //           ]
+          //         ),
+          //         Image.asset("assets/icons/arrow_right_black.png", width: 13, height: 13)
+          //       ]
+          //     )
+          //   )
+          // )
         ]
       )
     );

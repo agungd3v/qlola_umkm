@@ -293,7 +293,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   // if (products.isNotEmpty) PieChartComponent(
                   //   products: [...products, ...other_products],
                   // ),
-                  // if (products.isNotEmpty) LineChartComponent(report: report!),
+                  if (products.isNotEmpty) LineChartComponent(report: report!),
                   Container(
                     width: double.infinity,
                     height: 65,
@@ -419,48 +419,48 @@ class _ReportScreenState extends State<ReportScreen> {
                       ]
                     )
                   ),
-                  const SizedBox(height: 12),
-                  Container(
-                    width: double.infinity,
-                    height: 65,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(8)),
-                      border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).dividerColor,
-                          spreadRadius: 0.1,
-                          blurRadius: 7,
-                          offset: Offset(0, 3)
-                        )
-                      ]
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Rata-rata Waktu Produk Terjual",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w500,
-                            fontSize: 12
-                          )
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          avgTime,
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w700,
-                            fontSize: 16
-                          )
-                        )
-                      ]
-                    )
-                  ),
+                  // const SizedBox(height: 12),
+                  // Container(
+                  //   width: double.infinity,
+                  //   height: 65,
+                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //   decoration: BoxDecoration(
+                  //     color: Colors.white,
+                  //     borderRadius: BorderRadius.all(Radius.circular(8)),
+                  //     border: Border.all(width: 1, color: Theme.of(context).dividerColor),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Theme.of(context).dividerColor,
+                  //         spreadRadius: 0.1,
+                  //         blurRadius: 7,
+                  //         offset: Offset(0, 3)
+                  //       )
+                  //     ]
+                  //   ),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     children: [
+                  //       Text(
+                  //         "Rata-rata Waktu Produk Terjual",
+                  //         style: TextStyle(
+                  //           fontFamily: "Poppins",
+                  //           fontWeight: FontWeight.w500,
+                  //           fontSize: 12
+                  //         )
+                  //       ),
+                  //       const SizedBox(height: 2),
+                  //       Text(
+                  //         avgTime,
+                  //         style: TextStyle(
+                  //           fontFamily: "Poppins",
+                  //           fontWeight: FontWeight.w700,
+                  //           fontSize: 16
+                  //         )
+                  //       )
+                  //     ]
+                  //   )
+                  // ),
                   const SizedBox(height: 12),
                   if (products.isNotEmpty) Container(
                     padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),

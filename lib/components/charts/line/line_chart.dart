@@ -79,7 +79,7 @@ class _LineChartComponentState extends State<LineChartComponent> {
           );
         }
         
-        max = total;
+        max = double.parse(total.toString());
       }
 
       setState(() {
