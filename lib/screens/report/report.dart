@@ -293,7 +293,7 @@ class _ReportScreenState extends State<ReportScreen> {
                   // if (products.isNotEmpty) PieChartComponent(
                   //   products: [...products, ...other_products],
                   // ),
-                  if (products.isNotEmpty) LineChartComponent(report: report!),
+                  // if (products.isNotEmpty) LineChartComponent(report: report!),
                   Container(
                     width: double.infinity,
                     height: 65,
