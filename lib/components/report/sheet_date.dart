@@ -88,6 +88,7 @@ class _SheetDateState extends State<SheetDate> {
     }
 
     owner_provider!.set_report_date = {
+      "id": selectedDate == "Custom" ? "custom" : "",
       "label": selectedDate == "Custom" ? "${range["from"]} / ${range["to"]}" : selectedDate,
       "value": "${range["from"]} - ${range["to"]}"
     };
@@ -104,7 +105,7 @@ class _SheetDateState extends State<SheetDate> {
         selectedDate = firstLabel.split("/").length > 1 ? "Custom" : firstLabel;
         range = {
           "from": owner_provider!.reportDate["value"].toString().split(" - ")[0],
-          "to": owner_provider!.reportDate["value"].toString().split(" - ")[0]
+          "to": owner_provider!.reportDate["value"].toString().split(" - ")[1]
         };
       });
     });
@@ -309,7 +310,7 @@ class _SheetDateState extends State<SheetDate> {
                   Image.asset("assets/icons/calendar_outline.png", width: 18, height: 18),
                   const SizedBox(width: 5),
                   Text(
-                    "Start Date",
+                    range["from"] != "" ? range["from"].toString() : "Start Date",
                     style: TextStyle(
                       fontFamily: "Poppins",
                       color: Theme.of(context).disabledColor,
@@ -380,7 +381,7 @@ class _SheetDateState extends State<SheetDate> {
                   Image.asset("assets/icons/calendar_outline.png", width: 18, height: 18),
                   const SizedBox(width: 5),
                   Text(
-                    "End Date",
+                    range["to"] != "" ? range["to"].toString() : "End Date",
                     style: TextStyle(
                       fontFamily: "Poppins",
                       color: Theme.of(context).disabledColor,

@@ -38,6 +38,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
     Map<String, dynamic> data = {
       "outlet": owner_provider!.reportOutlet["value"],
+      "is_custom": owner_provider!.reportDate["id"] == "custom" ? true : false,
       "date": owner_provider!.reportDate["value"]
     };
 
