@@ -6,10 +6,7 @@ class ProductItem extends StatefulWidget {
   dynamic product;
   int index;
 
-  ProductItem({super.key,
-    required this.product,
-    required this.index
-  });
+  ProductItem({super.key, required this.product, required this.index});
 
   @override
   State<ProductItem> createState() => _ProductItemState();
@@ -19,13 +16,18 @@ class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.index > 0 ? const EdgeInsets.only(top: 14) : const EdgeInsets.only(top: 0),
+      margin: widget.index > 0
+          ? const EdgeInsets.only(top: 14, bottom: 14)
+          : const EdgeInsets.only(top: 14, bottom: 14),
+      // : const EdgeInsets.only(top: 0),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(8))
+              borderRadius: BorderRadius.all(
+                Radius.circular(8),
+              ),
             ),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
@@ -38,41 +40,45 @@ class _ProductItemState extends State<ProductItem> {
                   width: 70,
                   height: 70,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.2)
-                  ),
+                      color: Theme.of(context).primaryColor.withOpacity(0.2)),
                   child: Center(
-                    child: Image.asset("assets/icons/image_crash.png", width: 25, height: 25)
-                  )
+                    child: Image.asset("assets/icons/image_crash.png",
+                        width: 25, height: 25),
+                  ),
                 );
               },
-            )
+            ),
           ),
           const SizedBox(width: 12),
-          Expanded(child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.product["product_name"],
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColorDark
-                  )
-                ),
-                Text(
-                  transformPrice(double.parse(widget.product["product_price"].toString())),
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor
-                  )
-                )
-              ]
-            )
-          ))
-        ]
-      )
+          Expanded(
+            child: Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.product["product_name"],
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColorDark),
+                  ),
+                  Text(
+                    transformPrice(
+                      double.parse(
+                        widget.product["product_price"].toString(),
+                      ),
+                    ),
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColor),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
