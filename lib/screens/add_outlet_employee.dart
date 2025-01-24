@@ -286,12 +286,26 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
                           Radius.circular(6),
                         ),
                       ),
-                      child: Text(
-                        "Simpan",
-                        style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w700,
-                            color: Colors.white),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            Icons.save, // Ikon save
+                            color: Colors.white,
+                            size: 20, // Ukuran ikon
+                          ),
+                          const SizedBox(
+                              width:
+                                  8), // Memberikan jarak antara ikon dan teks
+                          Text(
+                            "Simpan",
+                            style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

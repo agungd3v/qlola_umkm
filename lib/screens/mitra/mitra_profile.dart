@@ -7,15 +7,17 @@ import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class MitraProfile extends StatefulWidget {
+  const MitraProfile({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<MitraProfile> createState() => _MitraProfileState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _MitraProfileState extends State<MitraProfile> {
   AuthProvider? auth_provider;
   bool proccess = false;
 
@@ -26,6 +28,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (httpRequest["status"] == 200) {
       localStorage.removeItem("user");
       localStorage.removeItem("token");
+
+      String path = join(await getDatabasesPath(), "local.db");
+      await deleteDatabase(path);
 
       Restart.restartApp();
     }

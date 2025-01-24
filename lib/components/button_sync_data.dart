@@ -15,11 +15,13 @@ class ButtonSyncData extends StatefulWidget {
   State<ButtonSyncData> createState() => _ButtonSyncDataState();
 }
 
-class _ButtonSyncDataState extends State<ButtonSyncData> with SingleTickerProviderStateMixin {
+class _ButtonSyncDataState extends State<ButtonSyncData>
+    with SingleTickerProviderStateMixin {
   AuthProvider? auth_provider;
 
   final databaseHelper = DatabaseHelper.instance;
-  late final AnimationController _controller = AnimationController(vsync: this, duration: Duration(seconds: 1));
+  late final AnimationController _controller =
+      AnimationController(vsync: this, duration: Duration(seconds: 1));
   bool proccess = false;
 
   Future _syncData(BuildContext context) async {
@@ -29,11 +31,13 @@ class _ButtonSyncDataState extends State<ButtonSyncData> with SingleTickerProvid
     final database = await databaseHelper.database;
     final rawQuery = await database?.rawQuery("SELECT * FROM orders");
     final data = rawQuery?.asMap().values.toList();
-    final batches = groupBy(data as Iterable<Map>, (Map obj) => obj["_transaction"]);
+    final batches =
+        groupBy(data as Iterable<Map>, (Map obj) => obj["_transaction"]);
 
     if (batches.isNotEmpty) {
-      final httpRequest = await bulk_checkout(<String, dynamic> {
-        "business_id": num.parse(auth_provider!.user["outlet"]["business_id"].toString()),
+      final httpRequest = await bulk_checkout(<String, dynamic>{
+        "business_id":
+            num.parse(auth_provider!.user["outlet"]["business_id"].toString()),
         "data": batches
       });
 
@@ -60,16 +64,14 @@ class _ButtonSyncDataState extends State<ButtonSyncData> with SingleTickerProvid
     auth_provider = Provider.of<AuthProvider>(context);
 
     return GestureDetector(
-      onTap: () => !proccess ? _syncData(context) : {},
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return Transform.rotate(
-            angle: _controller.value * 2 * math.pi,
-            child: Image.asset("assets/icons/sync_red.png", width: 45, height: 45)
-          );
-        }
-      )
-    );
+        onTap: () => !proccess ? _syncData(context) : {},
+        child: AnimatedBuilder(
+            animation: _controller,
+            builder: (context, child) {
+              return Transform.rotate(
+                  angle: _controller.value * 2 * math.pi,
+                  child: Image.asset("assets/icons/sync_red.png",
+                      width: 45, height: 45));
+            }));
   }
 }

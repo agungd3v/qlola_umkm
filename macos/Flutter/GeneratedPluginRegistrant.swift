@@ -6,12 +6,12 @@ import FlutterMacOS
 import Foundation
 
 import file_selector_macos
-import flutter_blue_plus
+import flutter_blue_plus_darwin
 import flutter_localization
 import path_provider_foundation
 import share_plus
 import shared_preferences_foundation
-import sqflite
+import sqflite_darwin
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))

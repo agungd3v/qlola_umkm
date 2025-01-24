@@ -6,33 +6,45 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:sizer/sizer.dart';
 
-class AddEmployeeScreen extends StatefulWidget {
-  const AddEmployeeScreen({super.key});
+class AddMitra extends StatefulWidget {
+  const AddMitra({super.key});
 
   @override
-  State<AddEmployeeScreen> createState() => _AddEmployeeScreenState();
+  State<AddMitra> createState() => _AddMitraState();
 }
 
-class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
-  final employeeName = TextEditingController();
-  final employeePhone = TextEditingController();
+class _AddMitraState extends State<AddMitra> {
+  AuthProvider? auth_provider;
+
+  final mitraName = TextEditingController();
+  final mitraPhone = TextEditingController();
+  final mitraEmail = TextEditingController();
   File? imageTemp;
   String? imagePath;
   bool proccess = false;
+  String role = '';
+  String email = '';
+  String password = '';
 
-  Future<void> _addproduct() async {
+  Future<void> _addMitra() async {
     final Map<String, dynamic> data = {
-      "name": employeeName.text,
-      "phone": "+62${employeePhone.text}",
-      "photo": imagePath
+      "name": mitraName.text,
+      "phone": "+62${mitraPhone.text}",
+      "photo": imagePath,
+      "email": mitraEmail.text,
+      "business_id": _convertToString(auth_provider!.user["business"]["id"]),
+      "owner_id": _convertToString(auth_provider!.user["business"]["owner_id"]),
     };
 
+    print(data);
     setState(() => proccess = true);
 
-    final httpRequest = await add_employee(data);
+    final httpRequest = await add_mitra(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
 
@@ -47,7 +59,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 fontWeight: FontWeight.w600,
                 color: Colors.white,
                 fontSize: 12)),
-        messageText: Text("Berhasil menambahkan karyawan baru",
+        messageText: Text("Berhasil menambahkan mitra baru",
             style: TextStyle(
                 fontFamily: "Poppins", color: Colors.white, fontSize: 12)),
       ).show(context);
@@ -89,6 +101,21 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     }
 
     Navigator.pop(context);
+  }
+
+  String _convertToString(dynamic value) {
+    if (value == null) {
+      return ""; // or return a default value, or throw an error if null is not acceptable
+    }
+
+    if (value is String) {
+      return value; // Already a String
+    } else if (value is int || value is double) {
+      return value.toString(); // Convert int or double to String
+    } else {
+      // Handle unexpected types if needed
+      return ""; // or throw an error
+    }
   }
 
   void _openModalPicture() {
@@ -147,6 +174,8 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    auth_provider = Provider.of<AuthProvider>(context);
+
     return Scaffold(
         extendBodyBehindAppBar: false,
         backgroundColor: Colors.white,
@@ -183,7 +212,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                     width: 4.5.w,
                                     height: 4.5.w))),
                         const SizedBox(width: 6),
-                        Text("Tambah Karyawan",
+                        Text("Tambah Mitra",
                             style: TextStyle(
                                 fontFamily: "Poppins",
                                 fontWeight: FontWeight.w700,
@@ -240,7 +269,41 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                         decoration: InputDecoration(
                                             isDense: true,
                                             border: InputBorder.none,
-                                            hintText: "Nama pegawai",
+                                            hintText: "Email mitra",
+                                            hintStyle: TextStyle(
+                                                fontFamily: "Poppins",
+                                                fontWeight: FontWeight.w400,
+                                                color: Theme.of(context)
+                                                    .disabledColor,
+                                                fontSize: 3.w)),
+                                        style: TextStyle(
+                                            fontFamily: "Poppins",
+                                            fontWeight: FontWeight.w400,
+                                            color: Theme.of(context)
+                                                .primaryColorDark,
+                                            fontSize: 3.w),
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        cursorColor:
+                                            Theme.of(context).focusColor,
+                                        controller: mitraEmail,
+                                      )),
+                                  const SizedBox(height: 12),
+                                  Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12, vertical: 6),
+                                      decoration: BoxDecoration(
+                                          border: Border.all(
+                                              width: 1,
+                                              color: Theme.of(context)
+                                                  .dividerColor),
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(6))),
+                                      child: TextField(
+                                        decoration: InputDecoration(
+                                            isDense: true,
+                                            border: InputBorder.none,
+                                            hintText: "Nama mitra",
                                             hintStyle: TextStyle(
                                                 fontFamily: "Poppins",
                                                 fontWeight: FontWeight.w400,
@@ -255,7 +318,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                             fontSize: 3.w),
                                         cursorColor:
                                             Theme.of(context).focusColor,
-                                        controller: employeeName,
+                                        controller: mitraName,
                                       )),
                                   const SizedBox(height: 12),
                                   Container(
@@ -298,7 +361,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                           keyboardType: TextInputType.number,
                                           cursorColor:
                                               Theme.of(context).focusColor,
-                                          controller: employeePhone,
+                                          controller: mitraPhone,
                                         ))
                                       ])),
                                   const SizedBox(height: 2),
@@ -380,7 +443,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     child: GestureDetector(
                         onTap: () {
                           FocusScope.of(context).unfocus();
-                          _addproduct();
+                          _addMitra();
                         },
                         child: Container(
                           height: 40,

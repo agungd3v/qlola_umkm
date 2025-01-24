@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class OutletItem extends StatefulWidget {
-  dynamic outlet;
-  int index;
+  final dynamic outlet;
+  final int index;
 
   OutletItem({super.key, required this.outlet, required this.index});
 
@@ -18,138 +18,117 @@ class _OutletItemState extends State<OutletItem> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        // Handle tap if needed
+      },
       child: Container(
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.all(8),
+        padding: EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white, // White background
-          borderRadius: BorderRadius.all(Radius.circular(8)),
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2), // Shadow color
-              spreadRadius: 1, // How much the shadow spreads
-              blurRadius: 8, // How blurry the shadow is
-              offset: Offset(0, 3), // Shadow position (x, y)
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 8,
+              offset: Offset(0, 5),
             ),
           ],
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image and Icon container
+            // Image Container
             Container(
-              width: screenWidth * 0.19, // Adjust width based on screen width
-              height:
-                  screenHeight * 0.10, // Adjust height based on screen height
+              width: screenWidth * 0.19,
+              height: screenHeight * 0.09,
               decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor.withOpacity(0.2),
-                  borderRadius: BorderRadius.all(Radius.circular(8))),
+                color: Theme.of(context).primaryColor.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(8),
+              ),
               clipBehavior: Clip.hardEdge,
               child: Center(
                 child: Image.asset(
                   "assets/icons/outlet.png",
                   width: screenWidth * 0.08,
-                  height: screenHeight * 0.04,
-                ), // Adjust icon size based on screen size
+                  height: screenHeight * 0.08,
+                ),
               ),
             ),
-            SizedBox(
-                width:
-                    screenWidth * 0.03), // Adjust space between image and text
-
-            // Text and Buttons container
+            SizedBox(width: screenWidth * 0.03),
+            // Main Content (Text)
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Phone number
+                  // Outlet Phone
                   Text(
                     widget.outlet["outlet_phone"],
                     style: TextStyle(
                       fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,
-                      fontSize: screenWidth * 0.03, // Responsive font size
+                      fontSize: screenWidth * 0.035,
                     ),
                   ),
-                  // Outlet name
+                  // Outlet Name
                   Text(
                     widget.outlet["outlet_name"],
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColorDark,
-                      fontSize: screenWidth * 0.04, // Responsive font size
+                      fontSize: screenWidth * 0.040,
                     ),
                   ),
-                  SizedBox(
-                      height: screenHeight *
-                          0.01), // Adjust vertical spacing between elements
-
-                  // Action buttons
-                  Row(
+                  SizedBox(height: screenHeight * 0.015),
+                  // Full Width Button for "Tambah Produk" and 2-column layout for others
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.pushNamed("Add Outlet Employee",
-                              extra: widget.outlet);
-                        },
-                        child: Container(
-                          width: MediaQuery.of(context).size.width *
-                              0.35, // Set width as a percentage of screen width
-                          height: screenHeight *
-                              0.04, // Adjust button height based on screen height
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth *
-                                  0.02), // Adjust button padding based on screen width
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Tambah Karyawan",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontSize: screenWidth *
-                                  0.03, // Responsive font size for button text
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                          width: screenWidth * 0.03), // Space between buttons
-                      GestureDetector(
-                        onTap: () {
+                      // Full Width Button for "Tambah Produk"
+                      _buildActionButton(
+                        label: "Tambah Produk",
+                        onPressed: () {
                           context.pushNamed("Add Outlet Product",
                               extra: widget.outlet);
                         },
-                        child: Container(
-                          height: screenHeight *
-                              0.04, // Adjust button height based on screen height
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth *
-                                  0.02), // Adjust button padding based on screen width
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(6)),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Tambah Produk",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontSize: screenWidth *
-                                  0.03, // Responsive font size for button text
+                        icon: Icons.production_quantity_limits,
+                        isFullWidth: true,
+                        backgroundColor: Colors.red[800]!,
+                      ),
+                      SizedBox(height: screenHeight * 0.009),
+                      // 2 Column Layout for "Tambah Karyawan" and "Tambah Mitra"
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildActionButton(
+                              label: "Tambah Karyawan",
+                              onPressed: () {
+                                context.pushNamed("Add Outlet Employee",
+                                    extra: widget.outlet);
+                              },
+                              icon: Icons.person_add_alt_1,
+                              isFullWidth: false,
+                              backgroundColor: Colors.blue[800]!,
                             ),
                           ),
-                        ),
+                          SizedBox(width: screenWidth * 0.020),
+                          Expanded(
+                            child: _buildActionButton(
+                              label: "Tambah Mitra",
+                              onPressed: () {
+                                context.pushNamed("Add Mitra",
+                                    extra: widget.outlet);
+                              },
+                              icon: Icons.group_add,
+                              backgroundColor: Colors.green[800]!,
+                              isFullWidth: true,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -157,6 +136,63 @@ class _OutletItemState extends State<OutletItem> {
               ),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required String label,
+    required VoidCallback onPressed,
+    required IconData icon,
+    required bool isFullWidth,
+    required Color backgroundColor,
+  }) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return GestureDetector(
+      onTap: onPressed,
+      child: InkWell(
+        splashColor: Colors.white.withOpacity(0.5),
+        highlightColor: backgroundColor.withOpacity(0.2),
+        child: Container(
+          width: isFullWidth ? screenWidth : screenWidth * 0.35,
+          height: screenHeight * 0.04,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+                size: screenWidth * 0.03,
+              ),
+              SizedBox(width: screenWidth * 0.02),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: screenWidth * 0.023,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
