@@ -29,7 +29,8 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
 
     final httpRequest = await add_outlet(data);
     if (httpRequest["status"] == 200) {
-      Navigator.pop(context);
+      // Pop dan kirimkan true untuk memperbarui data di OutletScreen
+      Navigator.pop(context, true);
 
       return Flushbar(
         backgroundColor: Color(0xff00880d),

@@ -39,13 +39,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     return Scaffold(
       extendBodyBehindAppBar: false,
+      backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0),
+        preferredSize:
+            const Size.fromHeight(80), // Disesuaikan dengan height header
         child: AppBar(
           automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).primaryColor,
           systemOverlayStyle: SystemUiOverlayStyle(
-              statusBarColor: Theme.of(context).primaryColor,
-              statusBarIconBrightness: Brightness.light),
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
+          ),
+          title: Padding(
+            padding: const EdgeInsets.only(
+                top: 20.0), // Memberikan padding untuk judul
+            child: Text(
+              "Profil", // Menjaga konsistensi nama pada halaman Profile
+              style: TextStyle(
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w700,
+                fontSize: 22, // Ukuran font konsisten dengan halaman lain
+                color: Colors.white,
+              ),
+            ),
+          ),
         ),
       ),
       body: Column(

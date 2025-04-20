@@ -16,14 +16,29 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0),
+        preferredSize:
+            const Size.fromHeight(80), // Disesuaikan dengan height header
         child: AppBar(
           automaticallyImplyLeading: false,
+          backgroundColor: Theme.of(context).primaryColor,
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Theme.of(context).primaryColor,
-            statusBarIconBrightness: Brightness.light
-          )
-        )
+            statusBarColor: Colors.transparent,
+            statusBarIconBrightness: Brightness.light,
+          ),
+          title: Padding(
+            padding: const EdgeInsets.only(
+                top: 20.0), // Memberikan padding untuk judul
+            child: Text(
+              "Beranda", // Menjaga konsistensi nama pada halaman Home
+              style: TextStyle(
+                fontFamily: "Poppins",
+                fontWeight: FontWeight.w700,
+                fontSize: 22, // Ukuran font konsisten dengan halaman lain
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -33,12 +48,12 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                TransactionInfo()
-              ]
-            )
-          )
-        )
-      )
+                TransactionInfo() // Komponen transaksi tetap dipertahankan
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

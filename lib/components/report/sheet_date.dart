@@ -138,127 +138,160 @@ class _SheetDateState extends State<SheetDate> {
     owner_provider = Provider.of<OwnerProvider>(context);
 
     return SafeArea(
-        child: Wrap(children: [
-      Column(children: [
-        Container(
-            width: MediaQuery.of(context).size.width / 4,
-            height: 6,
-            margin: const EdgeInsets.only(top: 6),
-            decoration: BoxDecoration(
-                color: Theme.of(context).dividerColor,
-                borderRadius: BorderRadius.all(Radius.circular(99)))),
-        const SizedBox(height: 10),
-        Column(children: [
-          const SizedBox(height: 20),
-          Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: GridView.count(
-                  crossAxisCount: 3,
-                  shrinkWrap: true,
-                  childAspectRatio: 16 / 5,
-                  mainAxisSpacing: 10,
-                  crossAxisSpacing: 10,
+      child: SingleChildScrollView(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            double maxWidth = constraints.maxWidth;
+            double contentMaxWidth = maxWidth > 850 ? 800 : maxWidth * 0.95;
+
+            int gridCount = maxWidth > 1000
+                ? 4
+                : maxWidth > 700
+                    ? 3
+                    : 2;
+
+            return Center(
+              child: Container(
+                width: contentMaxWidth,
+                child: Column(
                   children: [
-                    for (var index = 0; index < listDates.length; index++)
-                      GestureDetector(
-                          onTap: () => _changeSelectedDate(listDates[index]),
+                    // Handle kecil di atas (drag indicator)
+                    Container(
+                      width: 40,
+                      height: 6,
+                      margin: const EdgeInsets.only(top: 6),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).dividerColor,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(99)),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Grid tanggal
+                    GridView.count(
+                      crossAxisCount: gridCount,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      childAspectRatio: 16 / 5,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      children: listDates.map((item) {
+                        bool isSelected = item == selectedDate;
+                        return GestureDetector(
+                          onTap: () => _changeSelectedDate(item),
                           child: Container(
-                              width: double.infinity,
-                              height: 40,
-                              // margin: index < 1 ? EdgeInsets.only(left: 20, right: 20) : EdgeInsets.only(left: 20, right: 20, top: 7),
-                              padding: EdgeInsets.symmetric(horizontal: 16),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1,
-                                      color: listDates[index] == selectedDate
-                                          ? Theme.of(context).primaryColor
-                                          : Theme.of(context).dividerColor),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(8)),
-                                  color: listDates[index] == selectedDate
-                                      ? Theme.of(context)
-                                          .primaryColor
-                                          .withOpacity(0.2)
-                                      : Colors.white),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(listDates[index],
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
-                                            fontWeight:
-                                                listDates[index] == selectedDate
-                                                    ? FontWeight.w700
-                                                    : FontWeight.w400,
-                                            color: listDates[index] ==
-                                                    selectedDate
-                                                ? Theme.of(context).primaryColor
-                                                : Theme.of(context)
-                                                    .primaryColorDark,
-                                            fontSize: 12))
-                                  ])))
-                  ])),
-          if (selectedDate == "Custom") CustomDateRange(),
-          const SizedBox(height: 15),
-          Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Row(children: [
-                SizedBox(
-                    width: 80,
-                    height: 30,
-                    child: GestureDetector(
-                        onTap: () => _applyDate(),
-                        child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             decoration: BoxDecoration(
-                                color: Theme.of(context).primaryColor,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6))),
-                            child: Center(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.save, // Ikon save
-                                    color: Colors.white,
-                                    size: 20, // Ukuran ikon
-                                  ),
-                                  const SizedBox(
-                                      width:
-                                          8), // Memberikan jarak antara ikon dan teks
-                                  Text(
-                                    "Simpan",
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                              border: Border.all(
+                                width: 1,
+                                color: isSelected
+                                    ? Theme.of(context).primaryColor
+                                    : Theme.of(context).dividerColor,
                               ),
-                            )))),
-                SizedBox(
-                    width: 80,
-                    height: 30,
-                    child: GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(6))),
-                            child: Center(
-                                child: Text("Cancel",
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w700,
-                                        color: Theme.of(context).primaryColor,
-                                        fontSize: 10))))))
-              ])),
-          const SizedBox(height: 20)
-        ])
-      ])
-    ]));
+                              borderRadius: BorderRadius.circular(8),
+                              color: isSelected
+                                  ? Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.2)
+                                  : Colors.white,
+                            ),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: isSelected
+                                      ? FontWeight.w700
+                                      : FontWeight.w400,
+                                  color: isSelected
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).primaryColorDark,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+
+                    // Custom range jika dipilih
+                    if (selectedDate == "Custom") ...[
+                      const SizedBox(height: 16),
+                      CustomDateRange(),
+                    ],
+
+                    const SizedBox(height: 20),
+
+                    // Tombol Simpan dan Cancel (bersebelahan)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .spaceBetween, // Tombol rapat ke kiri dan kanan
+                        children: [
+                          // Tombol Simpan
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => _applyDate(),
+                              icon: const Icon(Icons.save,
+                                  size: 18, color: Colors.white),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                minimumSize: const Size(
+                                    150, 50), // Tombol tetap lebih besar
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 12),
+                              ),
+                              label: const Text(
+                                "Simpan",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10), // Jarak antar tombol
+                          // Tombol Cancel
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () => Navigator.pop(context),
+                              style: OutlinedButton.styleFrom(
+                                minimumSize: const Size(
+                                    150, 50), // Tombol tetap lebih besar
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 12, vertical: 12),
+                                side: BorderSide(
+                                    color: Theme.of(context).primaryColor),
+                              ),
+                              child: Text(
+                                "Cancel",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w700,
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
   }
 
   Widget CustomDateRange() {

@@ -5,7 +5,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
-// import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
@@ -27,18 +26,15 @@ Future<void> main() async {
   await initLocalStorage();
   await dotenv.load(fileName: '.env');
 
-  // final httpRequest = await check_user();
-  // if (httpRequest["status"] == 401) {
-  //   localStorage.removeItem("user");
-  //   localStorage.removeItem("token");
-  // }
-
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider(create: (create) => AuthProvider()),
-    ChangeNotifierProvider(create: (create) => CheckoutProvider()),
-    ChangeNotifierProvider(create: (create) => OwnerProvider()),
-    ChangeNotifierProvider(create: (create) => BluetoothProvider())
-  ], child: MyApp()));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (create) => AuthProvider()),
+      ChangeNotifierProvider(create: (create) => CheckoutProvider()),
+      ChangeNotifierProvider(create: (create) => OwnerProvider()),
+      ChangeNotifierProvider(create: (create) => BluetoothProvider()),
+    ],
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -50,22 +46,22 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final auth_provider = Provider.of<AuthProvider>(context);
 
+    // Initial route logic based on user state
     if (auth_provider.user == null) {
-      router = AuthRouter.router;
+      router = AuthRouter.router; // No user logged in, show auth routes
     } else {
       if (auth_provider.user["role"] == "owner") {
-        router = SuperRouter.router;
-      }
-      if (auth_provider.user["role"] == "karyawan") {
-        router = EmployeeRouter.router;
-      }
-      if (auth_provider.user["role"] == 'mitra') {
-        router = MitraRouter.router;
+        router = SuperRouter.router; // Owner role
+      } else if (auth_provider.user["role"] == "karyawan") {
+        router = EmployeeRouter.router; // Employee role
+      } else if (auth_provider.user["role"] == 'mitra') {
+        router = MitraRouter.router; // Mitra role
       }
     }
 
-    return Sizer(builder: (context, orientation, deviceType) {
-      return Theme(
+    return Sizer(
+      builder: (context, orientation, deviceType) {
+        return Theme(
           data: ThemeData(
               primaryColor: Color(0xffc02a34),
               indicatorColor: Color(0xffc02a34),
@@ -87,7 +83,9 @@ class MyApp extends StatelessWidget {
               GlobalCupertinoLocalizations.delegate,
             ],
             supportedLocales: [Locale("en"), Locale("id")],
-          ));
-    });
+          ),
+        );
+      },
+    );
   }
 }
