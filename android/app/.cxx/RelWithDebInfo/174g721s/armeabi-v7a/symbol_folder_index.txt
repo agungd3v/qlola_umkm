@@ -1,0 +1,1 @@
+/home/localhost/code/qlola_umkm/build/app/intermediates/cxx/RelWithDebInfo/174g721s/obj/armeabi-v7a

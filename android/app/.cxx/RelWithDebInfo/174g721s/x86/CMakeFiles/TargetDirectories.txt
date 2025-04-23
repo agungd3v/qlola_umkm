@@ -1,0 +1,2 @@
+/home/localhost/code/qlola_umkm/android/app/.cxx/RelWithDebInfo/174g721s/x86/CMakeFiles/edit_cache.dir
+/home/localhost/code/qlola_umkm/android/app/.cxx/RelWithDebInfo/174g721s/x86/CMakeFiles/rebuild_cache.dir
