@@ -179,13 +179,14 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Theme.of(context).dividerColor),
                     borderRadius: BorderRadius.all(Radius.circular(6))
                   ),
                   child: Row(
                     children: [
+                      SizedBox(width: 10),
                       Expanded(
                         child: TextField(
                           decoration: InputDecoration(
@@ -196,46 +197,40 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).disabledColor,
-                              fontSize: 12
+                              fontSize: 14
                             )
                           ),
                           style: TextStyle(
                             fontFamily: "Poppins",
                             fontWeight: FontWeight.w400,
                             color: Theme.of(context).primaryColorDark,
-                            fontSize: 12
+                            fontSize: 14
                           ),
                           cursorColor: Theme.of(context).focusColor,
                           controller: inputMacAddress,
                         )
+                      ),
+                      SizedBox(width: 8),
+                      SizedBox(
+                        child: ElevatedButton(
+                          onPressed: () => _testPrinter(context),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                          ),
+                          child: Text(
+                            "Tes",
+                            style: GoogleFonts.poppins(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        )
                       )
                     ]
                   )
-                ),
-                // GestureDetector(
-                //   onTap: () => _testPrinter(context),
-                //   child: SizedBox(
-                //     width: 100,
-                //     height: 50,
-                //     child: Text("test printer sekarang")
-                //   )
-                // )
-                ElevatedButton(
-                  onPressed: () => _testPrinter(context),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
-                    minimumSize: const Size.fromHeight(48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: Text(
-                    "Test printer",
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
                 )
               ]),
               Container(
