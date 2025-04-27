@@ -5,6 +5,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -27,7 +28,8 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   CheckoutProvider? checkout_provider;
   BluetoothProvider? bluetooth_provider;
 
-  final inputMacAddress = TextEditingController(text: localStorage.getItem("printer_mac") ?? "66:32:13:C1:9E:2A");
+  final inputMacAddress = TextEditingController();
+  // final inputMacAddress = TextEditingController(text: localStorage.getItem("printer_mac") ?? "66:32:13:C1:9E:2A");
 
   BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
   late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
@@ -50,7 +52,6 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   Future _testPrinter(BuildContext context) async {
     setState(() => testPrint = true);
 
-    localStorage.setItem("printer_mac", inputMacAddress.text);
     final generate = await testGenerateStruck();
 
     if (generate != null && generate["status"] == false) {
@@ -84,8 +85,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
 
   @override
   void initState() {
-    _adapterStateStateSubscription =
-        FlutterBluePlus.adapterState.listen((state) {
+    _adapterStateStateSubscription = FlutterBluePlus.adapterState.listen((state) {
       _adapterState = state;
       WidgetsBinding.instance.addPostFrameCallback((callback) {
         if (mounted) {
@@ -112,6 +112,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     bluetooth_provider = Provider.of<BluetoothProvider>(context);
 
     WidgetsBinding.instance.addPostFrameCallback((callback) {
+      setState(() => inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
       if (_adapterState == BluetoothAdapterState.on) {
         _scanPrinter();
       } else {
@@ -179,7 +180,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                 ),
                 const SizedBox(height: 10),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                   decoration: BoxDecoration(
                     border: Border.all(width: 1, color: Theme.of(context).dividerColor),
                     borderRadius: BorderRadius.all(Radius.circular(6))
@@ -192,13 +193,14 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                           decoration: InputDecoration(
                             isDense: true,
                             border: InputBorder.none,
-                            hintText: "Masukan printer mac address",
+                            hintText: "Printer mac address",
                             hintStyle: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w400,
                               color: Theme.of(context).disabledColor,
                               fontSize: 14
-                            )
+                            ),
+                            enabled: false
                           ),
                           style: TextStyle(
                             fontFamily: "Poppins",
@@ -211,22 +213,59 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                         )
                       ),
                       SizedBox(width: 8),
-                      SizedBox(
-                        child: ElevatedButton(
-                          onPressed: () => _testPrinter(context),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
+                      if (inputMacAddress.text != "") Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () => _testPrinter(context),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              )
                             ),
+                            child: Text(
+                              "Tes",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12
+                              )
+                            )
                           ),
-                          child: Text(
-                            "Tes",
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                          SizedBox(width: 4),
+                          ElevatedButton(
+                            onPressed: () => context.pushNamed("Printers"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).primaryColorDark,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(6),
+                              )
                             ),
-                          ),
+                            child: Text(
+                              "Ubah",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 12
+                              )
+                            )
+                          )
+                        ]
+                      ),
+                      if (inputMacAddress.text == "") ElevatedButton(
+                        onPressed: () => context.pushNamed("Printers"),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          )
+                        ),
+                        child: Text(
+                          "Scan",
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          )
                         )
                       )
                     ]
