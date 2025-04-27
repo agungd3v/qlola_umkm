@@ -1,6 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
 
-// import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +10,7 @@ import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:qlola_umkm/utils/printer.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 // import 'package:image/image.dart' as ImageImage;
@@ -49,6 +50,11 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
     // inspect(bytes);
 
     await Share.shareXFiles([XFile(file.path)], text: "Resi Pembelian");
+  }
+
+  Future _printBluetooth() async {
+    // inspect(checkout_provider?.carts);
+    await generateStruck(checkout_provider as CheckoutProvider, auth_provider as AuthProvider, "");
   }
 
   @override
@@ -207,12 +213,12 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                   Row(
                     children: [
                       Expanded(child: GestureDetector(
-                        onTap: () {},
+                        onTap: () => _printBluetooth(),
                         child: Container(
                           height: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).dividerColor,
+                            // color: Theme.of(context).dividerColor,
                             border: Border.all(width: 1, color: Theme.of(context).dividerColor),
                             borderRadius: BorderRadius.all(Radius.circular(8))
                           ),
@@ -221,7 +227,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                             style: TextStyle(
                               fontFamily: "Poppins",
                               // color: Theme.of(context).primaryColorDark
-                              color: Theme.of(context).disabledColor
+                              color: Theme.of(context).primaryColorDark
                             )
                           )
                         )

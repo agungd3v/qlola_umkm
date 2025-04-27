@@ -1,0 +1,2 @@
+/home/localhost/code/qlola_umkm/android/app/.cxx/Debug/2e5r3v3b/x86/CMakeFiles/edit_cache.dir
+/home/localhost/code/qlola_umkm/android/app/.cxx/Debug/2e5r3v3b/x86/CMakeFiles/rebuild_cache.dir

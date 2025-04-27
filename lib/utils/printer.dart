@@ -59,103 +59,103 @@ Future<bool> generateStruck(CheckoutProvider checkout_provider, AuthProvider aut
   List<int> bytes = [];
 
   if (Platform.isAndroid) {
-      final response = await [Permission.bluetoothScan, Permission.bluetoothConnect].request();
+    final response = await [Permission.bluetoothScan, Permission.bluetoothConnect].request();
 
-      if (response[Permission.bluetoothScan]?.isGranted == true && response[Permission.bluetoothConnect]?.isGranted == true) {
-        final checkConnect = await PrintBluetoothThermal.connect(macPrinterAddress: mac ?? "");
+    if (response[Permission.bluetoothScan]?.isGranted == true && response[Permission.bluetoothConnect]?.isGranted == true) {
+      final checkConnect = await PrintBluetoothThermal.connect(macPrinterAddress: mac ?? "");
 
-        if (checkConnect) {
-          try {
-            final profile = await CapabilityProfile.load();
-            final generator = Generator(PaperSize.mm58, profile);
+      if (checkConnect) {
+        try {
+          final profile = await CapabilityProfile.load();
+          final generator = Generator(PaperSize.mm58, profile);
 
-            bytes += generator.text(
-              auth_provider.user["outlet"]["business"]["business_name"],
+          bytes += generator.text(
+            auth_provider.user["outlet"]["business"]["business_name"],
+            styles: PosStyles(
+              bold: true,
+              align: PosAlign.center,
+              width: PosTextSize.size1,
+              height: PosTextSize.size2
+            )
+          );
+          bytes += generator.text(
+            auth_provider.user["outlet"]["outlet_name"],
+            styles: PosStyles(
+              align: PosAlign.center
+            )
+          );
+
+          bytes += generator.feed(1);
+          bytes += generator.text('----------------------------');
+
+          bytes += generator.row([
+            PosColumn(
+              text: "Kasir",
+              width: 6,
               styles: PosStyles(
-                bold: true,
-                align: PosAlign.center,
-                width: PosTextSize.size1,
-                height: PosTextSize.size2
+                align: PosAlign.left
               )
-            );
-            bytes += generator.text(
-              auth_provider.user["outlet"]["outlet_name"],
+            ),
+            PosColumn(
+              text: auth_provider.user["name"],
+              width: 6,
               styles: PosStyles(
-                align: PosAlign.center
+                align: PosAlign.right
               )
-            );
+            )
+          ]);
+          bytes += generator.row([
+            PosColumn(
+              text: "Waktu",
+              width: 4,
+              styles: PosStyles(
+                align: PosAlign.left
+              )
+            ),
+            PosColumn(
+              text: getDateTimeNow(),
+              width: 8,
+              styles: PosStyles(
+                align: PosAlign.right
+              )
+            )
+          ]);
+          bytes += generator.row([
+            PosColumn(
+              text: "No. Struk",
+              width: 6,
+              styles: PosStyles(
+                align: PosAlign.left
+              )
+            ),
+            PosColumn(
+              text: transaction_code,
+              width: 6,
+              styles: PosStyles(
+                align: PosAlign.right
+              )
+            )
+          ]);
+          bytes += generator.row([
+            PosColumn(
+              text: "Pembayaran",
+              width: 6,
+              styles: PosStyles(
+                align: PosAlign.left
+              )
+            ),
+            PosColumn(
+              text: "Tunai",
+              width: 6,
+              styles: PosStyles(
+                align: PosAlign.right
+              )
+            )
+          ]);
 
-            bytes += generator.feed(1);
-            bytes += generator.text('--------------------------------');
+          bytes += generator.text('--------------------------------');
 
-            bytes += generator.row([
-              PosColumn(
-                text: "Kasir",
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.left
-                )
-              ),
-              PosColumn(
-                text: auth_provider.user["name"],
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.right
-                )
-              )
-            ]);
-            bytes += generator.row([
-              PosColumn(
-                text: "Waktu",
-                width: 4,
-                styles: PosStyles(
-                  align: PosAlign.left
-                )
-              ),
-              PosColumn(
-                text: getDateTimeNow(),
-                width: 8,
-                styles: PosStyles(
-                  align: PosAlign.right
-                )
-              )
-            ]);
-            bytes += generator.row([
-              PosColumn(
-                text: "No. Struk",
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.left
-                )
-              ),
-              PosColumn(
-                text: transaction_code,
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.right
-                )
-              )
-            ]);
-            bytes += generator.row([
-              PosColumn(
-                text: "Pembayaran",
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.left
-                )
-              ),
-              PosColumn(
-                text: "Tunai",
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.right
-                )
-              )
-            ]);
-
-            bytes += generator.text('--------------------------------');
-
-            for (var index = 0; index < checkout_provider.carts.length; index++) {
+          for (var index = 0; index < checkout_provider.carts.length; index++) {
             bytes += generator.row([
               PosColumn(
                 text: checkout_provider.carts[index]["product_name"],
@@ -167,14 +167,14 @@ Future<bool> generateStruck(CheckoutProvider checkout_provider, AuthProvider aut
             ]);
             bytes += generator.row([
               PosColumn(
-                text: "${transformPrice(double.parse(checkout_provider.carts[index]["product_price"]))} x ${checkout_provider.carts[index]["quantity"]}",
+                text: "${transformPrice(double.parse(checkout_provider.carts[index]["product_price"].toString()))} x ${checkout_provider.carts[index]["quantity"]}",
                 width: 6,
                 styles: PosStyles(
                   align: PosAlign.left
                 )
               ),
               PosColumn(
-                text: transformPrice(double.parse(checkout_provider.carts[index]["product_price"]) * checkout_provider.carts[index]["quantity"]),
+                text: transformPrice(double.parse(checkout_provider.carts[index]["product_price"].toString()) * checkout_provider.carts[index]["quantity"]),
                 width: 6,
                 styles: PosStyles(
                   align: PosAlign.right
@@ -183,50 +183,50 @@ Future<bool> generateStruck(CheckoutProvider checkout_provider, AuthProvider aut
             ]);
           }
 
-            bytes += generator.text('--------------------------------');
+          bytes += generator.text('--------------------------------');
 
-            bytes += generator.row([
-              PosColumn(
-                text: "Total",
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.left,
-                  bold: true
-                )
-              ),
-              PosColumn(
-                text: transformPrice(checkout_provider.cart_total),
-                width: 6,
-                styles: PosStyles(
-                  align: PosAlign.right,
-                  bold: true
-                )
-              )
-            ]);
-
-            bytes += generator.feed(3);
-
-            bytes += generator.text(
-              "Terimakasih ^_^",
+          bytes += generator.row([
+            PosColumn(
+              text: "Total",
+              width: 6,
               styles: PosStyles(
-                align: PosAlign.center
+                align: PosAlign.left,
+                bold: true
               )
-            );
+            ),
+            PosColumn(
+              text: transformPrice(checkout_provider.cart_total),
+              width: 6,
+              styles: PosStyles(
+                align: PosAlign.right,
+                bold: true
+              )
+            )
+          ]);
 
-            bytes += generator.feed(1);
-            bytes += generator.cut();
+          bytes += generator.feed(3);
 
-            await PrintBluetoothThermal.writeBytes(bytes);
-            await PrintBluetoothThermal.disconnect;
+          bytes += generator.text(
+            "Terimakasih ^_^",
+            styles: PosStyles(
+              align: PosAlign.center
+            )
+          );
 
-            return true;
-          } catch (e) {
-            inspect(e);
+          bytes += generator.feed(1);
+          bytes += generator.cut();
 
-            await PrintBluetoothThermal.disconnect;
-            return true;
-          }
+          await PrintBluetoothThermal.writeBytes(bytes);
+          await PrintBluetoothThermal.disconnect;
+
+          return true;
+        } catch (e) {
+          inspect(e);
+
+          await PrintBluetoothThermal.disconnect;
+          return true;
         }
+      }
 
       await PrintBluetoothThermal.disconnect;
       return true;

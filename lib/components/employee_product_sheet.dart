@@ -32,6 +32,12 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
   }
 
   @override
+  void initState() {
+    debugPrint(widget.product.toString());
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
