@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
@@ -54,11 +55,13 @@ Future testGenerateStruck() async {
   }
 }
 
-Future<bool> generateStruck(CheckoutProvider checkout_provider, AuthProvider auth_provider, String transaction_code) async {
+Future generateStruck(CheckoutProvider checkout_provider, AuthProvider auth_provider, String transaction_code) async {
   final mac = localStorage.getItem("printer_mac");
+  final bluetoothOn = await FlutterBluePlus.isOn;
+
   List<int> bytes = [];
 
-  if (Platform.isAndroid) {
+  if (bluetoothOn) {
     final response = await [Permission.bluetoothScan, Permission.bluetoothConnect].request();
 
     if (response[Permission.bluetoothScan]?.isGranted == true && response[Permission.bluetoothConnect]?.isGranted == true) {
@@ -224,15 +227,23 @@ Future<bool> generateStruck(CheckoutProvider checkout_provider, AuthProvider aut
           inspect(e);
 
           await PrintBluetoothThermal.disconnect;
-          return true;
+
+          return <String, dynamic> {
+            "status": false,
+            "message": "Gagal, $e"
+          };
         }
       }
 
-      await PrintBluetoothThermal.disconnect;
-      return true;
+      return <String, dynamic> {
+        "status": false,
+        "message": "Gagal mengkoneksikan ke printer, pastikan bluetooth sudah menyala dan terkoneksi dengan printer."
+      };
     }
   }
 
-  await PrintBluetoothThermal.disconnect;
-  return true;
+  return <String, dynamic> {
+    "status": false,
+    "message": "Gagal, pastikan bluetooth kamu menyala."
+  };
 }

@@ -17,20 +17,29 @@ class EmployeePrintersScreen extends StatefulWidget {
 class _EmployeePrintersScreenState extends State<EmployeePrintersScreen> {
   List<ScanResult> scanResults = [];
   bool scanning = true;
+  bool bluetoothOn = true;
 
   void startScan() async {
-    await FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
+    final isBluetoothOn = await FlutterBluePlus.isOn;
+    if (isBluetoothOn) {
+      await FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
 
-    FlutterBluePlus.scanResults.listen((results) {
-      if (!mounted) return;
-      setState(() => scanResults = results);
-    });
+      FlutterBluePlus.scanResults.listen((results) {
+        if (!mounted) return;
+        setState(() => scanResults = results);
+      });
 
-    Future.delayed(Duration(seconds: 5), () {
-      if (!mounted) return;
-      setState(() => scanning = false);
-      FlutterBluePlus.stopScan();
-    });
+      Future.delayed(Duration(seconds: 5), () {
+        if (!mounted) return;
+        setState(() => scanning = false);
+        FlutterBluePlus.stopScan();
+      });
+    } else {
+      setState(() {
+        bluetoothOn = false;
+        scanning = false;
+      });
+    }
   }
 
   void connectToDevice(String mac, BuildContext context) async {
@@ -104,6 +113,20 @@ class _EmployeePrintersScreenState extends State<EmployeePrintersScreen> {
         child: Container(
           child: Column(
             children: [
+              if (!scanning && !bluetoothOn) Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.only(top: 100),
+                child: Column(
+                  children: [
+                    Text(
+                      "Bluetooth tidak aktif 🤨",
+                      style: TextStyle(
+                        color: Theme.of(context).primaryColor
+                      )
+                    ),
+                  ]
+                )
+              ),
               if (scanning) Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(top: 100),
@@ -123,7 +146,7 @@ class _EmployeePrintersScreenState extends State<EmployeePrintersScreen> {
                   ]
                 )
               ),
-              if (!scanning && scanResults.isEmpty) Container(
+              if (!scanning && bluetoothOn && scanResults.isEmpty) Container(
                 alignment: Alignment.center,
                 margin: EdgeInsets.only(top: 100),
                 child: Column(
