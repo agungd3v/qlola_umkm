@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:qlola_umkm/utils/request_permission.dart';
 
 class EmployeePrintersScreen extends StatefulWidget {
   const EmployeePrintersScreen({super.key});
@@ -22,18 +23,59 @@ class _EmployeePrintersScreenState extends State<EmployeePrintersScreen> {
   void startScan() async {
     final isBluetoothOn = await FlutterBluePlus.isOn;
     if (isBluetoothOn) {
-      await FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
+      final checkPermission = await checkPermissionBluetooth();
 
-      FlutterBluePlus.scanResults.listen((results) {
-        if (!mounted) return;
-        setState(() => scanResults = results);
-      });
+      if (checkPermission["status"]) {
+        await FlutterBluePlus.startScan(timeout: const Duration(seconds: 5));
 
-      Future.delayed(Duration(seconds: 5), () {
-        if (!mounted) return;
-        setState(() => scanning = false);
-        FlutterBluePlus.stopScan();
-      });
+        FlutterBluePlus.scanResults.listen((results) {
+          if (!mounted) return;
+          setState(() => scanResults = results);
+        });
+
+        Future.delayed(Duration(seconds: 5), () {
+          if (!mounted) return;
+
+          List<ScanResult> results = [];
+
+          for (var r in scanResults) {
+            if (r.device.name != "") {
+              results.add(r);
+            }
+          }
+
+          setState(() {
+            scanning = false;
+            scanResults = results;
+          });
+
+          FlutterBluePlus.stopScan();
+        });
+      } else {
+        Flushbar(
+          backgroundColor: Theme.of(context).primaryColor,
+          duration: Duration(seconds: 3),
+          reverseAnimationCurve: Curves.fastOutSlowIn,
+          flushbarPosition: FlushbarPosition.TOP,
+          titleText: Text(
+            "Bluetooth connection",
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+              fontSize: 12
+            )
+          ),
+          messageText: Text(
+            "Mohon untuk mengaktifkan semua permission yang di minta.",
+            style: TextStyle(
+              fontFamily: "Poppins",
+              color: Colors.white,
+              fontSize: 12
+            )
+          )
+        ).show(context);
+      }
     } else {
       setState(() {
         bluetoothOn = false;

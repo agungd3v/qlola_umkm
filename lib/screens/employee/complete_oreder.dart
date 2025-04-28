@@ -57,7 +57,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
   Future _printBluetooth(BuildContext context) async {
     setState(() => processBluetoothPrint = true);
 
-    final struck = await generateStruck(checkout_provider as CheckoutProvider, auth_provider as AuthProvider, "");
+    final struck = await generateStruck(checkout_provider as CheckoutProvider, auth_provider as AuthProvider, "-");
 
     if (!struck["status"]) {
       Flushbar(
