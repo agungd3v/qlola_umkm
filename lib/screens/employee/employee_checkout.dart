@@ -124,6 +124,8 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
 
     context.pushNamed("Complete");
     SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+
       successMessage(context, auth_provider!.user["outlet"]["outlet_name"],
           "Berhasil melakukan pemesanan");
       setState(() => proccess = false);
