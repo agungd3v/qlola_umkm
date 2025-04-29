@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +16,7 @@ import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/printer.dart';
 import 'package:sizer/sizer.dart';
-import 'package:connectivity_plus/connectivity_plus.dart'; // Import connectivity_plus
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeHomeScreen extends StatefulWidget {
   const EmployeeHomeScreen({super.key});
@@ -27,8 +29,8 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   CheckoutProvider? checkout_provider;
   BluetoothProvider? bluetooth_provider;
 
-  final inputMacAddress =
-      TextEditingController(text: localStorage.getItem("printer_mac") ?? "");
+  final inputMacAddress = TextEditingController();
+  // final inputMacAddress = TextEditingController(text: localStorage.getItem("printer_mac") ?? "66:32:13:C1:9E:2A");
 
   BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
   late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
@@ -59,7 +61,6 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   Future _testPrinter(BuildContext context) async {
     setState(() => testPrint = true);
 
-    localStorage.setItem("printer_mac", inputMacAddress.text);
     final generate = await testGenerateStruck();
 
     if (generate != null && generate["status"] == false) {
@@ -185,6 +186,8 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     bluetooth_provider = Provider.of<BluetoothProvider>(context);
 
     WidgetsBinding.instance.addPostFrameCallback((callback) {
+      setState(() =>
+          inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
       if (_adapterState == BluetoothAdapterState.on) {
         _scanPrinter();
       } else {
@@ -196,7 +199,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
         extendBodyBehindAppBar: false,
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(56),
+          preferredSize: const Size.fromHeight(56), // Adjust height as needed
           child: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Theme.of(context).primaryColor,
@@ -238,95 +241,102 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  // Tampilkan jenis koneksi perangkat
-                                  Text(
-                                    isConnectedToInternet
-                                        ? "Transaksi hari ini"
-                                        : "($connectionType)",
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white,
-                                        fontSize: 4.w),
-                                  ),
-                                  isConnectedToInternet
-                                      ? EmployeeTransactionToday()
-                                      : SizedBox
-                                          .shrink(), // Menyembunyikan transaksi jika tidak ada internet
+                                  Text("Transaksi hari ini",
+                                      style: TextStyle(
+                                          fontFamily: "Poppins",
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.white,
+                                          fontSize: 4.w)),
+                                  EmployeeTransactionToday()
                                 ])),
                         const SizedBox(height: 10),
-                      ]),
-
-                      // Kondisi jika terhubung dengan internet
-                      // Inside the widget build method where the sync prompt is displayed
-
-                      if (isConnectedToInternet)
-                        Column(
-                          children: [
-                            // Shortened the text
-                            if (showSyncPrompt)
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 10),
-                                child: Container(
-                                  width: double.infinity,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12, vertical: 12),
-                                  decoration: BoxDecoration(
-                                    color: Colors
-                                        .white, // Make it white for better visibility
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(6)),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.grey
-                                            .withOpacity(0.2), // Light shadow
-                                        spreadRadius: 1, // Small spread
-                                        blurRadius: 3, // Subtle blur
-                                        offset: Offset(
-                                            0, 2), // Slight vertical offset
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    'Klik tombol ini untuk sinkronkan data orderan jika koneksi internet sudah ada.',
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                      fontSize: 12.sp,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            Container(
-                              alignment: Alignment.centerRight,
-                              margin: const EdgeInsets.only(right: 10),
-                              child: ButtonSyncData(
-                                onPressed: () {
-                                  if (!isConnectedToInternet) {
-                                    // Tampilkan prompt jika tidak ada koneksi
-                                    _showNoConnectionPrompt(context);
-                                  } else {
-                                    // Lakukan sync data
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-
-                      // Jika tidak ada internet, tampilkan tombol untuk sinkronisasi
-                      if (!isConnectedToInternet)
                         Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    width: 1,
+                                    color: Theme.of(context).dividerColor),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(6))),
+                            child: Row(children: [
+                              SizedBox(width: 10),
+                              Expanded(
+                                  child: TextField(
+                                decoration: InputDecoration(
+                                    isDense: true,
+                                    border: InputBorder.none,
+                                    hintText: "Printer mac address",
+                                    hintStyle: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w400,
+                                        color: Theme.of(context).disabledColor,
+                                        fontSize: 14),
+                                    enabled: false),
+                                style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w400,
+                                    color: Theme.of(context).primaryColorDark,
+                                    fontSize: 14),
+                                cursorColor: Theme.of(context).focusColor,
+                                controller: inputMacAddress,
+                              )),
+                              SizedBox(width: 8),
+                              if (inputMacAddress.text != "")
+                                Row(children: [
+                                  ElevatedButton(
+                                      onPressed: () => _testPrinter(context),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Theme.of(context).primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          )),
+                                      child: Text("Tes",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12))),
+                                  SizedBox(width: 4),
+                                  ElevatedButton(
+                                      onPressed: () =>
+                                          context.pushNamed("Printers"),
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: Theme.of(context)
+                                              .primaryColorDark,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(6),
+                                          )),
+                                      child: Text("Ubah",
+                                          style: GoogleFonts.poppins(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12)))
+                                ]),
+                              if (inputMacAddress.text == "")
+                                ElevatedButton(
+                                    onPressed: () =>
+                                        context.pushNamed("Printers"),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor:
+                                            Theme.of(context).primaryColor,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(6),
+                                        )),
+                                    child: Text("Scan",
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600,
+                                        )))
+                            ]))
+                      ]),
+                      Container(
                           alignment: Alignment.centerRight,
                           margin: const EdgeInsets.only(right: 10),
-                          child: ButtonSyncData(
-                            onPressed: () {
-                              // Tampilkan prompt jika tidak ada koneksi
-                              _showNoConnectionPrompt(context);
-                            },
-                          ),
-                        ),
+                          child: ButtonSyncData())
                     ]))));
   }
 }

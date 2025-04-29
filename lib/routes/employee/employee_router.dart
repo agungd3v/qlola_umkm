@@ -5,6 +5,7 @@ import 'package:qlola_umkm/screens/employee/complete_oreder.dart';
 import 'package:qlola_umkm/screens/employee/employee_checkout.dart';
 import 'package:qlola_umkm/screens/employee/employee_home.dart';
 import 'package:qlola_umkm/screens/employee/employee_order.dart';
+import 'package:qlola_umkm/screens/employee/employee_printers.dart';
 import 'package:qlola_umkm/screens/employee/employee_profile.dart';
 import 'package:qlola_umkm/screens/employee/employee_transaction.dart';
 
@@ -77,6 +78,14 @@ class EmployeeRouter {
             ]
           )
         ]
+      ),
+      GoRoute(
+        path: '/printers',
+        name: 'Printers',
+        parentNavigatorKey: _rootNavigatorKey,
+        builder: (context, state) {
+          return EmployeePrintersScreen(key: state.pageKey);
+        }
       ),
       GoRoute(
         path: '/checkout',

@@ -70,7 +70,6 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
 
   Future<void> _prosesCheckout(BuildContext context) async {
     setState(() => proccess = true);
-    print('object dnanag');
     Map<String, dynamic> data = {
       "total": checkout_provider?.cart_total,
       "outlet_id": auth_provider?.user["outlet"]["id"],
@@ -78,9 +77,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
       "products": checkout_provider?.carts
     };
 
-    print('${data}, danang 12131');
     final httpRquest = await proses_checkout(data);
-    print('${httpRquest}, test checkout');
     if (httpRquest["status"] == 200) {
       context.pushNamed("Complete");
       SchedulerBinding.instance.addPostFrameCallback((_) {

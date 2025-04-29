@@ -1,6 +1,7 @@
+import 'dart:developer';
 import 'dart:io';
 
-// import 'package:esc_pos_utils/esc_pos_utils.dart';
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
@@ -10,6 +11,7 @@ import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:qlola_umkm/utils/printer.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 // import 'package:image/image.dart' as ImageImage;
@@ -25,6 +27,7 @@ class CompleteOrederScreen extends StatefulWidget {
 class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
   CheckoutProvider? checkout_provider;
   AuthProvider? auth_provider;
+  bool processBluetoothPrint = false;
 
   WidgetsToImageController widgetsToImageController = WidgetsToImageController();
 
@@ -49,6 +52,66 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
     // inspect(bytes);
 
     await Share.shareXFiles([XFile(file.path)], text: "Resi Pembelian");
+  }
+
+  Future _printBluetooth(BuildContext context) async {
+    setState(() => processBluetoothPrint = true);
+
+    final struck = await generateStruck(checkout_provider as CheckoutProvider, auth_provider as AuthProvider, "-");
+
+    if (!struck["status"]) {
+      Flushbar(
+        backgroundColor: Theme.of(context).primaryColor,
+        duration: Duration(seconds: 3),
+        reverseAnimationCurve: Curves.fastOutSlowIn,
+        flushbarPosition: FlushbarPosition.TOP,
+        titleText: Text(
+          "Bluetooth print",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+        messageText: Text(
+          struck["message"],
+          style: TextStyle(
+            fontFamily: "Poppins",
+            color: Colors.white,
+            fontSize: 12
+          )
+        )
+      ).show(context);
+
+      setState(() => processBluetoothPrint = false);
+    } else {
+      Flushbar(
+        backgroundColor: Color(0xff00880d),
+        duration: Duration(seconds: 3),
+        reverseAnimationCurve: Curves.fastOutSlowIn,
+        flushbarPosition: FlushbarPosition.TOP,
+        titleText: Text(
+          "Bluetooth print",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            fontWeight: FontWeight.w600,
+            color: Colors.white,
+            fontSize: 12
+          )
+        ),
+        messageText: Text(
+          "Struck sebentar lagi siap 🥣",
+          style: TextStyle(
+            fontFamily: "Poppins",
+            color: Colors.white,
+            fontSize: 12
+          )
+        )
+      ).show(context);
+
+      setState(() => processBluetoothPrint = false);
+    }
   }
 
   @override
@@ -207,12 +270,12 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                   Row(
                     children: [
                       Expanded(child: GestureDetector(
-                        onTap: () {},
+                        onTap: () => _printBluetooth(context),
                         child: Container(
                           height: 40,
                           alignment: Alignment.center,
                           decoration: BoxDecoration(
-                            color: Theme.of(context).dividerColor,
+                            // color: Theme.of(context).dividerColor,
                             border: Border.all(width: 1, color: Theme.of(context).dividerColor),
                             borderRadius: BorderRadius.all(Radius.circular(8))
                           ),
@@ -221,7 +284,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                             style: TextStyle(
                               fontFamily: "Poppins",
                               // color: Theme.of(context).primaryColorDark
-                              color: Theme.of(context).disabledColor
+                              color: Theme.of(context).primaryColorDark
                             )
                           )
                         )

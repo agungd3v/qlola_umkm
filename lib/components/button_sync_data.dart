@@ -9,7 +9,7 @@ import 'package:qlola_umkm/utils/flush_message.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ButtonSyncData extends StatefulWidget {
-  const ButtonSyncData({super.key, required Null Function() onPressed});
+  const ButtonSyncData({super.key});
 
   @override
   State<ButtonSyncData> createState() => _ButtonSyncDataState();
