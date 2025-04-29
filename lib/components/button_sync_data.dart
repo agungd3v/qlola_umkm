@@ -1,5 +1,4 @@
 import 'dart:math' as math;
-
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,9 +6,10 @@ import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/utils/flush_message.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 
 class ButtonSyncData extends StatefulWidget {
-  const ButtonSyncData({super.key});
+  const ButtonSyncData({super.key, required Null Function() onPressed});
 
   @override
   State<ButtonSyncData> createState() => _ButtonSyncDataState();
@@ -21,10 +21,11 @@ class _ButtonSyncDataState extends State<ButtonSyncData>
 
   final databaseHelper = DatabaseHelper.instance;
   late final AnimationController _controller =
-      AnimationController(vsync: this, duration: Duration(seconds: 1));
+      AnimationController(vsync: this, duration: const Duration(seconds: 1));
   bool proccess = false;
+  bool isConnected = true;
 
-  Future _syncData(BuildContext context) async {
+  Future<void> _syncData(BuildContext context) async {
     _controller.repeat();
     setState(() => proccess = true);
 
@@ -34,29 +35,43 @@ class _ButtonSyncDataState extends State<ButtonSyncData>
     final batches =
         groupBy(data as Iterable<Map>, (Map obj) => obj["_transaction"]);
 
-    if (batches.isNotEmpty) {
+    if (batches.isNotEmpty && auth_provider?.user != null) {
       final httpRequest = await bulk_checkout(<String, dynamic>{
-        "business_id":
-            num.parse(auth_provider!.user["outlet"]["business_id"].toString()),
+        "business_id": num.parse(
+          auth_provider!.user["outlet"]["business_id"].toString(),
+        ),
         "data": batches
       });
 
       if (httpRequest["status"] == 200) {
         successMessage(context, "Pemberitahuan", httpRequest["message"]);
-        setState(() => proccess = false);
-        _controller.reset();
-
         await database?.rawDelete("DELETE FROM orders");
-        return;
+      } else {
+        errorMessage(context, "Pemberitahuan", httpRequest["message"]);
       }
-
-      errorMessage(context, "Pemberitahuan", httpRequest["message"]);
     }
 
-    Future.delayed(const Duration(seconds: 1), () {
-      _controller.reset();
-      setState(() => proccess = false);
-    });
+    await Future.delayed(const Duration(seconds: 1));
+    _controller.reset();
+    setState(() => proccess = false);
+  }
+
+  Future<void> _checkAndHandleConnection(BuildContext context) async {
+    final result = await Connectivity().checkConnectivity();
+    final connected = result == ConnectivityResult.mobile ||
+        result == ConnectivityResult.wifi;
+
+    setState(() => isConnected = connected);
+
+    if (connected) {
+      _syncData(context);
+    } else {
+      errorMessage(
+        context,
+        "Tidak Ada Koneksi",
+        "Hello World! Kamu sedang offline.",
+      );
+    }
   }
 
   @override

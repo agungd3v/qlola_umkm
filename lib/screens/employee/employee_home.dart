@@ -14,6 +14,7 @@ import 'package:qlola_umkm/providers/bluetooth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/printer.dart';
 import 'package:sizer/sizer.dart';
+import 'package:connectivity_plus/connectivity_plus.dart'; // Import connectivity_plus
 
 class EmployeeHomeScreen extends StatefulWidget {
   const EmployeeHomeScreen({super.key});
@@ -33,6 +34,14 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
 
   bool testPrint = false;
+  bool isConnectedToInternet = false; // Flag untuk mengecek koneksi internet
+  late StreamSubscription<List<ConnectivityResult>>
+      _connectivitySubscription; // Stream untuk mendengarkan perubahan koneksi
+  String connectionType =
+      "Tidak ada koneksi"; // Variabel untuk menampilkan jenis koneksi
+  bool showSyncPrompt = false; // Flag untuk menampilkan prompt sync data
+  bool hasShownNoConnectionPrompt =
+      false; // Flag untuk mencegah flushbar berulang
 
   Future _scanPrinter() async {
     if (Platform.isAndroid) {
@@ -74,8 +83,56 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     setState(() => testPrint = false);
   }
 
+  // Fungsi untuk memeriksa koneksi internet
+  Future<void> checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    setState(() {
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        isConnectedToInternet = true;
+        connectionType = connectivityResult == ConnectivityResult.mobile
+            ? "Jaringan Seluler"
+            : "Wi-Fi";
+        showSyncPrompt = true; // Set flag untuk menampilkan prompt sync
+      } else {
+        isConnectedToInternet = false;
+        connectionType = "Tidak ada koneksi";
+        showSyncPrompt = false; // Hide sync prompt jika tidak ada koneksi
+      }
+    });
+  }
+
+  void _showNoConnectionPrompt(BuildContext context) {
+    if (!hasShownNoConnectionPrompt) {
+      hasShownNoConnectionPrompt = true;
+      Flushbar(
+        backgroundColor: Theme.of(context).primaryColor,
+        duration: Duration(seconds: 3),
+        reverseAnimationCurve: Curves.fastOutSlowIn,
+        flushbarPosition: FlushbarPosition.TOP,
+        titleText: Text(
+          "Tidak ada Koneksi",
+          style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w600,
+              color: Colors.white,
+              fontSize: 12),
+        ),
+        messageText: Text(
+          "Jika sudah ada koneksi internet, wajib klik tombol ini untuk sinkronkan data orderan.",
+          style: TextStyle(
+              fontFamily: "Poppins", color: Colors.white, fontSize: 12),
+        ),
+      ).show(context).then((_) {
+        // Reset flag after the Flushbar has been dismissed
+        hasShownNoConnectionPrompt = false;
+      });
+    }
+  }
+
   @override
   void initState() {
+    super.initState();
     _adapterStateStateSubscription =
         FlutterBluePlus.adapterState.listen((state) {
       _adapterState = state;
@@ -88,13 +145,37 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
       });
     });
 
-    super.initState();
+    checkInternetConnection(); // Cek koneksi internet saat halaman pertama kali dibuka
+
+    // Menambahkan stream subscription untuk mendengarkan perubahan koneksi internet
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) {
+      setState(() {
+        if (result.isNotEmpty) {
+          if (result.first == ConnectivityResult.mobile ||
+              result.first == ConnectivityResult.wifi) {
+            isConnectedToInternet = true;
+            connectionType = result.first == ConnectivityResult.mobile
+                ? "Jaringan Seluler"
+                : "Wi-Fi";
+            showSyncPrompt = true; // Tampilkan prompt sync jika ada koneksi
+          } else {
+            isConnectedToInternet = false;
+            connectionType = "Tidak ada koneksi";
+            showSyncPrompt =
+                false; // Sembunyikan prompt sync jika tidak ada koneksi
+          }
+        }
+      });
+    });
   }
 
   @override
   void dispose() {
     _adapterStateStateSubscription.cancel();
-
+    _connectivitySubscription
+        .cancel(); // Jangan lupa untuk membatalkan subscription saat dispose
     super.dispose();
   }
 
@@ -115,7 +196,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
         extendBodyBehindAppBar: false,
         backgroundColor: Colors.white,
         appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(56), // Adjust height as needed
+          preferredSize: const Size.fromHeight(56),
           child: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Theme.of(context).primaryColor,
@@ -157,20 +238,95 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text("Transaksi hari ini",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.white,
-                                          fontSize: 4.w)),
-                                  EmployeeTransactionToday()
+                                  // Tampilkan jenis koneksi perangkat
+                                  Text(
+                                    isConnectedToInternet
+                                        ? "Transaksi hari ini"
+                                        : "($connectionType)",
+                                    style: TextStyle(
+                                        fontFamily: "Poppins",
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.white,
+                                        fontSize: 4.w),
+                                  ),
+                                  isConnectedToInternet
+                                      ? EmployeeTransactionToday()
+                                      : SizedBox
+                                          .shrink(), // Menyembunyikan transaksi jika tidak ada internet
                                 ])),
                         const SizedBox(height: 10),
                       ]),
-                      Container(
+
+                      // Kondisi jika terhubung dengan internet
+                      // Inside the widget build method where the sync prompt is displayed
+
+                      if (isConnectedToInternet)
+                        Column(
+                          children: [
+                            // Shortened the text
+                            if (showSyncPrompt)
+                              Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Container(
+                                  width: double.infinity,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12, vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: Colors
+                                        .white, // Make it white for better visibility
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(6)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey
+                                            .withOpacity(0.2), // Light shadow
+                                        spreadRadius: 1, // Small spread
+                                        blurRadius: 3, // Subtle blur
+                                        offset: Offset(
+                                            0, 2), // Slight vertical offset
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    'Klik tombol ini untuk sinkronkan data orderan jika koneksi internet sudah ada.',
+                                    style: TextStyle(
+                                      fontFamily: "Poppins",
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                      fontSize: 12.sp,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            Container(
+                              alignment: Alignment.centerRight,
+                              margin: const EdgeInsets.only(right: 10),
+                              child: ButtonSyncData(
+                                onPressed: () {
+                                  if (!isConnectedToInternet) {
+                                    // Tampilkan prompt jika tidak ada koneksi
+                                    _showNoConnectionPrompt(context);
+                                  } else {
+                                    // Lakukan sync data
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+
+                      // Jika tidak ada internet, tampilkan tombol untuk sinkronisasi
+                      if (!isConnectedToInternet)
+                        Container(
                           alignment: Alignment.centerRight,
                           margin: const EdgeInsets.only(right: 10),
-                          child: ButtonSyncData())
+                          child: ButtonSyncData(
+                            onPressed: () {
+                              // Tampilkan prompt jika tidak ada koneksi
+                              _showNoConnectionPrompt(context);
+                            },
+                          ),
+                        ),
                     ]))));
   }
 }
