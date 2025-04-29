@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:qlola_umkm/notifiers/tab_notifer.dart';
 
 class TabIndex extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -16,7 +17,9 @@ class _TabIndexState extends State<TabIndex> {
   int tabIndex = 0;
 
   void goIndex(int index) {
+    setState(() => tabIndex = index);
     widget.navigationShell.goBranch(index, initialLocation: index == widget.navigationShell.currentIndex);
+    tabChangeNotifier.value = index;
   }
 
   @override

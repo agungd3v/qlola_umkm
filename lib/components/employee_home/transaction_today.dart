@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/notifiers/tab_notifer.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:sizer/sizer.dart';
 
@@ -12,8 +15,10 @@ class EmployeeTransactionToday extends StatefulWidget {
 
 class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
   dynamic transaction;
+  late VoidCallback listener;
 
   Future getHistory() async {
+    inspect("oke");
     final httpRequest = await outlet_transaction();
     if (httpRequest["status"] == 200) {
       setState(() {
@@ -22,10 +27,28 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
     }
   }
 
+  void _onRefresh() {
+    getHistory();
+  }
+
   @override
   void initState() {
-    getHistory();
     super.initState();
+
+    getHistory();
+    listener = () {
+      if (tabChangeNotifier.value == 0) {
+        getHistory();
+      }
+    };
+
+    tabChangeNotifier.addListener(listener);
+  }
+
+  @override
+  void dispose() {
+    tabChangeNotifier.removeListener(listener);
+    super.dispose();
   }
 
   @override
