@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -22,7 +23,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
   Future<void> _signup() async {
     final Map<String, dynamic> data = {
-      "name" : name.text,
+      "name": name.text,
       "phone": "+62${phone.text}",
       "email": email.text,
       "password": password.text,
@@ -30,8 +31,8 @@ class _SignupScreenState extends State<SignupScreen> {
     };
 
     setState(() => proccess = true);
-
     final httpRequest = await sign_up(data);
+
     if (httpRequest["status"] == 200) {
       return Navigator.pop(context);
     }
@@ -40,365 +41,211 @@ class _SignupScreenState extends State<SignupScreen> {
 
     Flushbar(
       backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 5),
-      reverseAnimationCurve: Curves.fastOutSlowIn,
+      duration: const Duration(seconds: 5),
       flushbarPosition: FlushbarPosition.TOP,
-      titleText: Text(
+      titleText: const Text(
         "Registrasi gagal",
-        style: TextStyle(
-          fontFamily: "Poppins",
-          fontWeight: FontWeight.w600,
-          color: Colors.white,
-          fontSize: 12
-        )
+        style: TextStyle(fontWeight: FontWeight.w600, color: Colors.white),
       ),
       messageText: Text(
         httpRequest["message"],
-        style: TextStyle(
-          fontFamily: "Poppins",
-          color: Colors.white,
-          fontSize: 12
-        )
+        style: const TextStyle(color: Colors.white),
       ),
     ).show(context);
   }
 
+  Widget buildInputField({required IconData icon, required Widget child}) {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey.shade300),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: Theme.of(context).primaryColor),
+          const SizedBox(width: 12),
+          Expanded(child: child)
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Scaffold(
-      extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(0),
-        child: AppBar(
-          automaticallyImplyLeading: false,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Theme.of(context).primaryColor,
-            statusBarIconBrightness: Brightness.light
-          )
-        )
+      body: SafeArea(
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 30),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.business,
+                      size: 80, color: Theme.of(context).primaryColor),
+                  const SizedBox(height: 20),
+                  Text(
+                    "Buat Akun",
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Informasi Pemilik",
+                        style: Theme.of(context).textTheme.titleMedium),
+                  ),
+                  buildInputField(
+                    icon: Icons.person_outline,
+                    child: TextField(
+                      controller: name,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none, hintText: "Nama Lengkap"),
+                    ),
+                  ),
+                  buildInputField(
+                    icon: Icons.phone,
+                    child: Row(
+                      children: [
+                        const Text("+62"),
+                        const SizedBox(width: 6),
+                        Expanded(
+                          child: TextField(
+                            controller: phone,
+                            keyboardType: TextInputType.number,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.digitsOnly
+                            ],
+                            style: GoogleFonts.poppins(fontSize: 14),
+                            decoration: const InputDecoration(
+                              hintText: "No Handphone",
+                              border: InputBorder.none,
+                              contentPadding: EdgeInsets.symmetric(
+                                vertical: 18,
+                                horizontal: 0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  buildInputField(
+                    icon: Icons.email_outlined,
+                    child: TextField(
+                      controller: email,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none, hintText: "Alamat Email"),
+                    ),
+                  ),
+                  buildInputField(
+                    icon: Icons.lock_outline,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            controller: password,
+                            obscureText: !show_password,
+                            decoration: const InputDecoration(
+                                border: InputBorder.none, hintText: "Password"),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () =>
+                              setState(() => show_password = !show_password),
+                          child: Icon(
+                            show_password
+                                ? Icons.visibility_off
+                                : Icons.visibility,
+                            size: 20,
+                            color: Colors.grey,
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Informasi Usaha",
+                        style: Theme.of(context).textTheme.titleMedium),
+                  ),
+                  buildInputField(
+                    icon: Icons.storefront_outlined,
+                    child: TextField(
+                      controller: business,
+                      decoration: const InputDecoration(
+                          border: InputBorder.none, hintText: "Nama Usaha"),
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  !proccess
+                      ? ElevatedButton(
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            _signup();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: const Size.fromHeight(48),
+                            backgroundColor: Theme.of(context).primaryColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text("Daftar",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white)),
+                        )
+                      : Container(
+                          height: 48,
+                          width: double.infinity,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              LoadingAnimationWidget.fourRotatingDots(
+                                color: Colors.white,
+                                size: 20,
+                              ),
+                              const SizedBox(width: 10),
+                              const Text("Mendaftar...",
+                                  style: TextStyle(color: Colors.white)),
+                            ],
+                          ),
+                        ),
+                  TextButton(
+                    onPressed: () => Navigator.pop(context),
+                    child: Text(
+                      "Sudah punya akun? Masuk",
+                      style: GoogleFonts.poppins(
+                        color: theme.primaryColor,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 13,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
       ),
-      body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
-        child: Container(
-          alignment: Alignment.center,
-          color: Colors.white,
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "SignUp",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 20
-                  )
-                ),
-                const SizedBox(height: 40),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Informasi Pemilik",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 13
-                    )
-                  )
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: InputBorder.none,
-                      hintText: "Nama Lengkap",
-                      hintStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context).disabledColor,
-                        fontSize: 12
-                      )
-                    ),
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 12
-                    ),
-                    keyboardType: TextInputType.text,
-                    cursorColor: Theme.of(context).focusColor,
-                    controller: name,
-                  )
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        "+62",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
-                        )
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(child: TextField(
-                        decoration: InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                          hintText: "No. Handphone",
-                          hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).disabledColor,
-                            fontSize: 12
-                          )
-                        ),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
-                        ),
-                        keyboardType: TextInputType.number,
-                        cursorColor: Theme.of(context).focusColor,
-                        controller: phone,
-                      ))
-                    ]
-                  )
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: InputBorder.none,
-                      hintText: "Alamat Email",
-                      hintStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context).disabledColor,
-                        fontSize: 12
-                      )
-                    ),
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 12
-                    ),
-                    keyboardType: TextInputType.emailAddress,
-                    cursorColor: Theme.of(context).focusColor,
-                    controller: email,
-                  )
-                ),
-                const SizedBox(height: 6),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Row(
-                    children: [
-                      Expanded(child: TextField(
-                        decoration: InputDecoration(
-                          isDense: true,
-                          border: InputBorder.none,
-                          hintText: "Password",
-                          hintStyle: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w400,
-                            color: Theme.of(context).disabledColor,
-                            fontSize: 12
-                          )
-                        ),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w400,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
-                        ),
-                        keyboardType: TextInputType.text,
-                        obscureText: !show_password,
-                        cursorColor: Theme.of(context).focusColor,
-                        controller: password,
-                      )),
-                      const SizedBox(width: 8),
-                      GestureDetector(
-                        onTap: () => setState(() => show_password = !show_password),
-                        child: !show_password ? Image.asset("assets/icons/show_password.png", width: 20, height: 20) : Image.asset("assets/icons/hide_password.png", width: 20, height: 20)
-                      )
-                    ]
-                  )
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
-                    )
-                  )
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Informasi Usaha",
-                    textAlign: TextAlign.start,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 13
-                    )
-                  )
-                ),
-                const SizedBox(height: 12),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    border: Border.all(width: 1, color: Theme.of(context).dividerColor),
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      isDense: true,
-                      border: InputBorder.none,
-                      hintText: "Nama Usaha",
-                      hintStyle: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w400,
-                        color: Theme.of(context).disabledColor,
-                        fontSize: 12
-                      )
-                    ),
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w400,
-                      color: Theme.of(context).primaryColorDark,
-                      fontSize: 12
-                    ),
-                    keyboardType: TextInputType.text,
-                    cursorColor: Theme.of(context).focusColor,
-                    controller: business,
-                  )
-                ),
-                const SizedBox(height: 40),
-                if (!proccess) Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).unfocus();
-                      _signup();
-                    },
-                    child: Container(
-                      height: 38,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.all(Radius.circular(6))
-                      ),
-                      child: Text(
-                        "Daftar",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white
-                        )
-                      )
-                    )
-                  )
-                ),
-                if (proccess) Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  height: 38,
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      LoadingAnimationWidget.fourRotatingDots(
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                      const SizedBox(width: 5),
-                      Text(
-                        "Daftar...",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          color: Colors.white
-                        )
-                      )
-                    ]
-                  )
-                ),
-                if (!proccess) Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 50),
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      height: 38,
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(6))
-                      ),
-                      child: Text(
-                        "Masuk",
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColor
-                        )
-                      )
-                    )
-                  )
-                )
-              ]
-            )
-          )
-        )
-      )
     );
   }
 }

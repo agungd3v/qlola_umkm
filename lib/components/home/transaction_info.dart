@@ -26,81 +26,94 @@ class _TransactionInfoState extends State<TransactionInfo> {
       future: getHistory(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Waiting connection...");
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor:
+                  AlwaysStoppedAnimation(Colors.redAccent), // Red color loader
+            ),
+          );
         }
         if (snapshot.data != null) {
           return Column(
             children: [
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(6))
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Penjualan ${getThisMonth()}",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        fontSize: 4.w
-                      )
-                    ),
-                    Text(
-                      transformPrice(double.parse(snapshot.data["transaction_nominal_month"].toString())),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 5.w
-                      )
-                    )
-                  ]
-                )
+              _buildTransactionCard(
+                title: "Penjualan ${getThisMonth()}",
+                amount: snapshot.data["transaction_nominal_month"],
               ),
               const SizedBox(height: 12),
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(6))
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Penjualan hari ini",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                        fontSize: 4.w
-                      )
-                    ),
-                    Text(
-                      transformPrice(double.parse(snapshot.data["transaction_nominal_today"].toString())),
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 5.w
-                      )
-                    )
-                  ]
-                )
-              )
-            ]
+              _buildTransactionCard(
+                title: "Penjualan hari ini",
+                amount: snapshot.data["transaction_nominal_today"],
+              ),
+            ],
           );
         }
-        return Text("Error connection...");
-      }
+        return Center(
+          child: Text(
+            "Error connection...",
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w600,
+              fontSize: 4.w,
+              color: Colors.redAccent, // Red color for error text
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTransactionCard({
+    required String title,
+    required dynamic amount,
+  }) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.red.shade800, // Dark Red
+            Colors.black, // Black for gradient effect
+          ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(12),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 8,
+            spreadRadius: 2,
+            offset: Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w500,
+              color: Colors.white,
+              fontSize: 4.w,
+            ),
+          ),
+          SizedBox(height: 4),
+          Text(
+            transformPrice(double.parse(amount.toString())),
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontFamily: "Poppins",
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              fontSize: 5.w,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

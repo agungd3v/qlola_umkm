@@ -3,13 +3,12 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:sizer/sizer.dart'; // Pastikan menggunakan Sizer untuk responsivitas
 
 class EmployeeProductSheet extends StatefulWidget {
   dynamic product;
 
-  EmployeeProductSheet({super.key,
-    required this.product
-  });
+  EmployeeProductSheet({super.key, required this.product});
 
   @override
   State<EmployeeProductSheet> createState() => _EmployeeProductSheetState();
@@ -33,6 +32,12 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
   }
 
   @override
+  void initState() {
+    debugPrint(widget.product.toString());
+    super.initState();
+  }
+
+  @override
   void dispose() {
     super.dispose();
   }
@@ -43,23 +48,24 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
 
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: 4.w), // Responsif dengan Sizer
       child: Column(
         children: [
           Container(
-            width: MediaQuery.of(context).size.width / 4,
-            height: 6,
-            margin: const EdgeInsets.only(top: 6),
+            width: 10.w, // Adjusted width for responsiveness
+            height: 0.6.h, // Adjusted height for responsiveness
+            margin:
+                EdgeInsets.only(top: 1.h), // Adjusted margin for responsiveness
             decoration: BoxDecoration(
               color: Theme.of(context).dividerColor,
-              borderRadius: BorderRadius.all(Radius.circular(99))
-            )
+              borderRadius: BorderRadius.all(Radius.circular(99)),
+            ),
           ),
-          const SizedBox(height: 10),
+          SizedBox(height: 2.h), // Adjusted for spacing
           Container(
-            height: 240,
+            height: 25.h, // Responsively adjusting image height
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(12))
+              borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
@@ -72,47 +78,52 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                   width: double.infinity,
                   height: double.infinity,
                   decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor.withOpacity(0.2)
+                    color: Theme.of(context).primaryColor.withOpacity(0.2),
                   ),
                   child: Center(
-                    child: Image.asset("assets/icons/image_crash.png", width: 50, height: 50)
-                  )
+                    child: Image.asset("assets/icons/image_crash.png",
+                        width: 12.w, height: 12.w),
+                  ),
                 );
               },
-            )
+            ),
           ),
-          const SizedBox(height: 10),
-          Expanded(child: SizedBox(
-            width: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.product["product_name"],
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColorDark,
-                    fontSize: 16
-                  )
-                ),
-                Text(
-                  transformPrice(double.parse(widget.product["product_price"].toString())),
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: "Poppins",
-                    fontWeight: FontWeight.w700,
-                    color: Theme.of(context).primaryColor,
-                    fontSize: 14
-                  )
-                )
-              ]
-            )
-          )),
+          SizedBox(height: 2.h), // Adjusted for spacing
+          Expanded(
+            child: SizedBox(
+              width: double.infinity,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    widget.product["product_name"],
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 16.sp, // Using responsive font size
+                    ),
+                  ),
+                  Text(
+                    transformPrice(double.parse(
+                        widget.product["product_price"].toString())),
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 14.sp, // Using responsive font size
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
           Container(
-            margin: const EdgeInsets.only(bottom: 6),
+            margin: EdgeInsets.only(
+                bottom: 1.h), // Adjusted margin for bottom spacing
             child: Column(
               children: [
                 Row(
@@ -125,49 +136,55 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.3),
-                          borderRadius: BorderRadius.all(Radius.circular(6))
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.3),
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
                         ),
-                        child: Image.asset("assets/icons/minus_red.png", width: 28, height: 28)
-                      )
-                    ),
-                    Expanded(child: Container(
-                      alignment: Alignment.center,
-                      child: Text(
-                        quantity.toString(),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 16
-                        )
+                        child: Image.asset("assets/icons/minus_red.png",
+                            width: 7.w, height: 7.w),
                       ),
-                    )),
+                    ),
+                    Expanded(
+                      child: Container(
+                        alignment: Alignment.center,
+                        child: Text(
+                          quantity.toString(),
+                          style: TextStyle(
+                            fontFamily: "Poppins",
+                            fontWeight: FontWeight.w700,
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 16.sp, // Responsive font size
+                          ),
+                        ),
+                      ),
+                    ),
                     GestureDetector(
                       onTap: () {
                         setState(() => quantity++);
                       },
                       child: Container(
                         decoration: BoxDecoration(
-                          color: Theme.of(context).primaryColor.withOpacity(0.3),
-                          borderRadius: BorderRadius.all(Radius.circular(6))
+                          color:
+                              Theme.of(context).primaryColor.withOpacity(0.3),
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
                         ),
-                        child: Image.asset("assets/icons/plus_red.png", width: 28, height: 28)
-                      )
-                    )
-                  ]
+                        child: Image.asset("assets/icons/plus_red.png",
+                            width: 7.w, height: 7.w),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 2.h), // Adjusted for spacing
                 GestureDetector(
                   onTap: () {
                     _addToCart(widget.product);
                   },
                   child: Container(
                     width: double.infinity,
-                    height: 40,
+                    height: 5.h, // Adjusted height for responsiveness
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.all(Radius.circular(8))
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
                     ),
                     alignment: Alignment.center,
                     child: Text(
@@ -176,16 +193,16 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
-                        fontSize: 14
-                      )
-                    )
-                  )
-                )
-              ]
-            )
-          )
-        ]
-      )
+                        fontSize: 14.sp, // Responsive font size
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

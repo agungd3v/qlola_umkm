@@ -14,8 +14,13 @@ class _SheetOutletState extends State<SheetOutlet> {
   OwnerProvider? owner_provider;
   bool loading = false;
 
-  List listOutlets = [{"label": "Semua Outlet", "value": null}];
-  Map<String, dynamic> selectedOutlet = {"label": "Semua Outlet", "value": null};
+  List listOutlets = [
+    {"label": "Semua Outlet", "value": null}
+  ];
+  Map<String, dynamic> selectedOutlet = {
+    "label": "Semua Outlet",
+    "value": null
+  };
 
   Future _getOutlets() async {
     setState(() => loading = true);
@@ -62,110 +67,109 @@ class _SheetOutletState extends State<SheetOutlet> {
     owner_provider = Provider.of<OwnerProvider>(context);
 
     return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "List Outlet",
-          style: TextStyle(
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.w700,
-            color: Theme.of(context).primaryColor,
-            fontSize: 16
-          )
-        ),
-        const SizedBox(height: 12),
-        if (!loading) for (var index = 0; index < listOutlets.length; index++) GestureDetector(
-          onTap: () {
-            _changeSelectedOutlet(listOutlets[index]);
-          },
-          child: Container(
-            width: double.infinity,
-            height: 38,
-            alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.symmetric(horizontal: 12),
-            margin: index > 0 ? EdgeInsets.only(top: 8) : EdgeInsets.only(top: 0),
-            decoration: BoxDecoration(
-              color: listOutlets[index]["value"] == selectedOutlet["value"] ? Theme.of(context).primaryColor.withOpacity(0.2) : Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(6)),
-              border: Border.all(
-                width: 1,
-                color: listOutlets[index]["value"] == selectedOutlet["value"] ? Theme.of(context).primaryColor : Theme.of(context).dividerColor
-              )
-            ),
-            child: Text(
-              listOutlets[index]["label"],
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("List Outlet",
               style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: listOutlets[index]["value"] == selectedOutlet["value"] ? FontWeight.w700 : FontWeight.w400,
-                color: listOutlets[index]["value"] == selectedOutlet["value"] ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
-                fontSize: 12
-              )
-            )
-          )
-        ),
-        if (loading) Text(
-          "Loading...",
-          style: TextStyle(
-            fontFamily: "Poppins",
-            color: Theme.of(context).primaryColorDark,
-            fontSize: 12
-          )
-        ),
-        const SizedBox(height: 20),
-        Row(
-          children: [
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w700,
+                  color: Theme.of(context).primaryColor,
+                  fontSize: 16)),
+          const SizedBox(height: 12),
+          if (!loading)
+            for (var index = 0; index < listOutlets.length; index++)
+              GestureDetector(
+                  onTap: () {
+                    _changeSelectedOutlet(listOutlets[index]);
+                  },
+                  child: Container(
+                      width: double.infinity,
+                      height: 38,
+                      alignment: Alignment.centerLeft,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      margin: index > 0
+                          ? EdgeInsets.only(top: 8)
+                          : EdgeInsets.only(top: 0),
+                      decoration: BoxDecoration(
+                          color: listOutlets[index]["value"] == selectedOutlet["value"]
+                              ? Theme.of(context).primaryColor.withOpacity(0.2)
+                              : Colors.white,
+                          borderRadius: BorderRadius.all(Radius.circular(6)),
+                          border: Border.all(
+                              width: 1,
+                              color: listOutlets[index]["value"] == selectedOutlet["value"]
+                                  ? Theme.of(context).primaryColor
+                                  : Theme.of(context).dividerColor)),
+                      child: Text(listOutlets[index]["label"],
+                          style: TextStyle(
+                              fontFamily: "Poppins",
+                              fontWeight: listOutlets[index]["value"] ==
+                                      selectedOutlet["value"]
+                                  ? FontWeight.w700
+                                  : FontWeight.w400,
+                              color:
+                                  listOutlets[index]["value"] == selectedOutlet["value"]
+                                      ? Theme.of(context).primaryColor
+                                      : Theme.of(context).primaryColorDark,
+                              fontSize: 12)))),
+          if (loading)
+            Text("Loading...",
+                style: TextStyle(
+                    fontFamily: "Poppins",
+                    color: Theme.of(context).primaryColorDark,
+                    fontSize: 12)),
+          const SizedBox(height: 20),
+          Row(children: [
             SizedBox(
-              width: 80,
-              height: 30,
-              child: GestureDetector(
-                onTap: () => _appyOutlet(),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Simpan",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
-                        fontSize: 10
-                      )
-                    )
-                  )
-                )
-              )
-            ),
+                width: 80,
+                height: 30,
+                child: GestureDetector(
+                    onTap: () => _appyOutlet(),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).primaryColor,
+                            borderRadius: BorderRadius.all(Radius.circular(6))),
+                        child: Center(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.save, // Ikon save
+                                color: Colors.white,
+                                size: 20, // Ukuran ikon
+                              ),
+                              const SizedBox(
+                                  width:
+                                      8), // Memberikan jarak antara ikon dan teks
+                              Text(
+                                "Simpan",
+                                style: TextStyle(
+                                  fontFamily: "Poppins",
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )))),
             SizedBox(
-              width: 80,
-              height: 30,
-              child: GestureDetector(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.all(Radius.circular(6))
-                  ),
-                  child: Center(
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColor,
-                        fontSize: 10
-                      )
-                    )
-                  )
-                )
-              )
-            )
-          ]
-        )
-      ]
-    );
+                width: 80,
+                height: 30,
+                child: GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.all(Radius.circular(6))),
+                        child: Center(
+                            child: Text("Cancel",
+                                style: TextStyle(
+                                    fontFamily: "Poppins",
+                                    fontWeight: FontWeight.w700,
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 10))))))
+          ])
+        ]);
   }
 }

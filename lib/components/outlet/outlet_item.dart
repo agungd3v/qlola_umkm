@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class OutletItem extends StatefulWidget {
-  dynamic outlet;
-  int index;
+  final dynamic outlet;
+  final int index;
 
-  OutletItem({super.key,
-    required this.outlet,
-    required this.index
-  });
+  OutletItem({super.key, required this.outlet, required this.index});
 
   @override
   State<OutletItem> createState() => _OutletItemState();
@@ -17,115 +14,187 @@ class OutletItem extends StatefulWidget {
 class _OutletItemState extends State<OutletItem> {
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        // Handle tap if needed
+      },
       child: Container(
-        margin: widget.index > 0 ? const EdgeInsets.only(top: 14) : const EdgeInsets.only(top: 0),
-        padding: const EdgeInsets.symmetric(horizontal: 16),
+        margin: EdgeInsets.all(8),
+        padding: EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 2,
+              blurRadius: 8,
+              offset: Offset(0, 5),
+            ),
+          ],
+        ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Image Container
             Container(
-              width: 70,
-              height: 70,
+              width: screenWidth * 0.19,
+              height: screenHeight * 0.09,
               decoration: BoxDecoration(
-                color: Theme.of(context).primaryColor.withOpacity(0.2),
-                borderRadius: BorderRadius.all(Radius.circular(8))
+                color: Theme.of(context).primaryColor.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(8),
               ),
               clipBehavior: Clip.hardEdge,
               child: Center(
-                child: Image.asset("assets/icons/outlet.png", width: 25, height: 25)
-              )
+                child: Image.asset(
+                  "assets/icons/outlet.png",
+                  width: screenWidth * 0.08,
+                  height: screenHeight * 0.08,
+                ),
+              ),
             ),
-            const SizedBox(width: 12),
-            Expanded(child: Container(
+            SizedBox(width: screenWidth * 0.03),
+            // Main Content (Text)
+            Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Outlet Phone
                   Text(
                     widget.outlet["outlet_phone"],
                     style: TextStyle(
                       fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w600,
                       color: Theme.of(context).primaryColor,
-                      fontSize: 12
-                    )
+                      fontSize: screenWidth * 0.035,
+                    ),
                   ),
+                  // Outlet Name
                   Text(
                     widget.outlet["outlet_name"],
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColorDark
-                    )
+                      fontWeight: FontWeight.w600,
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: screenWidth * 0.040,
+                    ),
                   ),
-                  const SizedBox(height: 10),
-                  Row(
+                  SizedBox(height: screenHeight * 0.015),
+                  // Full Width Button for "Tambah Produk" and 2-column layout for others
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      GestureDetector(
-                        onTap: () {
-                          context.pushNamed(
-                            "Add Outlet Employee",
-                            extra: widget.outlet
-                          );
+                      // Full Width Button for "Tambah Produk"
+                      _buildActionButton(
+                        label: "Tambah Produk",
+                        onPressed: () {
+                          context.pushNamed("Add Outlet Product",
+                              extra: widget.outlet);
                         },
-                        child: Container(
-                          height: 24,
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(6))
-                          ),
-                          alignment: Alignment.center,
-                          clipBehavior: Clip.hardEdge,
-                          child: Text(
-                            "Tambah Karyawan",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontSize: 10
-                            )
-                          )
-                        )
+                        icon: Icons.production_quantity_limits,
+                        isFullWidth: true,
+                        backgroundColor: Colors.red[800]!,
                       ),
-                      const SizedBox(width: 6),
-                      GestureDetector(
-                        onTap: () {
-                          context.pushNamed(
-                            "Add Outlet Product",
-                            extra: widget.outlet
-                          );
-                        },
-                        child: Container(
-                          height: 24,
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).primaryColor,
-                            borderRadius: BorderRadius.all(Radius.circular(6))
+                      SizedBox(height: screenHeight * 0.009),
+                      // 2 Column Layout for "Tambah Karyawan" and "Tambah Mitra"
+                      Row(
+                        children: [
+                          Expanded(
+                            child: _buildActionButton(
+                              label: "Tambah Karyawan",
+                              onPressed: () {
+                                context.pushNamed("Add Outlet Employee",
+                                    extra: widget.outlet);
+                              },
+                              icon: Icons.person_add_alt_1,
+                              isFullWidth: false,
+                              backgroundColor: Colors.blue[800]!,
+                            ),
                           ),
-                          alignment: Alignment.center,
-                          clipBehavior: Clip.hardEdge,
-                          child: Text(
-                            "Tambah Produk",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                              fontSize: 10
-                            )
-                          )
-                        )
-                      )
-                    ]
-                  )
-                ]
-              )
-            ))
-          ]
-        )
-      )
+                          SizedBox(width: screenWidth * 0.020),
+                          Expanded(
+                            child: _buildActionButton(
+                              label: "Tambah Mitra",
+                              onPressed: () {
+                                context.pushNamed("Add Mitra",
+                                    extra: widget.outlet);
+                              },
+                              icon: Icons.group_add,
+                              backgroundColor: Colors.green[800]!,
+                              isFullWidth: true,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildActionButton({
+    required String label,
+    required VoidCallback onPressed,
+    required IconData icon,
+    required bool isFullWidth,
+    required Color backgroundColor,
+  }) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return GestureDetector(
+      onTap: onPressed,
+      child: InkWell(
+        splashColor: Colors.white.withOpacity(0.5),
+        highlightColor: backgroundColor.withOpacity(0.2),
+        child: Container(
+          width: isFullWidth ? screenWidth : screenWidth * 0.35,
+          height: screenHeight * 0.04,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            color: backgroundColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.2),
+                spreadRadius: 2,
+                blurRadius: 6,
+                offset: Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                icon,
+                color: Colors.white,
+                size: screenWidth * 0.03,
+              ),
+              SizedBox(width: screenWidth * 0.02),
+              Text(
+                label,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                  fontSize: screenWidth * 0.023,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
