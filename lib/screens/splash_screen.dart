@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
