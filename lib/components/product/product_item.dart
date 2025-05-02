@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
@@ -13,6 +15,11 @@ class ProductItem extends StatefulWidget {
 }
 
 class _ProductItemState extends State<ProductItem> {
+  @override
+  void initState() {
+    super.initState();
+    inspect(widget.product);
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +38,7 @@ class _ProductItemState extends State<ProductItem> {
             ),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
-              "${dotenv.env["ASSET_URL"]}${widget.product["product_image"]}",
+              "${dotenv.env["ASSET_URL"]}/${widget.product["product_image"]}",
               width: 70,
               height: 70,
               fit: BoxFit.cover,

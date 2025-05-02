@@ -26,7 +26,7 @@ class _EmployeeItemState extends State<EmployeeItem> {
           ),
           clipBehavior: Clip.hardEdge,
           child: Image.network(
-            "${dotenv.env["ASSET_URL"]}${widget.employee["photo"]}",
+            "${dotenv.env["ASSET_URL"]}/${widget.employee["photo"]}",
             width: 17.5.w,
             height: 17.5.w,
             fit: BoxFit.cover,

@@ -1,3 +1,5 @@
+import "dart:developer";
+
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
@@ -39,6 +41,12 @@ class _TransactionItemState extends State<TransactionItem> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    inspect(widget.transaction);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -55,7 +63,7 @@ class _TransactionItemState extends State<TransactionItem> {
               ),
               const SizedBox(height: 5),
               Text(
-                transformPrice(double.parse(widget.transaction["grand_total"])),
+                transformPrice(double.parse(widget.transaction["grand_total"].toString())),
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                   fontFamily: "Poppins",
@@ -111,7 +119,7 @@ class _TransactionItemState extends State<TransactionItem> {
                       Row(
                         children: [
                           Text(
-                            transformPrice(double.parse(widget.transaction["checkouts"][index2]["total"])),
+                            transformPrice(double.parse(widget.transaction["checkouts"][index2]["total"].toString())),
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w700,
@@ -121,7 +129,7 @@ class _TransactionItemState extends State<TransactionItem> {
                           ),
                           const SizedBox(width: 5),
                           Text(
-                            "(x${widget.transaction["checkouts"][index2]["quantity"]})",
+                            "(x${widget.transaction["checkouts"][index2]["quantity"].toString()})",
                             style: TextStyle(
                               fontFamily: "Poppins",
                               fontWeight: FontWeight.w700,
@@ -153,7 +161,7 @@ class _TransactionItemState extends State<TransactionItem> {
                       );
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
                       decoration: BoxDecoration(
                         color: Theme.of(context).primaryColor,
                         borderRadius: BorderRadius.all(Radius.circular(4))
@@ -163,7 +171,7 @@ class _TransactionItemState extends State<TransactionItem> {
                         style: TextStyle(
                           fontFamily: "Poppins",
                           color: Colors.white,
-                          fontSize: 12
+                          fontSize: 10
                         )
                       )
                     )

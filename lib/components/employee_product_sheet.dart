@@ -69,7 +69,7 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
             ),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
-              "${dotenv.env["ASSET_URL"]}${widget.product["product_image"]}",
+              "${dotenv.env["ASSET_URL"]}/${widget.product["product_image"]}",
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,

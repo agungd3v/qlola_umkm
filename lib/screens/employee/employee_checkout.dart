@@ -191,7 +191,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                             ),
                             clipBehavior: Clip.hardEdge,
                             child: Image.network(
-                              "${dotenv.env["ASSET_URL"]}${checkout_provider!.carts[index]["product_image"]}",
+                              "${dotenv.env["ASSET_URL"]}/${checkout_provider!.carts[index]["product_image"]}",
                               width: 19.w,
                               height: 19.w,
                               fit: BoxFit.cover,
