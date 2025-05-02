@@ -58,7 +58,7 @@ class _HistoryTransactionScreenState extends State<HistoryTransactionScreen> {
             )
           ),
           GestureDetector(
-            onTap: () => context.pushNamed("Transaction"),
+            onTap: () => context.pushNamed("Owner Transaction"),
             child: Container(
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 20),

@@ -19,7 +19,7 @@ class _ButtonCheckoutState extends State<ButtonCheckout> {
 
     return GestureDetector(
       onTap: () {
-        context.pushNamed("Checkout");
+        context.pushNamed("Employee Checkout");
       },
       child: Container(
         width: MediaQuery.of(context).size.width,

@@ -68,7 +68,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
     final checkout = await HelperCheckout.checkoutOnline(checkout_provider!, auth_provider!);
 
     if (checkout["status"]) {
-      context.pushNamed("Complete");
+      context.pushNamed("Employee Complete");
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
@@ -90,7 +90,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
     final checkout = await HelperCheckout.checkoutOffline(checkout_provider!, auth_provider!);
 
     if (checkout["status"]) {
-      context.pushNamed("Complete");
+      context.pushNamed("Employee Complete");
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;

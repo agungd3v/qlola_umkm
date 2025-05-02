@@ -116,7 +116,7 @@ class SuperRouter {
     ),
     GoRoute(
       path: '/owner/add_outlet_employee',
-      name: "Owner Outlet Employee",
+      name: "Owner Add Outlet Employee",
       builder: (context, state) {
         final outlet = state.extra! as dynamic;
         return AddOutletEmployeeScreen(key: state.pageKey, outlet: outlet);
