@@ -25,18 +25,19 @@ GoRouter buildRouter(AuthProvider authProvider) {
       ...MitraRouter.routes,
     ],
     redirect: (context, state) {
-      if (user == null) {
-        return '/auth/signin';
-      }
+      return null;
+      // if (user == null) {
+      //   return '/auth/signin';
+      // }
 
-      final role = user['role'];
-      final fullPath = state.fullPath ?? '';
+      // final role = user['role'];
+      // final fullPath = state.fullPath ?? '';
 
-      if (allowedRootPaths.containsKey(role) && fullPath.startsWith(allowedRootPaths[role]!)) {
-        return null;
-      }
+      // if (allowedRootPaths.containsKey(role) && fullPath.startsWith(allowedRootPaths[role]!)) {
+      //   return null;
+      // }
 
-      return allowedRootPaths[role] ?? '/auth/signin';
+      // return allowedRootPaths[role] ?? '/auth/signin';
     }
   );
 }

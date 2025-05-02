@@ -15,23 +15,24 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-    // Delay 3 detik sebelum navigasi
-    Future.delayed(const Duration(seconds: 3), () {
-      final auth_provider = Provider.of<AuthProvider>(context, listen: false);
+    Future.delayed(Duration(seconds: 2), () {
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      final user = authProvider.user;
 
-      if (auth_provider.user == null) {
-        // Arahkan ke rute Auth jika tidak ada user yang login
-        context.go('/signin');
-      } else {
-        // Arahkan ke rute yang sesuai berdasarkan role user
-        if (auth_provider.user["role"] == "owner") {
-          context.go('/super');
-        } else if (auth_provider.user["role"] == "karyawan") {
-          context.go('/employee');
-        } else if (auth_provider.user["role"] == "mitra") {
-          context.go('/mitra');
-        }
+      if (user == null) {
+        context.go('/auth/signin');
+        return;
       }
+
+      final role = user['role'];
+      final redirectMap = {
+        'owner': '/owner',
+        'karyawan': '/employee',
+        'mitra': '/mitra',
+      };
+
+      final target = redirectMap[role] ?? '/auth/signin';
+      context.go(target);
     });
   }
 
@@ -63,20 +64,23 @@ class _SplashScreenState extends State<SplashScreen> {
             ),
             const SizedBox(height: 10), // Spasi antara nama dan tagline
             // Tagline atau deskripsi
-            Text(
-              'Memberdayakan Usaha Kecil, Menengah, dan Besar',
-              style: TextStyle(
-                fontFamily: 'Poppins', // Menggunakan font keluarga aplikasi
-                fontWeight: FontWeight.w500,
-                fontSize: 14, // Ukuran font untuk tagline
-                color: Colors.white.withOpacity(
-                    0.7), // Warna teks dengan opacity agar lebih kontras
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
-      ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Memberdayakan Usaha Kecil, Menengah, dan Besar',
+                style: TextStyle(
+                  fontFamily: 'Poppins', // Menggunakan font keluarga aplikasi
+                  fontWeight: FontWeight.w500,
+                  fontSize: 14, // Ukuran font untuk tagline
+                  color: Colors.white.withOpacity(
+                      0.7), // Warna teks dengan opacity agar lebih kontras
+                ),
+                textAlign: TextAlign.center,
+              )
+            )
+          ]
+        )
+      )
     );
   }
 }
