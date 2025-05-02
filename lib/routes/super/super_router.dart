@@ -21,166 +21,156 @@ import 'package:qlola_umkm/screens/transaction.dart';
 class SuperRouter {
   SuperRouter._();
 
-  static String initSuperRoute = '/home';
-  static final _rootSuperNavigatorKey = GlobalKey<NavigatorState>();
-  static final _rootSuperNavigatorHome =
-      GlobalKey<NavigatorState>(debugLabel: 'shellHome');
-  static final _rootSuperNavigatorProduct =
-      GlobalKey<NavigatorState>(debugLabel: 'shellProduct');
-  static final _rootSuperNavigatorOutlet =
-      GlobalKey<NavigatorState>(debugLabel: 'shellOutlet');
-  static final _rootSuperNavigatorEmployee =
-      GlobalKey<NavigatorState>(debugLabel: 'shellEmployee');
-  static final _rootSuperNavigatorProfile =
-      GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
+  static final homeKey = GlobalKey<NavigatorState>(debugLabel: 'ownerHome');
+  static final productKey = GlobalKey<NavigatorState>(debugLabel: 'ownerProduct');
+  static final outletKey = GlobalKey<NavigatorState>(debugLabel: 'ownerKey');
+  static final employeeKey = GlobalKey<NavigatorState>(debugLabel: 'ownerEmployee');
+  static final profileKey = GlobalKey<NavigatorState>(debugLabel: 'ownerProfile');
 
-  static final GoRouter router = GoRouter(
-      initialLocation: initSuperRoute,
-      navigatorKey: _rootSuperNavigatorKey,
-      debugLogDiagnostics: true,
-      routes: [
-        StatefulShellRoute.indexedStack(
-            builder: (context, state, navigationShell) {
-              return TabIndex(navigationShell: navigationShell);
-            },
-            branches: [
-              StatefulShellBranch(
-                  navigatorKey: _rootSuperNavigatorHome,
-                  routes: [
-                    GoRoute(
-                        path: '/home',
-                        name: 'Home',
-                        builder: (context, state) {
-                          return HomeScreen(key: state.pageKey);
-                        })
-                  ]),
-              StatefulShellBranch(
-                  navigatorKey: _rootSuperNavigatorProduct,
-                  routes: [
-                    GoRoute(
-                        path: '/product',
-                        name: 'Product',
-                        builder: (context, state) {
-                          return ProductScreen(key: state.pageKey);
-                        })
-                  ]),
-              StatefulShellBranch(
-                  navigatorKey: _rootSuperNavigatorOutlet,
-                  routes: [
-                    GoRoute(
-                        path: '/outlet',
-                        name: 'Outlet',
-                        builder: (context, state) {
-                          return OutletScreen(key: state.pageKey);
-                        })
-                  ]),
-              StatefulShellBranch(
-                  navigatorKey: _rootSuperNavigatorEmployee,
-                  routes: [
-                    GoRoute(
-                        path: '/employee',
-                        name: 'Employee',
-                        builder: (context, state) {
-                          return EmployeeScreen(key: state.pageKey);
-                        })
-                  ]),
-              StatefulShellBranch(
-                  navigatorKey: _rootSuperNavigatorProfile,
-                  routes: [
-                    GoRoute(
-                        path: '/profile',
-                        name: 'Profile',
-                        builder: (context, state) {
-                          return ProfileScreen(key: state.pageKey);
-                        })
-                  ])
-            ]),
-        GoRoute(
-            path: '/add_product',
-            name: 'Add Product',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return AddProductScreen(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/edit_product',
-            name: 'Edit Product',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return EditProductScreen(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/add_outlet',
-            name: 'Add Outlet',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return AddOutletScreen(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/add_outlet_employee',
-            name: 'Add Outlet Employee',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              final outlet = state.extra! as dynamic;
-
-              return AddOutletEmployeeScreen(
-                key: state.pageKey,
-                outlet: outlet,
-              );
-            }),
-        GoRoute(
-            path: '/add_mitra',
-            name: 'Add Mitra',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return AddMitra(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/add_outlet_product',
-            name: 'Add Outlet Product',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              final outlet = state.extra! as dynamic;
-
-              return AddOutletProductScreen(
-                key: state.pageKey,
-                outlet: outlet,
-              );
-            }),
-        GoRoute(
-            path: '/add_employee',
-            name: 'Add Employee',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return AddEmployeeScreen(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/history_transaction',
-            name: 'HistoryTransaction',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return HistoryTransactionScreen(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/delete_transaction',
-            name: 'DeleteTransaction',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return DeleteTransactionScreen(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/transaction',
-            name: 'Transaction',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return TransactionScreen(key: state.pageKey);
-            }),
-        GoRoute(
-            path: '/report',
-            name: 'Report',
-            parentNavigatorKey: _rootSuperNavigatorKey,
-            builder: (context, state) {
-              return ReportScreen(key: state.pageKey);
-            })
-      ]);
+  static final List<RouteBase> routes = [
+    StatefulShellRoute.indexedStack(
+      builder: (context, state, navigationShell) => TabIndex(navigationShell: navigationShell),
+      branches: [
+        StatefulShellBranch(
+          navigatorKey: homeKey,
+          routes: [
+            GoRoute(
+              path: "/owner",
+              name: "Owner Home",
+              builder: (context, state) {
+                return HomeScreen(key: state.pageKey);
+              }
+            )
+          ]
+        ),
+        StatefulShellBranch(
+          navigatorKey: productKey,
+          routes: [
+            GoRoute(
+              path: '/owner/product',
+              name: "Owner Product",
+              builder: (context, state) {
+                return ProductScreen(key: state.pageKey);
+              }
+            )
+          ]
+        ),
+        StatefulShellBranch(
+          navigatorKey: outletKey,
+          routes: [
+            GoRoute(
+              path: '/owner/outlet',
+              name: "Owner Outlet",
+              builder: (context, state) {
+                return OutletScreen(key: state.pageKey);
+              }
+            )
+          ]
+        ),
+        StatefulShellBranch(
+          navigatorKey: employeeKey,
+          routes: [
+            GoRoute(
+              path: '/owner/employee',
+              name: "Owner Employee",
+              builder: (context, state) {
+                return EmployeeScreen(key: state.pageKey);
+              }
+            )
+          ]
+        ),
+        StatefulShellBranch(
+          navigatorKey: profileKey,
+          routes: [
+            GoRoute(
+              path: '/owner/profile',
+              name: "Owner Profile",
+              builder: (context, state) {
+                return ProfileScreen(key: state.pageKey);
+              }
+            )
+          ]
+        )
+      ]
+    ),
+    GoRoute(
+      path: '/owner/add_product',
+      name: "Owner Add Product",
+      builder: (context, state) {
+        return AddProductScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/edit_product',
+      name: "Owner Edit Product",
+      builder: (context, state) {
+        return EditProductScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/add_outlet',
+      name: "Owner Add Outlet",
+      builder: (context, state) {
+        return AddOutletScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/add_outlet_employee',
+      name: "Owner Outlet Employee",
+      builder: (context, state) {
+        final outlet = state.extra! as dynamic;
+        return AddOutletEmployeeScreen(key: state.pageKey, outlet: outlet);
+      }
+    ),
+    GoRoute(
+      path: '/owner/add_mitra',
+      name: "Owner Add Mitra",
+      builder: (context, state) {
+        return AddMitra(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/add_outlet_product',
+      name: "Owner Add Outlet Product",
+      builder: (context, state) {
+        final outlet = state.extra! as dynamic;
+        return AddOutletProductScreen(key: state.pageKey, outlet: outlet);
+      }
+    ),
+    GoRoute(
+      path: '/owner/add_employee',
+      name: "Owner Add Employee",
+      builder: (context, state) {
+        return AddEmployeeScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/history_transaction',
+      name: "Owner History Transaction",
+      builder: (context, state) {
+        return HistoryTransactionScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/delete_transaction',
+      name: "Owner Delete Transaction",
+      builder: (context, state) {
+        return DeleteTransactionScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/transaction',
+      name: "Owner Transaction",
+      builder: (context, state) {
+        return TransactionScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/report',
+      name: "Owner Report",
+      builder: (context, state) {
+        return ReportScreen(key: state.pageKey);
+      }
+    )
+  ];
 }
