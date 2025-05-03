@@ -17,8 +17,10 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  final phone = TextEditingController(text: "89668951090");
-  final password = TextEditingController(text: "12345678");
+  // final phone = TextEditingController(text: "89668951090");
+  // final password = TextEditingController(text: "12345678");
+  final phone = TextEditingController(text: "");
+  final password = TextEditingController(text: "");
   bool showPassword = false;
   bool proccess = false;
 

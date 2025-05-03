@@ -189,14 +189,14 @@ class HelperCheckout {
               )
             ),
             const SizedBox(height: 15),
-            Text(
-              transformPrice(0),
-              style: TextStyle(
-                fontFamily: "Poppins",
-                color: Theme.of(context).primaryColorDark,
-                fontWeight: FontWeight.w700
-              )
-            ),
+            // Text(
+            //   transformPrice(0),
+            //   style: TextStyle(
+            //     fontFamily: "Poppins",
+            //     color: Theme.of(context).primaryColorDark,
+            //     fontWeight: FontWeight.w700
+            //   )
+            // ),
             const SizedBox(height: 15),
             GestureDetector(
               onTap: () {
