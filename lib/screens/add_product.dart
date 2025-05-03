@@ -1,13 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddProductScreen extends StatefulWidget {
   const AddProductScreen({super.key});
@@ -36,41 +37,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
     final httpRequest = await add_product(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context, true);
+      successMessage(context, "Informasi", "Berhasil menambahkan produk baru");
 
-      return Flushbar(
-        backgroundColor: Color(0xff00880d),
-        duration: Duration(seconds: 5),
-        reverseAnimationCurve: Curves.fastOutSlowIn,
-        flushbarPosition: FlushbarPosition.TOP,
-        titleText: Text("Informasi",
-            style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 12)),
-        messageText: Text("Berhasil menambahkan produk baru",
-            style: TextStyle(
-                fontFamily: "Poppins", color: Colors.white, fontSize: 12)),
-      ).show(context);
+      return;
     }
 
     setState(() => proccess = false);
 
-    Flushbar(
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 5),
-      reverseAnimationCurve: Curves.fastOutSlowIn,
-      flushbarPosition: FlushbarPosition.TOP,
-      titleText: Text("Informasi",
-          style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12)),
-      messageText: Text(httpRequest["message"],
-          style: TextStyle(
-              fontFamily: "Poppins", color: Colors.white, fontSize: 12)),
-    ).show(context);
+    errorMessage(context, "Informasi", httpRequest["message"]);
   }
 
   Future<void> _pickFromGallery() async {
@@ -120,8 +94,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             width: 5.w, height: 5.w),
                         const SizedBox(width: 12),
                         Text("Kamera",
-                            style: TextStyle(
-                                fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w500,
                                 color: Theme.of(context).primaryColorDark,
                                 fontSize: 3.w))
@@ -186,11 +159,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     height: 4.5.w))),
                         const SizedBox(width: 6),
                         Text("Tambah Produk",
-                            style: TextStyle(
-                                fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w700,
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 3.6.w))
+                                fontSize: 4.w))
                       ])),
               Expanded(
                   child: SingleChildScrollView(
@@ -241,18 +213,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         isDense: true,
                                         border: InputBorder.none,
                                         hintText: "Nama produk",
-                                        hintStyle: TextStyle(
-                                            fontFamily: "Poppins",
+                                        hintStyle: GoogleFonts.roboto(
                                             fontWeight: FontWeight.w400,
                                             color:
                                                 Theme.of(context).disabledColor,
-                                            fontSize: 3.w)),
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
+                                            fontSize: 3.5.w)),
+                                    style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w400,
                                         color:
                                             Theme.of(context).primaryColorDark,
-                                        fontSize: 3.w),
+                                        fontSize: 3.5.w),
                                     cursorColor: Theme.of(context).focusColor,
                                     controller: productName,
                                   )),
@@ -272,18 +242,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                         isDense: true,
                                         border: InputBorder.none,
                                         hintText: "Harga jual",
-                                        hintStyle: TextStyle(
-                                            fontFamily: "Poppins",
+                                        hintStyle: GoogleFonts.roboto(
                                             fontWeight: FontWeight.w400,
                                             color:
                                                 Theme.of(context).disabledColor,
-                                            fontSize: 3.w)),
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
+                                            fontSize: 3.5.w)),
+                                    style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w400,
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                        fontSize: 3.w),
+                                        color: Theme.of(context).primaryColorDark,
+                                        fontSize: 3.5.w),
                                     keyboardType: TextInputType.number,
                                     cursorColor: Theme.of(context).focusColor,
                                     controller: productPrice,
@@ -293,47 +260,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                         Container(
                           height: 10,
                           color:
-                              Theme.of(context).dividerColor.withOpacity(0.5),
+                            Theme.of(context).dividerColor.withOpacity(0.5),
                         ),
                         const SizedBox(height: 20),
-                        // Container(
-                        //   padding: const EdgeInsets.symmetric(horizontal: 20),
-                        //   child: Row(
-                        //     children: [
-                        //       Expanded(child: Column(
-                        //         crossAxisAlignment: CrossAxisAlignment.start,
-                        //         children: [
-                        //           Text(
-                        //             "Produk Favorit",
-                        //             style: TextStyle(
-                        //               fontFamily: "Poppins",
-                        //               fontWeight: FontWeight.w600,
-                        //               color: Theme.of(context).primaryColor
-                        //             )
-                        //           ),
-                        //           Text(
-                        //             "Tampilkan produk di posisi teratas",
-                        //             style: TextStyle(
-                        //               fontFamily: "Poppins",
-                        //               color: Theme.of(context).primaryColorDark,
-                        //               fontSize: 12
-                        //             )
-                        //           )
-                        //         ]
-                        //       )),
-                        //       const SizedBox(width: 12),
-                        //       Transform.scale(
-                        //         scale: 0.7,
-                        //         child: CupertinoSwitch(
-                        //           activeColor: Theme.of(context).primaryColor,
-                        //           trackColor: Theme.of(context).dividerColor,
-                        //           value: favorite,
-                        //           onChanged: (value) => setState(() => favorite = value),
-                        //         )
-                        //       )
-                        //     ]
-                        //   )
-                        // ),
                         const SizedBox(height: 20)
                       ]))),
               if (!proccess)
@@ -354,10 +283,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(6))),
                             child: Text("Simpan",
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
+                                style: GoogleFonts.roboto(
                                     fontWeight: FontWeight.w700,
-                                    color: Colors.white))))),
+                                    color: Colors.white,
+                                    fontSize: 16))))),
               if (proccess)
                 Container(
                     width: double.infinity,
@@ -374,14 +303,14 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             children: [
                               LoadingAnimationWidget.fourRotatingDots(
                                 color: Colors.white,
-                                size: 22,
+                                size: 20,
                               ),
                               const SizedBox(width: 5),
                               Text("Proses Simpan...",
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
+                                  style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white))
+                                      color: Colors.white,
+                                      fontSize: 16))
                             ])))
             ]))));
   }

@@ -1,9 +1,10 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddOutletScreen extends StatefulWidget {
   const AddOutletScreen({super.key});
@@ -29,43 +30,15 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
 
     final httpRequest = await add_outlet(data);
     if (httpRequest["status"] == 200) {
-      // Pop dan kirimkan true untuk memperbarui data di OutletScreen
       Navigator.pop(context, true);
+      successMessage(context, "Informasi", "Berhasil menambahkan outlet baru");
 
-      return Flushbar(
-        backgroundColor: Color(0xff00880d),
-        duration: Duration(seconds: 5),
-        reverseAnimationCurve: Curves.fastOutSlowIn,
-        flushbarPosition: FlushbarPosition.TOP,
-        titleText: Text("Informasi",
-            style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
-                fontSize: 12)),
-        messageText: Text("Berhasil menambahkan outlet baru",
-            style: TextStyle(
-                fontFamily: "Poppins", color: Colors.white, fontSize: 12)),
-      ).show(context);
+      return;
     }
 
     setState(() => proccess = false);
 
-    Flushbar(
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 5),
-      reverseAnimationCurve: Curves.fastOutSlowIn,
-      flushbarPosition: FlushbarPosition.TOP,
-      titleText: Text("Informasi",
-          style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12)),
-      messageText: Text(httpRequest["message"],
-          style: TextStyle(
-              fontFamily: "Poppins", color: Colors.white, fontSize: 12)),
-    ).show(context);
+    errorMessage(context, "Informasi", httpRequest["message"]);
   }
 
   @override
@@ -107,11 +80,10 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                     height: 4.5.w))),
                         const SizedBox(width: 6),
                         Text("Tambah Outlet",
-                            style: TextStyle(
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.w700,
+                            style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 3.6.w))
+                                fontSize: 4.w))
                       ])),
               Expanded(
                   child: SingleChildScrollView(
@@ -125,12 +97,11 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("Informasi Outlet",
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
-                                          fontWeight: FontWeight.w700,
+                                      style: GoogleFonts.roboto(
+                                          fontWeight: FontWeight.bold,
                                           color: Theme.of(context)
                                               .primaryColorDark,
-                                          fontSize: 3.6.w)),
+                                          fontSize: 4.w)),
                                   const SizedBox(height: 14),
                                   Container(
                                       padding: const EdgeInsets.symmetric(
@@ -147,18 +118,16 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                             isDense: true,
                                             border: InputBorder.none,
                                             hintText: "Nama outlet",
-                                            hintStyle: TextStyle(
-                                                fontFamily: "Poppins",
+                                            hintStyle: GoogleFonts.roboto(
                                                 fontWeight: FontWeight.w400,
                                                 color: Theme.of(context)
                                                     .disabledColor,
-                                                fontSize: 3.w)),
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
+                                                fontSize: 3.5.w)),
+                                        style: GoogleFonts.roboto(
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
                                                 .primaryColorDark,
-                                            fontSize: 3.w),
+                                            fontSize: 3.5.w),
                                         cursorColor:
                                             Theme.of(context).focusColor,
                                         controller: outletName,
@@ -176,12 +145,11 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                               Radius.circular(6))),
                                       child: Row(children: [
                                         Text("+62",
-                                            style: TextStyle(
-                                                fontFamily: "Poppins",
+                                            style: GoogleFonts.roboto(
                                                 fontWeight: FontWeight.w400,
                                                 color: Theme.of(context)
                                                     .primaryColorDark,
-                                                fontSize: 3.w)),
+                                                fontSize: 3.5.w)),
                                         const SizedBox(width: 8),
                                         Expanded(
                                             child: TextField(
@@ -189,18 +157,16 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                               isDense: true,
                                               border: InputBorder.none,
                                               hintText: "No. Handphone",
-                                              hintStyle: TextStyle(
-                                                  fontFamily: "Poppins",
+                                              hintStyle: GoogleFonts.roboto(
                                                   fontWeight: FontWeight.w400,
                                                   color: Theme.of(context)
                                                       .disabledColor,
-                                                  fontSize: 3.w)),
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
+                                                  fontSize: 3.5.w)),
+                                          style: GoogleFonts.roboto(
                                               fontWeight: FontWeight.w400,
                                               color: Theme.of(context)
                                                   .primaryColorDark,
-                                              fontSize: 3.w),
+                                              fontSize: 3.5.w),
                                           keyboardType: TextInputType.number,
                                           cursorColor:
                                               Theme.of(context).focusColor,
@@ -224,18 +190,16 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                             border: InputBorder.none,
                                             hintText:
                                                 "Detail Alamat (Optional)",
-                                            hintStyle: TextStyle(
-                                                fontFamily: "Poppins",
+                                            hintStyle: GoogleFonts.roboto(
                                                 fontWeight: FontWeight.w400,
                                                 color: Theme.of(context)
                                                     .disabledColor,
-                                                fontSize: 3.w)),
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
+                                                fontSize: 3.5.w)),
+                                        style: GoogleFonts.roboto(
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
                                                 .primaryColorDark,
-                                            fontSize: 3.w),
+                                            fontSize: 3.5.w),
                                         cursorColor:
                                             Theme.of(context).focusColor,
                                         controller: outletAddress,
@@ -273,10 +237,10 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                                       8), // Memberikan jarak antara ikon dan teks
                               Text(
                                 "Simpan",
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
-                                  fontWeight: FontWeight.w700,
+                                style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.bold,
                                   color: Colors.white,
+                                  fontSize: 16
                                 ),
                               ),
                             ],
@@ -298,14 +262,14 @@ class _AddOutletScreenState extends State<AddOutletScreen> {
                             children: [
                               LoadingAnimationWidget.fourRotatingDots(
                                 color: Colors.white,
-                                size: 22,
+                                size: 20,
                               ),
                               const SizedBox(width: 5),
                               Text("Proses Simpan...",
-                                  style: TextStyle(
-                                      fontFamily: "Poppins",
+                                  style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w700,
-                                      color: Colors.white))
+                                      color: Colors.white,
+                                      fontSize: 16))
                             ])))
             ]))));
   }

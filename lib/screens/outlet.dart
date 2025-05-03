@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/outlet/outlet_item.dart';
 import 'package:qlola_umkm/screens/add_outlet.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OutletScreen extends StatefulWidget {
   final String title;
@@ -59,36 +60,30 @@ class _OutletScreenState extends State<OutletScreen> {
       extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
+        preferredSize: const Size.fromHeight(56), // Adjust height as needed
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0,
+          title: Text(
+            widget.title,
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColorDark,
+              fontSize: 18
+            )
+          ),
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
+            statusBarColor: Theme.of(context).primaryColor,
             statusBarIconBrightness: Brightness.light,
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Text(
-              widget.title,
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w700,
-                fontSize: 22, // Ukuran font judul yang lebih kecil
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+          )
+        )
       ),
       body: Stack(
         children: [
           Column(
-            crossAxisAlignment: outlets.isNotEmpty
-                ? CrossAxisAlignment.start
-                : CrossAxisAlignment.center,
+            crossAxisAlignment: outlets.isNotEmpty ? CrossAxisAlignment.start : CrossAxisAlignment.center,
             children: [
-              // Body header text
               Container(
                 padding: const EdgeInsets.all(16),
                 child: Column(
@@ -96,25 +91,21 @@ class _OutletScreenState extends State<OutletScreen> {
                   children: [
                     Text(
                       widget.title,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20, // Ukuran font lebih kecil
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                         color: Theme.of(context).primaryColorDark,
                       ),
                     ),
-                    const SizedBox(height: 6),
                     Text(
                       "Kelola semua data outlet kamu di sini.",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         color: Theme.of(context).disabledColor,
-                        fontSize:
-                            12, // Ukuran font yang lebih kecil untuk deskripsi
-                      ),
-                    ),
-                  ],
-                ),
+                        fontSize: 14,
+                      )
+                    )
+                  ]
+                )
               ),
               // Divider
               Container(
@@ -125,23 +116,16 @@ class _OutletScreenState extends State<OutletScreen> {
                 child: LayoutBuilder(
                   builder: (context, constraints) => RefreshIndicator(
                     color: Theme.of(context).indicatorColor,
-                    onRefresh: () => Future.delayed(
-                        const Duration(seconds: 1), () => _getOutlet()),
+                    onRefresh: () => Future.delayed(const Duration(seconds: 1), () => _getOutlet()),
                     child: SingleChildScrollView(
                       physics: const AlwaysScrollableScrollPhysics(),
                       child: ConstrainedBox(
-                        constraints:
-                            BoxConstraints(minHeight: constraints.maxHeight),
+                        constraints: BoxConstraints(minHeight: constraints.maxHeight),
                         child: IntrinsicHeight(
                           child: Column(
                             children: [
                               const SizedBox(height: 16),
-                              if (!isLoading && outlets.isNotEmpty)
-                                for (var index = 0;
-                                    index < outlets.length;
-                                    index++)
-                                  OutletItem(
-                                      outlet: outlets[index], index: index),
+                              if (!isLoading && outlets.isNotEmpty) for (var index = 0; index < outlets.length; index++) OutletItem(outlet: outlets[index], index: index),
                               if (!isLoading && outlets.isEmpty)
                                 Expanded(
                                   child: Column(
@@ -156,8 +140,7 @@ class _OutletScreenState extends State<OutletScreen> {
                                       const SizedBox(height: 12),
                                       Text(
                                         "Belum ada ${widget.buttonText.split(' ').last}",
-                                        style: TextStyle(
-                                          fontFamily: "Poppins",
+                                        style: GoogleFonts.roboto(
                                           fontWeight: FontWeight.w600,
                                           fontSize: 18,
                                           color: Theme.of(context)
@@ -170,8 +153,7 @@ class _OutletScreenState extends State<OutletScreen> {
                                         child: Text(
                                           'Tekan tombol di bawah untuk menambahkan ${widget.buttonText.split(' ').last.toLowerCase()} kamu',
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontFamily: "Poppins",
+                                          style: GoogleFonts.roboto(
                                             color: Theme.of(context)
                                                 .primaryColorDark,
                                             fontSize: 14,
