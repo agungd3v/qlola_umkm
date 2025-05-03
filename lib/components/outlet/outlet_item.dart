@@ -2,6 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
 
 class OutletItem extends StatefulWidget {
   final dynamic outlet;
@@ -111,10 +112,11 @@ class _OutletItemState extends State<OutletItem> {
               Expanded(child: _buildActionButton(
                 label: "Tambah Mitra",
                 onPressed: () {
-                  context.pushNamed("Owner Add Mitra", extra: widget.outlet);
+                  // context.pushNamed("Owner Add Mitra", extra: widget.outlet);
+                  successMessage(context, "Kelola Outlet", "Sedang tahap development");
                 },
                 icon: Icons.group_add,
-                backgroundColor: Theme.of(context).primaryColor,
+                backgroundColor: Theme.of(context).disabledColor,
                 isFullWidth: true,
               ))
             ])

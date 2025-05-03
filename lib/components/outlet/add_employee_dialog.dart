@@ -13,8 +13,11 @@ class AddEmployeeDialog extends StatefulWidget {
 class _AddEmployeeDialogState extends State<AddEmployeeDialog> {
   OwnerProvider? owner_provider;
   List employeeDump = [];
+  bool load = false;
 
   Future getEmployee() async {
+    setState(() => load = true);
+
     final httpRequest = await get_available_employees();
     if (httpRequest["status"] == 200) {
       setState(() {
@@ -23,6 +26,8 @@ class _AddEmployeeDialogState extends State<AddEmployeeDialog> {
         }).toList();
       });
     }
+
+    setState(() => load = false);
   }
 
   Future _tempEmployee() async {
@@ -61,7 +66,19 @@ class _AddEmployeeDialogState extends State<AddEmployeeDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (employeeDump.isEmpty) Container(
+          if (load) Container(
+            padding: const EdgeInsets.only(bottom: 40, top: 20),
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                )
+              ]
+            )
+          ),
+          if (!load && employeeDump.isEmpty) Container(
             margin: const EdgeInsets.only(bottom: 20),
             child: Text(
               "Tidak ada karyawan satupun tersedia di bisnis anda",
@@ -73,7 +90,7 @@ class _AddEmployeeDialogState extends State<AddEmployeeDialog> {
               )
             )
           ),
-          if (employeeDump.isNotEmpty) Container(
+          if (!load && employeeDump.isNotEmpty) Container(
             margin: const EdgeInsets.only(bottom: 20),
             child: Column(
               children: [
@@ -114,7 +131,7 @@ class _AddEmployeeDialogState extends State<AddEmployeeDialog> {
               ]
             )
           ),
-          GestureDetector(
+          if (!load && employeeDump.isNotEmpty) GestureDetector(
             onTap: () => _tempEmployee(),
             child: Container(
               height: 40,

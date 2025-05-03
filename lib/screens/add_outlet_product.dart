@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/outlet/add_product_dialog.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
 
 class AddOutletProductScreen extends StatefulWidget {
   dynamic outlet;
@@ -19,6 +19,7 @@ class AddOutletProductScreen extends StatefulWidget {
 class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
   OwnerProvider? owner_provider;
   bool proccess = false;
+  bool load = false;
 
   Future<void> _addEmployee() async {
     final Map<String, dynamic> data = {
@@ -31,56 +32,25 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
     final httpRequest = await add_outlet_products(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
+      successMessage(context, widget.outlet["outlet_name"], "Berhasil memperbarui produk pada ${widget.outlet["outlet_name"]}");
 
-      return Flushbar(
-        backgroundColor: Color(0xff00880d),
-        duration: Duration(seconds: 5),
-        reverseAnimationCurve: Curves.fastOutSlowIn,
-        flushbarPosition: FlushbarPosition.TOP,
-        titleText: Text(
-          widget.outlet["outlet_name"],
-          style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12),
-        ),
-        messageText: Text(
-          "Berhasil memperbarui produk pada ${widget.outlet["outlet_name"]}",
-          style: TextStyle(
-              fontFamily: "Poppins", color: Colors.white, fontSize: 12),
-        ),
-      ).show(context);
+      return;
     }
 
     setState(() => proccess = false);
 
-    Flushbar(
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 5),
-      reverseAnimationCurve: Curves.fastOutSlowIn,
-      flushbarPosition: FlushbarPosition.TOP,
-      titleText: Text(
-        widget.outlet["outlet_name"],
-        style: TextStyle(
-            fontFamily: "Poppins",
-            fontWeight: FontWeight.w600,
-            color: Colors.white,
-            fontSize: 12),
-      ),
-      messageText: Text(
-        httpRequest["message"],
-        style:
-            TextStyle(fontFamily: "Poppins", color: Colors.white, fontSize: 12),
-      ),
-    ).show(context);
+    errorMessage(context, widget.outlet["outlet_name"], httpRequest["message"]);
   }
 
   Future _showProduct() async {
+    setState(() => load = true);
+
     final httpRequest = await get_outlet_products(widget.outlet["id"]);
     if (httpRequest["status"] == 200) {
       owner_provider!.init_product = httpRequest["data"] as List;
     }
+
+    setState(() => load = false);
   }
 
   void _showListProduct() {
@@ -184,7 +154,19 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                 ),
               ),
             ),
-            Expanded(
+            if (load) Expanded(child: Container(
+              padding: const EdgeInsets.only(top: 50),
+              alignment: Alignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                  )
+                ]
+              )
+            )),
+            if (!load && (owner_provider!.products).isNotEmpty) Expanded(
               child: SingleChildScrollView(
                 keyboardDismissBehavior:
                     ScrollViewKeyboardDismissBehavior.onDrag,
@@ -258,6 +240,10 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                 ),
               ),
             ),
+            if (!load && (owner_provider!.products).isEmpty) Expanded(child: Container(
+              padding: const EdgeInsets.all(16),
+              child: Text("Tidak ditemukan produk di outlet ini"),
+            )),
             if (!proccess)
               Container(
                 width: double.infinity,
@@ -318,6 +304,7 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                   ),
                 ),
               ),
+            SizedBox(height: 10)
           ],
         ),
       ),

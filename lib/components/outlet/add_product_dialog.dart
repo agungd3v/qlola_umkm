@@ -19,8 +19,11 @@ class AddProductDialog extends StatefulWidget {
 class _AddProductDialogState extends State<AddProductDialog> {
   OwnerProvider? owner_provider;
   List productDump = [];
+  bool load = false;
 
   Future getProduct() async {
+    setState(() => load = true);
+
     final Map<String, dynamic> data = {
       "outlet_id": widget.outlet["id"],
     };
@@ -34,6 +37,8 @@ class _AddProductDialogState extends State<AddProductDialog> {
         }).toList();
       });
     }
+
+    setState(() => load = false);
   }
 
   Future _tempEmployee() async {
@@ -72,7 +77,19 @@ class _AddProductDialogState extends State<AddProductDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (productDump.isEmpty) Container(
+          if (load) Container(
+            padding: const EdgeInsets.only(bottom: 40, top: 20),
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                )
+              ]
+            )
+          ),
+          if (!load && productDump.isEmpty) Container(
             margin: const EdgeInsets.only(bottom: 20),
             child: Text(
               "Tidak ada satupun produk tersedia di bisnis anda",
@@ -84,7 +101,7 @@ class _AddProductDialogState extends State<AddProductDialog> {
               )
             )
           ),
-          if (productDump.isNotEmpty) Container(
+          if (!load && productDump.isNotEmpty) Container(
             margin: const EdgeInsets.only(bottom: 20),
             child: Column(
               children: [

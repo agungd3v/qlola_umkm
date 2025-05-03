@@ -1,4 +1,3 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -6,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/outlet/add_employee_dialog.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
 
 class AddOutletEmployeeScreen extends StatefulWidget {
   final dynamic outlet;
@@ -13,13 +13,13 @@ class AddOutletEmployeeScreen extends StatefulWidget {
   AddOutletEmployeeScreen({super.key, required this.outlet});
 
   @override
-  State<AddOutletEmployeeScreen> createState() =>
-      _AddOutletEmployeeScreenState();
+  State<AddOutletEmployeeScreen> createState() => _AddOutletEmployeeScreenState();
 }
 
 class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
   OwnerProvider? owner_provider;
   bool proccess = false;
+  bool load = false;
 
   Future<void> _addEmployee() async {
     final Map<String, dynamic> data = {
@@ -32,54 +32,25 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
     final httpRequest = await add_outlet_employees(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context);
+      successMessage(context, widget.outlet["outlet_name"], "Berhasil memperbarui karyawan pada ${widget.outlet["outlet_name"]}");
 
-      return Flushbar(
-        backgroundColor: Color(0xff00880d),
-        duration: Duration(seconds: 5),
-        reverseAnimationCurve: Curves.fastOutSlowIn,
-        flushbarPosition: FlushbarPosition.TOP,
-        titleText: Text(
-          widget.outlet["outlet_name"],
-          style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12),
-        ),
-        messageText: Text(
-          "Berhasil memperbarui karyawan pada ${widget.outlet["outlet_name"]}",
-          style: TextStyle(
-              fontFamily: "Poppins", color: Colors.white, fontSize: 12),
-        ),
-      ).show(context);
+      return;
     }
 
     setState(() => proccess = false);
 
-    Flushbar(
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 5),
-      reverseAnimationCurve: Curves.fastOutSlowIn,
-      flushbarPosition: FlushbarPosition.TOP,
-      titleText: Text(widget.outlet["outlet_name"],
-          style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12)),
-      messageText: Text(
-        httpRequest["message"],
-        style:
-            TextStyle(fontFamily: "Poppins", color: Colors.white, fontSize: 12),
-      ),
-    ).show(context);
+    errorMessage(context, widget.outlet["outlet_name"], httpRequest["message"]);
   }
 
   Future _showEmployee() async {
+    setState(() => load = true);
+
     final httpRequest = await get_outlet_employees(widget.outlet["id"]);
     if (httpRequest["status"] == 200) {
       owner_provider!.init_employee = httpRequest["data"] as List;
     }
+
+    setState(() => load = false);
   }
 
   void _showListEmployee() {
@@ -179,12 +150,24 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                         fontSize: 12, // Font size remains consistent
-                      ),
-                    ),
-                  ),
-                ),
+                      )
+                    )
+                  )
+                )
               ),
-              Expanded(
+              if (load) Expanded(child: Container(
+                padding: const EdgeInsets.only(top: 50),
+                alignment: Alignment.center,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+                    )
+                  ]
+                )
+              )),
+              if (!load && (owner_provider!.employees).isNotEmpty) Expanded(
                 child: SingleChildScrollView(
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
@@ -193,7 +176,7 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
                     children: [
                       const SizedBox(height: 20),
                       for (var index = 0;
-                          index < owner_provider!.employees.length;
+                          index < (owner_provider!.employees).length;
                           index++)
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -267,6 +250,10 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
                   ),
                 ),
               ),
+              if (!load && (owner_provider!.employees).isEmpty) Expanded(child: Container(
+                padding: const EdgeInsets.all(16),
+                child: Text("Tidak ditemukan karyawan di outlet ini"),
+              )),
               if (!proccess)
                 Container(
                   width: double.infinity,
@@ -343,6 +330,7 @@ class _AddOutletEmployeeScreenState extends State<AddOutletEmployeeScreen> {
                     ),
                   ),
                 ),
+              SizedBox(height: 10),
             ],
           ),
         ),
