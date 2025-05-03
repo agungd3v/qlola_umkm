@@ -73,8 +73,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                 child: AppBar(
                     automaticallyImplyLeading: false,
                     systemOverlayStyle: SystemUiOverlayStyle(
-                        statusBarColor: Theme.of(context).primaryColor,
-                        statusBarIconBrightness: Brightness.light))),
+                        statusBarIconBrightness: Brightness.dark))),
             body: Container(
                 padding: const EdgeInsets.all(20),
                 child: Column(

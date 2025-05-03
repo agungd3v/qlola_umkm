@@ -1,8 +1,14 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 Future successMessage(BuildContext context, title, message) {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Color(0xFF18CB96),
+    statusBarIconBrightness: Brightness.light
+  ));
+
   return Flushbar(
     backgroundColor: Theme.of(context).primaryColor,
     duration: Duration(seconds: 3),
@@ -28,6 +34,11 @@ Future successMessage(BuildContext context, title, message) {
 }
 
 Future errorMessage(BuildContext context, title, message) {
+  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    statusBarColor: Color(0xFF18CB96),
+    statusBarIconBrightness: Brightness.light
+  ));
+
   return Flushbar(
     backgroundColor: Color(0xFFE5484D),
     duration: Duration(seconds: 3),

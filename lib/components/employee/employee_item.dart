@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeItem extends StatefulWidget {
   dynamic employee;
@@ -30,13 +31,24 @@ class _EmployeeItemState extends State<EmployeeItem> {
             width: 17.5.w,
             height: 17.5.w,
             fit: BoxFit.cover,
+            loadingBuilder: (context, child, loadingProgress) {
+              if (loadingProgress == null) return child;
+              return Container(
+                width: 17.5.w,
+                height: 17.5.w,
+                color: Theme.of(context).primaryColor.withOpacity(0.2),
+                child: Center(
+                  child: Icon(Icons.person, size: 32, color: Theme.of(context).primaryColor)
+                )
+              );
+            },
             errorBuilder: (context, error, stackTrace) {
               return Container(
                 width: 17.5.w,
                 height: 17.5.w,
                 color: Theme.of(context).primaryColor.withOpacity(0.2),
                 child: Center(
-                  child: Image.asset("assets/icons/profile.png", width: 30, height: 30)
+                  child: Icon(Icons.person, size: 32, color: Theme.of(context).primaryColor)
                 )
               );
             }
@@ -44,15 +56,13 @@ class _EmployeeItemState extends State<EmployeeItem> {
         ),
         const SizedBox(height: 6),
         SizedBox(
-          width: 17.5.w,
           child: Text(
             widget.employee["name"],
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontFamily: "Poppins",
+            style: GoogleFonts.roboto(
               color: Theme.of(context).primaryColorDark,
-              fontSize: 3.w
+              fontSize: 12
             )
           )
         )

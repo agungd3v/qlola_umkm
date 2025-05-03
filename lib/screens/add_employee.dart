@@ -1,12 +1,14 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:qlola_umkm/api/request.dart';
+import 'package:qlola_umkm/utils/flush_message.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 
 class AddEmployeeScreen extends StatefulWidget {
   const AddEmployeeScreen({super.key});
@@ -34,47 +36,14 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
     final httpRequest = await add_employee(data);
     if (httpRequest["status"] == 200) {
       Navigator.pop(context, true);
+      successMessage(context, "Informasi", "Berhasil menambahkan karyawan baru");
 
-      return Flushbar(
-        backgroundColor: Color(0xff00880d),
-        duration: Duration(seconds: 5),
-        reverseAnimationCurve: Curves.fastOutSlowIn,
-        flushbarPosition: FlushbarPosition.TOP,
-        titleText: Text(
-          "Informasi",
-          style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12),
-        ),
-        messageText: Text(
-          "Berhasil menambahkan karyawan baru",
-          style: TextStyle(
-              fontFamily: "Poppins", color: Colors.white, fontSize: 12),
-        ),
-      ).show(context);
+      return;
     }
 
     setState(() => proccess = false);
 
-    Flushbar(
-      backgroundColor: Theme.of(context).primaryColor,
-      duration: Duration(seconds: 5),
-      reverseAnimationCurve: Curves.fastOutSlowIn,
-      flushbarPosition: FlushbarPosition.TOP,
-      titleText: Text("Informasi",
-          style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w600,
-              color: Colors.white,
-              fontSize: 12)),
-      messageText: Text(
-        httpRequest["message"],
-        style:
-            TextStyle(fontFamily: "Poppins", color: Colors.white, fontSize: 12),
-      ),
-    ).show(context);
+    errorMessage(context, "Informasi", httpRequest["message"]);
   }
 
   Future<void> _pickFromGallery() async {
@@ -126,20 +95,17 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
             GestureDetector(
               onTap: () {},
               child: Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Row(
                   children: [
-                    Image.asset("assets/icons/camera_red.png",
-                        width: 24, height: 24),
+                    Image.asset("assets/icons/camera_red.png", width: 24, height: 24),
                     const SizedBox(width: 16),
                     Text(
                       "Kamera",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColorDark,
-                        fontSize: 14, // Adjusted font size
+                        fontSize: 14,
                       ),
                     ),
                   ],
@@ -218,20 +184,17 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     GestureDetector(
                       onTap: () => Navigator.pop(context),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 5),
-                        child: Icon(Icons.arrow_back,
-                            size: 24, color: Colors.black),
-                      ),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Image.asset("assets/icons/arrow_back_gray.png", width: 4.5.w, height: 4.5.w)
+                      )
                     ),
                     const SizedBox(width: 6),
                     Text(
                       "Tambah Karyawan",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
-                          fontWeight: FontWeight.w700,
+                      style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColorDark,
-                          fontSize: 18),
+                          fontSize: 4.w),
                     )
                   ],
                 ),
@@ -391,8 +354,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                           const SizedBox(width: 10),
                           Text(
                             "Simpan",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
                               fontSize: 14,

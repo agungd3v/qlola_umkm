@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/employee/employee_item.dart';
-import 'package:qlola_umkm/screens/add_employee.dart'; // Import the EmployeeItem
+import 'package:qlola_umkm/screens/add_employee.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeScreen extends StatefulWidget {
   const EmployeeScreen({super.key});
@@ -58,27 +59,24 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(80),
+        preferredSize: const Size.fromHeight(56), // Adjust height as needed
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0,
+          title: Text(
+            "Kelola Pegawai",
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColorDark,
+              fontSize: 18
+            )
+          ),
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
+            statusBarColor: Theme.of(context).primaryColor,
             statusBarIconBrightness: Brightness.light,
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(top: 20.0),
-            child: Text(
-              "Kelola Pegawai",
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w700,
-                fontSize: 22, // Ukuran font lebih kecil agar lebih proporsional
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+          )
+        )
       ),
       body: Stack(
         children: [
@@ -94,24 +92,21 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                   children: [
                     Text(
                       "Kelola Pegawai",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        fontSize: 20, // Ukuran font lebih kecil
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
                         color: Theme.of(context).primaryColorDark,
                       ),
                     ),
-                    const SizedBox(height: 6),
                     Text(
                       "Kelola semua pegawai kamu di sini.",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         color: Theme.of(context).disabledColor,
-                        fontSize: 12, // Ukuran font yang lebih kecil
-                      ),
-                    ),
-                  ],
-                ),
+                        fontSize: 14,
+                      )
+                    )
+                  ]
+                )
               ),
               // Divider
               Container(

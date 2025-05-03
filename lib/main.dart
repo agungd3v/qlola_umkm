@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
@@ -15,11 +14,6 @@ import 'package:sizer/sizer.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    statusBarColor: Color(0xffc02a34),
-    statusBarIconBrightness: Brightness.light
-  ));
 
   await initLocalStorage();
   await dotenv.load(fileName: '.env');
@@ -65,7 +59,10 @@ class _MyAppState extends State<MyApp> {
             dividerColor: Color(0xffd6dfeb),
             disabledColor: Color(0xff6d7588),
             primaryColorDark: Color(0xff292929),
-            scaffoldBackgroundColor: Colors.white
+            scaffoldBackgroundColor: Colors.white,
+            appBarTheme: AppBarTheme(
+              color: Colors.white,
+            )
           ),
           child: CupertinoApp.router(
             title: 'Qlola UMKM',
