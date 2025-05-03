@@ -60,14 +60,15 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
             )
           ),
           children: [
-            for (var index2 = 0; index2 < widget.item["checkouts"].length; index2++) ExpansionItem(widget.item["checkouts"][index2])
+            if ((widget.item as Map).containsKey("checkouts")) for (var index2 = 0; index2 < widget.item["checkouts"].length; index2++) ExpansionItem(widget.item["checkouts"][index2], false),
+            if ((widget.item as Map).containsKey("others")) for (var index2 = 0; index2 < widget.item["others"].length; index2++) ExpansionItem(widget.item["others"][index2], true)
           ]
         ))
       ]
     );
   }
 
-  Widget ExpansionItem(item) {
+  Widget ExpansionItem(item, bool isOther) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       color: Theme.of(context).dividerColor,
@@ -76,7 +77,7 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            item["product"]["product_name"],
+            isOther ? item["product_name"] : item["product"]["product_name"],
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.roboto(
               color: Theme.of(context).primaryColorDark,

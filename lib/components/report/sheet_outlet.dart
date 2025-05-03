@@ -121,12 +121,11 @@ class _SheetOutletState extends State<SheetOutlet> {
                     fontSize: 12)),
           const SizedBox(height: 20),
           Row(children: [
-            SizedBox(
-                width: 80,
-                height: 30,
-                child: GestureDetector(
+            GestureDetector(
                     onTap: () => _appyOutlet(),
                     child: Container(
+                        height: 35,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                             color: Theme.of(context).primaryColor,
                             borderRadius: BorderRadius.all(Radius.circular(6))),
@@ -139,9 +138,7 @@ class _SheetOutletState extends State<SheetOutlet> {
                                 color: Colors.white,
                                 size: 20, // Ukuran ikon
                               ),
-                              const SizedBox(
-                                  width:
-                                      8), // Memberikan jarak antara ikon dan teks
+                              const SizedBox(width: 8), // Memberikan jarak antara ikon dan teks
                               Text(
                                 "Simpan",
                                 style: TextStyle(
@@ -152,13 +149,12 @@ class _SheetOutletState extends State<SheetOutlet> {
                               ),
                             ],
                           ),
-                        )))),
-            SizedBox(
-                width: 80,
-                height: 30,
-                child: GestureDetector(
+                        ))),
+            GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: Container(
+                        height: 35,
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(6))),
@@ -167,8 +163,7 @@ class _SheetOutletState extends State<SheetOutlet> {
                                 style: TextStyle(
                                     fontFamily: "Poppins",
                                     fontWeight: FontWeight.w700,
-                                    color: Theme.of(context).primaryColor,
-                                    fontSize: 10))))))
+                                    color: Theme.of(context).primaryColor)))))
           ])
         ]);
   }

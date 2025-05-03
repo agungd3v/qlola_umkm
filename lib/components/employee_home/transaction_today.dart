@@ -36,7 +36,7 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
     getHistory();
     listener = () {
       if (tabChangeNotifier.value == 0) {
-        getHistory();
+        _onRefresh();
       }
     };
 
