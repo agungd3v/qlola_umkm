@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 Future successMessage(BuildContext context, title, message) {
   return Flushbar(
-    backgroundColor: Color(0xff00880d),
+    backgroundColor: Theme.of(context).primaryColor,
     duration: Duration(seconds: 3),
     reverseAnimationCurve: Curves.fastOutSlowIn,
     flushbarPosition: FlushbarPosition.TOP,
@@ -30,7 +30,7 @@ Future successMessage(BuildContext context, title, message) {
 
 Future errorMessage(BuildContext context, title, message) {
   return Flushbar(
-    backgroundColor: Theme.of(context).primaryColor,
+    backgroundColor: Color(0xFFE5484D),
     duration: Duration(seconds: 3),
     reverseAnimationCurve: Curves.fastOutSlowIn,
     flushbarPosition: FlushbarPosition.TOP,

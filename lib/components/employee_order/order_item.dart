@@ -36,7 +36,8 @@ class _OrderItemState extends State<OrderItem> {
         // getDeviceType() == "tablet" ? _addProductToCart(widget.item) : _openSheetProduct(widget.item);
         _openSheetProduct(widget.item);
       },
-        child: Container(
+      child: Container(
+        color: Colors.transparent,
         margin: widget.index > 0 ? const EdgeInsets.only(top: 14) : const EdgeInsets.only(top: 0),
         child: Row(
           children: [
@@ -47,18 +48,18 @@ class _OrderItemState extends State<OrderItem> {
               clipBehavior: Clip.hardEdge,
               child: Image.network(
                 "${dotenv.env["ASSET_URL"]}/${widget.item["product_image"]}",
-                width: 90,
-                height: 90,
+                width: 80,
+                height: 80,
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    width: 90,
-                    height: 90,
+                    width: 80,
+                    height: 80,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor.withOpacity(0.2)
                     ),
                     child: Center(
-                      child: Image.asset("assets/icons/image_crash.png", width: 25, height: 25)
+                      child: Icon(Icons.photo_size_select_actual, color: Theme.of(context).primaryColorDark)
                     )
                   );
                 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/notifiers/tab_notifer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TabIndex extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -39,9 +40,9 @@ class _TabIndexState extends State<TabIndex> {
           backgroundColor: Colors.white,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Theme.of(context).primaryColor,
-          unselectedItemColor: Theme.of(context).disabledColor,
-          unselectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 12),
-          selectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 12),
+          unselectedItemColor: Theme.of(context).primaryColorDark,
+          unselectedLabelStyle: GoogleFonts.roboto(fontSize: 12),
+          selectedLabelStyle: GoogleFonts.roboto(fontSize: 12),
           elevation: 0,
           currentIndex: currentIndex,
           onTap: (index) => goIndex(index),
@@ -50,8 +51,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 0 ?
-                  Image.asset("assets/icons/home.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/home_outline.png", width: 27, height: 27)
+                  Icon(Icons.home_work_rounded, size: 33) :
+                  Icon(Icons.home_work_rounded, size: 33)
               ),
               label: 'Home'
             ),
@@ -59,8 +60,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 1 ?
-                  Image.asset("assets/icons/order.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/order_outline.png", width: 27, height: 27)
+                  Icon(Icons.shopping_bag, size: 33) :
+                  Icon(Icons.shopping_bag_outlined, size: 33)
               ),
               label: 'Order'
             ),
@@ -68,8 +69,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 2 ?
-                  Image.asset("assets/icons/transaction.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/transaction_outline.png", width: 27, height: 27)
+                  Icon(Icons.wallet, size: 33) :
+                  Icon(Icons.wallet_outlined, size: 33)
               ),
               label: 'Transaksi'
             ),
@@ -77,8 +78,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 3 ?
-                  Image.asset("assets/icons/profile.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/profile_outline.png", width: 27, height: 27)
+                  Icon(Icons.person, size: 33) :
+                  Icon(Icons.person_outline, size: 33)
               ),
               label: 'Saya'
             )

@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/notifiers/tab_notifer.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeTransactionToday extends StatefulWidget {
   const EmployeeTransactionToday({super.key});
@@ -18,7 +17,6 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
   late VoidCallback listener;
 
   Future getHistory() async {
-    inspect("oke");
     final httpRequest = await outlet_transaction();
     if (httpRequest["status"] == 200) {
       setState(() {
@@ -58,18 +56,16 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
         children: [
           if (transaction != null) Text(
             transformPrice(double.parse(transaction["transaction_nominal_today"].toString())),
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w700,
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
               color: Colors.white,
               fontSize: 5.w
             )
           ),
           if (transaction == null) Text(
             transformPrice(0),
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w700,
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
               color: Colors.white,
               fontSize: 5.w
             )

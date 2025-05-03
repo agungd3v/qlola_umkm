@@ -34,6 +34,7 @@ class _SigninScreenState extends State<SigninScreen> {
     if (response["status"] == 200) {
       localStorage.setItem("user", json.encode(response["user"]));
       localStorage.setItem("token", response["token"]);
+
       Restart.restartApp();
     } else {
       setState(() => proccess = false);
@@ -43,7 +44,6 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: const Color(0xFFF9FAFB),
       body: SafeArea(
@@ -57,12 +57,12 @@ class _SigninScreenState extends State<SigninScreen> {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: theme.primaryColor.withOpacity(0.1),
+                  color: Theme.of(context).primaryColor.withOpacity(0.1),
                 ),
                 child: Icon(
                   Icons.account_balance_wallet_rounded,
                   size: 80,
-                  color: theme.primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               const SizedBox(height: 24),
@@ -72,7 +72,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
-                  color: theme.primaryColor,
+                  color: Theme.of(context).primaryColor,
                 ),
               ),
               const SizedBox(height: 4),
@@ -102,7 +102,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         style: GoogleFonts.poppins(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
-                          color: theme.primaryColor,
+                          color: Theme.of(context).primaryColor,
                         ),
                       ),
                     ),
@@ -120,16 +120,14 @@ class _SigninScreenState extends State<SigninScreen> {
                           contentPadding: EdgeInsets.symmetric(
                             vertical: 18,
                             horizontal: 0,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                          )
+                        )
+                      )
+                    )
+                  ]
+                )
               ),
-
               const SizedBox(height: 16),
-
               // Input Password
               Container(
                 decoration: BoxDecoration(
@@ -142,91 +140,84 @@ class _SigninScreenState extends State<SigninScreen> {
                   obscureText: !showPassword,
                   style: GoogleFonts.poppins(fontSize: 14),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock_outline_rounded,
-                        color: theme.primaryColor),
+                    prefixIcon: Icon(Icons.lock_outline_rounded, color: Theme.of(context).primaryColor),
                     suffixIcon: IconButton(
                       icon: Icon(
                         showPassword ? Icons.visibility_off : Icons.visibility,
                         color: Colors.grey,
                       ),
-                      onPressed: () =>
-                          setState(() => showPassword = !showPassword),
+                      onPressed: () => setState(() => showPassword = !showPassword),
                     ),
                     border: InputBorder.none,
                     hintText: "Password",
                     contentPadding: const EdgeInsets.symmetric(
                       vertical: 18,
                       horizontal: 16,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox(height: 30),
-
-              // Tombol Masuk
-              proccess
-                  ? Container(
-                      height: 48,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: theme.primaryColor,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          LoadingAnimationWidget.fourRotatingDots(
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                          const SizedBox(width: 10),
-                          Text(
-                            "Masuk...",
-                            style: GoogleFonts.poppins(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          )
-                        ],
-                      ),
                     )
-                  : ElevatedButton(
-                      onPressed: _signin,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: theme.primaryColor,
-                        minimumSize: const Size.fromHeight(48),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        "Masuk",
-                        style: GoogleFonts.poppins(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                  )
+                )
+              ),
+              const SizedBox(height: 30),
+              // Tombol Masuk
+              if (proccess) Container(
+                height: 48,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    LoadingAnimationWidget.fourRotatingDots(
+                      color: Colors.white,
+                      size: 20,
                     ),
-
+                    const SizedBox(width: 10),
+                    Text(
+                      "Masuk...",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
+                      )
+                    )
+                  ]
+                )
+              ),
+              if (!proccess) ElevatedButton(
+                onPressed: _signin,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  minimumSize: const Size.fromHeight(48),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  )
+                ),
+                child: Text(
+                  "Masuk",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                  )
+                )
+              ),
               const SizedBox(height: 16),
-
               // Tombol daftar
               TextButton(
                 onPressed: () => context.pushNamed("Sign Up"),
                 child: Text(
                   "Belum punya akun? Daftar di sini",
                   style: GoogleFonts.poppins(
-                    color: theme.primaryColor,
+                    color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w500,
                     fontSize: 13,
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+                  )
+                )
+              )
+            ]
+          )
+        )
+      )
     );
   }
 }

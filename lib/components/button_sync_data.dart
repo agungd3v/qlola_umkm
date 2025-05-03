@@ -20,8 +20,7 @@ class _ButtonSyncDataState extends State<ButtonSyncData>
   AuthProvider? auth_provider;
 
   final databaseHelper = DatabaseHelper.instance;
-  late final AnimationController _controller =
-      AnimationController(vsync: this, duration: const Duration(seconds: 1));
+  late final AnimationController _controller = AnimationController(vsync: this, duration: const Duration(seconds: 1));
   bool proccess = false;
   bool isConnected = true;
 
@@ -32,8 +31,7 @@ class _ButtonSyncDataState extends State<ButtonSyncData>
     final database = await databaseHelper.database;
     final rawQuery = await database?.rawQuery("SELECT * FROM orders");
     final data = rawQuery?.asMap().values.toList();
-    final batches =
-        groupBy(data as Iterable<Map>, (Map obj) => obj["_transaction"]);
+    final batches = groupBy(data as Iterable<Map>, (Map obj) => obj["_transaction"]);
 
     if (batches.isNotEmpty && auth_provider?.user != null) {
       final httpRequest = await bulk_checkout(<String, dynamic>{
@@ -58,19 +56,14 @@ class _ButtonSyncDataState extends State<ButtonSyncData>
 
   Future<void> _checkAndHandleConnection(BuildContext context) async {
     final result = await Connectivity().checkConnectivity();
-    final connected = result == ConnectivityResult.mobile ||
-        result == ConnectivityResult.wifi;
+    final connected = result == ConnectivityResult.mobile || result == ConnectivityResult.wifi;
 
     setState(() => isConnected = connected);
 
     if (connected) {
       _syncData(context);
     } else {
-      errorMessage(
-        context,
-        "Tidak Ada Koneksi",
-        "Hello World! Kamu sedang offline.",
-      );
+      errorMessage(context, "Tidak Ada Koneksi", "Hello World! Kamu sedang offline.");
     }
   }
 
@@ -79,14 +72,24 @@ class _ButtonSyncDataState extends State<ButtonSyncData>
     auth_provider = Provider.of<AuthProvider>(context);
 
     return GestureDetector(
-        onTap: () => !proccess ? _syncData(context) : {},
+      onTap: () => !proccess ? _syncData(context) : {},
+      child: Container(
+        width: 50,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          shape: BoxShape.circle
+        ),
         child: AnimatedBuilder(
-            animation: _controller,
-            builder: (context, child) {
-              return Transform.rotate(
-                  angle: _controller.value * 2 * math.pi,
-                  child: Image.asset("assets/icons/sync_red.png",
-                      width: 45, height: 45));
-            }));
+          animation: _controller,
+          builder: (context, child) {
+            return Transform.rotate(
+              angle: _controller.value * 2 * math.pi,
+              child: Icon(Icons.refresh, size: 32, color: Theme.of(context).primaryColorDark)
+            );
+          }
+        )
+      )
+    );
   }
 }

@@ -48,22 +48,21 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
 
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 4.w), // Responsif dengan Sizer
+      padding: EdgeInsets.symmetric(horizontal: 4.w),
       child: Column(
         children: [
           Container(
-            width: 10.w, // Adjusted width for responsiveness
-            height: 0.6.h, // Adjusted height for responsiveness
-            margin:
-                EdgeInsets.only(top: 1.h), // Adjusted margin for responsiveness
+            width: 10.w,
+            height: 0.6.h,
+            margin: EdgeInsets.only(top: 1.h),
             decoration: BoxDecoration(
               color: Theme.of(context).dividerColor,
-              borderRadius: BorderRadius.all(Radius.circular(99)),
-            ),
+              borderRadius: BorderRadius.all(Radius.circular(99))
+            )
           ),
-          SizedBox(height: 2.h), // Adjusted for spacing
+          SizedBox(height: 2.h),
           Container(
-            height: 25.h, // Responsively adjusting image height
+            height: 25.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
@@ -81,14 +80,13 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                     color: Theme.of(context).primaryColor.withOpacity(0.2),
                   ),
                   child: Center(
-                    child: Image.asset("assets/icons/image_crash.png",
-                        width: 12.w, height: 12.w),
+                    child: Icon(Icons.photo_size_select_actual, size: 43, color: Theme.of(context).primaryColorDark)
                   ),
                 );
               },
             ),
           ),
-          SizedBox(height: 2.h), // Adjusted for spacing
+          SizedBox(height: 2.h),
           Expanded(
             child: SizedBox(
               width: double.infinity,
@@ -115,65 +113,58 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       fontSize: 14.sp, // Using responsive font size
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                    )
+                  )
+                ]
+              )
+            )
           ),
           Container(
-            margin: EdgeInsets.only(
-                bottom: 1.h), // Adjusted margin for bottom spacing
+            margin: EdgeInsets.only(bottom: 1.h), // Adjusted margin for bottom spacing
             child: Column(
               children: [
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        if (quantity > 1) {
-                          setState(() => quantity--);
-                        }
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.3),
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                        ),
-                        child: Image.asset("assets/icons/minus_red.png",
-                            width: 7.w, height: 7.w),
+                Row(children: [
+                  GestureDetector(
+                    onTap: () {
+                      if (quantity > 1) {
+                        setState(() => quantity--);
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(0.3),
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
                       ),
+                      child: Icon(Icons.remove, size: 28, color: Theme.of(context).primaryColorDark)
                     ),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.center,
-                        child: Text(
-                          quantity.toString(),
-                          style: TextStyle(
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.w700,
-                            color: Theme.of(context).primaryColorDark,
-                            fontSize: 16.sp, // Responsive font size
-                          ),
-                        ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Text(
+                        quantity.toString(),
+                        style: TextStyle(
+                          fontFamily: "Poppins",
+                          fontWeight: FontWeight.w700,
+                          color: Theme.of(context).primaryColorDark,
+                          fontSize: 20,
+                        )
+                      )
+                    )
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      setState(() => quantity++);
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor.withOpacity(0.3),
+                        borderRadius: BorderRadius.all(Radius.circular(6)),
                       ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() => quantity++);
-                      },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).primaryColor.withOpacity(0.3),
-                          borderRadius: BorderRadius.all(Radius.circular(6)),
-                        ),
-                        child: Image.asset("assets/icons/plus_red.png",
-                            width: 7.w, height: 7.w),
-                      ),
-                    ),
-                  ],
-                ),
+                      child: Icon(Icons.add, size: 28, color: Theme.of(context).primaryColorDark)
+                    )
+                  )
+                ]),
                 SizedBox(height: 2.h), // Adjusted for spacing
                 GestureDetector(
                   onTap: () {
@@ -193,16 +184,16 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
-                        fontSize: 14.sp, // Responsive font size
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+                        fontSize: 16,
+                      )
+                    )
+                  )
+                )
+              ]
+            )
+          )
+        ]
+      )
     );
   }
 }
