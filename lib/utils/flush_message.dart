@@ -1,5 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 Future successMessage(BuildContext context, title, message) {
   return Flushbar(
@@ -10,8 +11,7 @@ Future successMessage(BuildContext context, title, message) {
     titleText: Text(
       title,
       overflow: TextOverflow.ellipsis,
-      style: TextStyle(
-        fontFamily: "Poppins",
+      style: GoogleFonts.roboto(
         fontWeight: FontWeight.w600,
         color: Colors.white,
         fontSize: 12
@@ -19,8 +19,7 @@ Future successMessage(BuildContext context, title, message) {
     ),
     messageText: Text(
       message,
-      style: TextStyle(
-        fontFamily: "Poppins",
+      style: GoogleFonts.roboto(
         color: Colors.white,
         fontSize: 12
       )
@@ -36,8 +35,7 @@ Future errorMessage(BuildContext context, title, message) {
     flushbarPosition: FlushbarPosition.TOP,
     titleText: Text(
       title,
-      style: TextStyle(
-        fontFamily: "Poppins",
+      style: GoogleFonts.roboto(
         fontWeight: FontWeight.w600,
         color: Colors.white,
         fontSize: 12
@@ -45,8 +43,7 @@ Future errorMessage(BuildContext context, title, message) {
     ),
     messageText: Text(
       message,
-      style: TextStyle(
-        fontFamily: "Poppins",
+      style: GoogleFonts.roboto(
         color: Colors.white,
         fontSize: 12
       )

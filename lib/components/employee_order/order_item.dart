@@ -52,6 +52,18 @@ class _OrderItemState extends State<OrderItem> {
                 width: 80,
                 height: 80,
                 fit: BoxFit.cover,
+                loadingBuilder: (context, child, loadingProgress) {
+                  return Container(
+                    width: 80,
+                    height: 80,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor.withOpacity(0.2)
+                    ),
+                    child: Center(
+                      child: Icon(Icons.photo_size_select_actual, color: Theme.of(context).primaryColorDark)
+                    )
+                  );
+                },
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
                     width: 80,

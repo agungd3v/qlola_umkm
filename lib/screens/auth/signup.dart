@@ -93,7 +93,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 20),
                   Text(
                     "Buat Akun",
-                    style: TextStyle(
+                    style: GoogleFonts.roboto(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
                       color: Theme.of(context).primaryColor,
@@ -203,10 +203,13 @@ class _SignupScreenState extends State<SignupScreen> {
                               borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          child: const Text("Daftar",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white)),
+                          child: Text(
+                            "Daftar",
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white
+                            )
+                          )
                         )
                       : Container(
                           height: 48,
@@ -233,7 +236,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     onPressed: () => Navigator.pop(context),
                     child: Text(
                       "Sudah punya akun? Masuk",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.roboto(
                         color: theme.primaryColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 13,

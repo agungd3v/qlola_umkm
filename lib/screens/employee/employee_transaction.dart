@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/history/employee_transaction_daily.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeTransactionScreen extends StatefulWidget {
   const EmployeeTransactionScreen({super.key});
@@ -42,9 +43,8 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
           elevation: 0,
           title: Text(
             "Riwayat Transaksi",
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w700,
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColorDark,
               fontSize: 18
             )
@@ -75,17 +75,15 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                   children: [
                     Text(
                       "Transaksi",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.bold,
                         color: Theme.of(context).primaryColorDark,
                         fontSize: 16
                       )
                     ),
                     Text(
                       "Riwayat transaksi kamu hari ini.",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         color: Theme.of(context).disabledColor,
                         fontSize: 12
                       )
@@ -122,8 +120,7 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                             const SizedBox(height: 12),
                             Text(
                               "Belum ada Transaksi",
-                              style: TextStyle(
-                                fontFamily: "Poppins",
+                              style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.w700,
                                 color: Theme.of(context).primaryColorDark,
                                 fontSize: 18
@@ -135,8 +132,7 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
                               child: Text(
                                 'Oops... belum ada transaksi di hari ini',
                                 textAlign: TextAlign.center,
-                                style: TextStyle(
-                                  fontFamily: "Poppins",
+                                style: GoogleFonts.roboto(
                                   color: Theme.of(context).primaryColorDark,
                                   fontSize: 14
                                 )

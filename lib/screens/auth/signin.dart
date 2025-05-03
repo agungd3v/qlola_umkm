@@ -69,7 +69,7 @@ class _SigninScreenState extends State<SigninScreen> {
 
               Text(
                 "Masuk ke Akunmu",
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.roboto(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                   color: Theme.of(context).primaryColor,
@@ -78,7 +78,7 @@ class _SigninScreenState extends State<SigninScreen> {
               const SizedBox(height: 4),
               Text(
                 "Pantau dan kelola keuangan bisnismu",
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.roboto(
                   fontSize: 14,
                   color: Colors.grey[600],
                 ),
@@ -99,7 +99,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Text(
                         "+62",
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.roboto(
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).primaryColor,
@@ -113,7 +113,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         inputFormatters: [
                           FilteringTextInputFormatter.digitsOnly
                         ],
-                        style: GoogleFonts.poppins(fontSize: 14),
+                        style: GoogleFonts.roboto(fontSize: 14),
                         decoration: const InputDecoration(
                           hintText: "No Handphone",
                           border: InputBorder.none,
@@ -138,7 +138,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 child: TextField(
                   controller: password,
                   obscureText: !showPassword,
-                  style: GoogleFonts.poppins(fontSize: 14),
+                  style: GoogleFonts.roboto(fontSize: 14),
                   decoration: InputDecoration(
                     prefixIcon: Icon(Icons.lock_outline_rounded, color: Theme.of(context).primaryColor),
                     suffixIcon: IconButton(
@@ -176,7 +176,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     const SizedBox(width: 10),
                     Text(
                       "Masuk...",
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.roboto(
                         color: Colors.white,
                         fontWeight: FontWeight.w600,
                       )
@@ -195,7 +195,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 ),
                 child: Text(
                   "Masuk",
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.roboto(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
                   )
@@ -207,7 +207,7 @@ class _SigninScreenState extends State<SigninScreen> {
                 onPressed: () => context.pushNamed("Sign Up"),
                 child: Text(
                   "Belum punya akun? Daftar di sini",
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.roboto(
                     color: Theme.of(context).primaryColor,
                     fontWeight: FontWeight.w500,
                     fontSize: 13,

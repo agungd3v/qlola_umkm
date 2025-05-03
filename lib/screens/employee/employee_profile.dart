@@ -8,6 +8,7 @@ import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:restart_app/restart_app.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeProfileScreen extends StatefulWidget {
   const EmployeeProfileScreen({super.key});
@@ -52,9 +53,8 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
           elevation: 0,
           title: Text(
             "Profile Karyawan",
-            style: TextStyle(
-              fontFamily: "Poppins",
-              fontWeight: FontWeight.w700,
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColorDark,
               fontSize: 18
             ),
@@ -101,20 +101,18 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
                       children: [
                         Text(
                           auth_provider!.user["name"],
-                          style: TextStyle(
-                            fontFamily: "Poppins",
+                          style: GoogleFonts.roboto(
                             fontWeight: FontWeight.w600,
                             color: Theme.of(context).primaryColorDark,
-                            fontSize: 14
+                            fontSize: 16
                           )
                         ),
                         Text(
                           "Karyawan",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
+                          style: GoogleFonts.roboto(
                             fontWeight: FontWeight.w600,
                             color: Theme.of(context).disabledColor,
-                            fontSize: 12
+                            fontSize: 14
                           )
                         )
                       ]
@@ -139,10 +137,10 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
               ),
               child: Text(
                 "Keluar",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColorDark
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 16
                 )
               )
             )
@@ -167,10 +165,10 @@ class _EmployeeProfileScreenState extends State<EmployeeProfileScreen> {
               const SizedBox(width: 5),
               Text(
                 "Keluar",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColorDark
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 16
                 )
               )
             ]
