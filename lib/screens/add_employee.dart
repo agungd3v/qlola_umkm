@@ -112,11 +112,6 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                 ),
               ),
             ),
-            const Divider(
-              color: Colors.grey,
-              height: 1,
-              thickness: 1,
-            ),
             // Gallery Option
             GestureDetector(
               onTap: () {
@@ -132,8 +127,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                     const SizedBox(width: 16),
                     Text(
                       "Pilih dari galeri",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w500,
                         color: Theme.of(context).primaryColorDark,
                         fontSize: 14, // Adjusted font size
@@ -255,12 +249,11 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                             color:
                                                 Theme.of(context).disabledColor,
                                             fontSize: 12)),
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
+                                    style: GoogleFonts.roboto(
                                         fontWeight: FontWeight.w400,
                                         color:
                                             Theme.of(context).primaryColorDark,
-                                        fontSize: 12),
+                                        fontSize: 3.5.w),
                                     cursorColor: Theme.of(context).focusColor,
                                     controller: employeeName,
                                   )),
@@ -278,12 +271,11 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                   ),
                                   child: Row(children: [
                                     Text("+62",
-                                        style: TextStyle(
-                                            fontFamily: "Poppins",
+                                        style: GoogleFonts.roboto(
                                             fontWeight: FontWeight.w400,
                                             color: Theme.of(context)
                                                 .primaryColorDark,
-                                            fontSize: 12)),
+                                            fontSize: 3.5.w)),
                                     const SizedBox(width: 8),
                                     Expanded(
                                         child: TextField(
@@ -291,18 +283,16 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                                           isDense: true,
                                           border: InputBorder.none,
                                           hintText: "No. Handphone",
-                                          hintStyle: TextStyle(
-                                              fontFamily: "Poppins",
+                                          hintStyle: GoogleFonts.roboto(
                                               fontWeight: FontWeight.w400,
                                               color: Theme.of(context)
                                                   .disabledColor,
-                                              fontSize: 12)),
-                                      style: TextStyle(
-                                          fontFamily: "Poppins",
+                                              fontSize: 3.5.w)),
+                                      style: GoogleFonts.roboto(
                                           fontWeight: FontWeight.w400,
                                           color: Theme.of(context)
                                               .primaryColorDark,
-                                          fontSize: 12),
+                                          fontSize: 3.5.w),
                                       keyboardType: TextInputType.number,
                                       cursorColor: Theme.of(context).focusColor,
                                       controller: employeePhone,
@@ -311,8 +301,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                               const SizedBox(height: 2),
                               Text(
                                 "Contoh: 82179099557",
-                                style: TextStyle(
-                                    fontFamily: "Poppins",
+                                style: GoogleFonts.roboto(
                                     color: Theme.of(context).disabledColor,
                                     fontSize: 10),
                               )
@@ -357,7 +346,7 @@ class _AddEmployeeScreenState extends State<AddEmployeeScreen> {
                             style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w600,
                               color: Colors.white,
-                              fontSize: 14,
+                              fontSize: 16,
                             ),
                           ),
                         ],

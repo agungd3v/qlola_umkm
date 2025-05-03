@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:restart_app/restart_app.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -41,29 +42,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
       extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize:
-            const Size.fromHeight(80), // Disesuaikan dengan height header
+        preferredSize: const Size.fromHeight(56), // Adjust height as needed
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
-          systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
-            statusBarIconBrightness: Brightness.light,
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(
-                top: 20.0), // Memberikan padding untuk judul
-            child: Text(
-              "Profil", // Menjaga konsistensi nama pada halaman Profile
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w700,
-                fontSize: 22, // Ukuran font konsisten dengan halaman lain
-                color: Colors.white,
-              ),
+          elevation: 0,
+          title: Text(
+            "Profile",
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColorDark,
+              fontSize: 18
             ),
           ),
-        ),
+          systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Theme.of(context).primaryColor,
+            statusBarIconBrightness: Brightness.light,
+          )
+        )
       ),
       body: Column(
         children: [
@@ -91,12 +87,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
-                              width: 2, color: Theme.of(context).primaryColor),
+                            width: 2,
+                            color: Theme.of(context).primaryColor
+                          )
                         ),
                         child: Center(
-                          child: Image.asset("assets/icons/profile.png",
-                              width: 35, height: 35),
-                        ),
+                          child: Icon(Icons.person, size: 39, color: Theme.of(context).primaryColorDark)
+                        )
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -105,20 +102,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         children: [
                           Text(
                             auth_provider!.user["name"],
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w600,
                               color: Theme.of(context).primaryColorDark,
-                              fontSize: 14,
+                              fontSize: 16,
                             ),
                           ),
                           Text(
                             "Owner Bisnis",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w600,
                               color: Theme.of(context).disabledColor,
-                              fontSize: 12,
+                              fontSize: 14,
                             ),
                           ),
                         ],
