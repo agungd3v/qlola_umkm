@@ -45,42 +45,40 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Ikon terkait bisnis
-            Icon(
-              Icons.business, // Anda bisa mengganti ikon ini jika diperlukan
-              size: 150, // Ukuran ikon
-              color: Colors.white, // Warna ikon (putih agar kontras)
+            Image.asset(
+              'assets/images/logo-qlola.png',
+              width: 500,
+              height: 500,
             ),
-            const SizedBox(height: 20), // Spasi antara ikon dan teks
-            // Nama Aplikasi atau Tagline
-            Text(
-              'Qlola UMKM',
-              style: TextStyle(
-                fontFamily: 'Poppins', // Menggunakan font keluarga aplikasi
-                fontWeight: FontWeight.w700,
-                fontSize: 24, // Ukuran font
-                color: Colors.white, // Warna teks (putih untuk kontras)
-              ),
-            ),
-            const SizedBox(height: 10), // Spasi antara nama dan tagline
+            const SizedBox(height: 20),
+            // Text(
+            //   'Qlola UMKM',
+            //   style: TextStyle(
+            //     fontFamily: 'Poppins',
+            //     fontWeight: FontWeight.w700,
+            //     fontSize: 24,
+            //     color: Colors.white,
+            //   ),
+            // ),
+            // const SizedBox(height: 10), // Spasi antara nama dan tagline
             // Tagline atau deskripsi
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(
-                'Memberdayakan Usaha Kecil, Menengah, dan Besar',
-                style: TextStyle(
-                  fontFamily: 'Poppins', // Menggunakan font keluarga aplikasi
-                  fontWeight: FontWeight.w500,
-                  fontSize: 14, // Ukuran font untuk tagline
-                  color: Colors.white.withOpacity(
-                      0.7), // Warna teks dengan opacity agar lebih kontras
-                ),
-                textAlign: TextAlign.center,
-              )
-            )
-          ]
-        )
-      )
+            // Container(
+            //   padding: const EdgeInsets.symmetric(horizontal: 16),
+            //   child: Text(
+            //     'Memberdayakan Usaha Kecil, Menengah, dan Besar',
+            //     style: TextStyle(
+            //       fontFamily: 'Poppins', // Menggunakan font keluarga aplikasi
+            //       fontWeight: FontWeight.w500,
+            //       fontSize: 14, // Ukuran font untuk tagline
+            //       color: Colors.white.withOpacity(
+            //           0.7), // Warna teks dengan opacity agar lebih kontras
+            //     ),
+            //     textAlign: TextAlign.center,
+            //   ),
+            // ),
+          ],
+        ),
+      ),
     );
   }
 }
