@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeTransactionDaily extends StatefulWidget {
   dynamic item;
@@ -26,14 +27,13 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                child: Image.asset("assets/icons/transaction.png", width: 25, height: 25)
+                child: Icon(Icons.wallet, size: 30, color: Theme.of(context).primaryColor)
               ),
               const SizedBox(height: 5),
               Text(
                 transformPrice(double.parse(widget.item["grand_total"].toString())),
                 overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontFamily: "Poppins",
+                style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).primaryColor,
                   fontSize: 10
@@ -47,16 +47,15 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
           shape: Border(),
           title: Text(
             widget.item["transaction_code"],
-            style: TextStyle(
-              fontFamily: "Poppins",
+            style: GoogleFonts.roboto(
               fontWeight: FontWeight.w500,
-              color: Theme.of(context).primaryColorDark
+              color: Theme.of(context).primaryColorDark,
+              fontSize: 14
             )
           ),
           subtitle: Text(
             transformDate(widget.item["checkouts"][0]["created_at"]),
-            style: TextStyle(
-              fontFamily: "Poppins",
+            style: GoogleFonts.roboto(
               color: Theme.of(context).disabledColor
             )
           ),
@@ -79,18 +78,16 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
           Text(
             item["product"]["product_name"],
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontFamily: "Poppins",
+            style: GoogleFonts.roboto(
               color: Theme.of(context).primaryColorDark,
-              fontSize: 13
+              fontSize: 14
             )
           ),
           Row(
             children: [
               Text(
                 transformPrice(double.parse(item["total"].toString())),
-                style: TextStyle(
-                  fontFamily: "Poppins",
+                style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).primaryColor,
                   fontSize: 12
@@ -99,11 +96,10 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
               const SizedBox(width: 5),
               Text(
                 "(x${item["quantity"]})",
-                style: TextStyle(
-                  fontFamily: "Poppins",
+                style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w700,
                   color: Theme.of(context).primaryColor,
-                  fontSize: 10
+                  fontSize: 12
                 )
               ),
             ]

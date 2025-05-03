@@ -193,15 +193,27 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                         width: 19.w,
                         height: 19.w,
                         fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
+                        loadingBuilder: (context, child, loadingProgress) {
                           return Container(
-                            width: 19.w,
-                            height: 19.w,
+                            width: 80,
+                            height: 80,
                             decoration: BoxDecoration(
                               color: Theme.of(context).primaryColor.withOpacity(0.2)
                             ),
                             child: Center(
-                              child: Image.asset("assets/icons/image_crash.png", width: 25, height: 25)
+                              child: Icon(Icons.photo_size_select_actual, color: Theme.of(context).primaryColorDark)
+                            )
+                          );
+                        },
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              color: Theme.of(context).primaryColor.withOpacity(0.2)
+                            ),
+                            child: Center(
+                              child: Icon(Icons.photo_size_select_actual, color: Theme.of(context).primaryColorDark)
                             )
                           );
                         }
@@ -235,7 +247,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                               "Quantity",
                               style: GoogleFonts.roboto(
                                 color: Theme.of(context).primaryColorDark,
-                                fontSize: 3.w
+                                fontSize: 14
                               )
                             ),
                             const SizedBox(width: 6),
@@ -244,7 +256,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 3.w
+                                fontSize: 14
                               )
                             ),
                             Expanded(child: Container()),
@@ -253,7 +265,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                               style: GoogleFonts.roboto(
                                 fontWeight: FontWeight.bold,
                                 color: Theme.of(context).primaryColor,
-                                fontSize: 3.5.w
+                                fontSize: 16
                               )
                             )
                           ]),
@@ -274,7 +286,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                   color: Theme.of(context).primaryColor.withOpacity(0.2),
                                   borderRadius: BorderRadius.all(Radius.circular(4))
                                 ),
-                                child: Image.asset("assets/icons/minus_red.png", width: 5.w, height: 5.w)
+                                child: Icon(Icons.remove, size: 20, color: Theme.of(context).primaryColorDark)
                               )
                             ),
                             const SizedBox(width: 10),
@@ -301,7 +313,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
                                   color: Theme.of(context).primaryColor.withOpacity(0.2),
                                   borderRadius: BorderRadius.all(Radius.circular(4))
                                 ),
-                                child: Image.asset("assets/icons/plus_red.png", width: 5.w, height: 5.w)
+                                child: Icon(Icons.add, size: 20, color: Theme.of(context).primaryColorDark)
                               )
                             )
                           ])

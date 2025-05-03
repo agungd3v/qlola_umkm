@@ -91,8 +91,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                     auth_provider!.user["outlet"]["business"]
                                         ["business_name"],
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
+                                    style: GoogleFonts.roboto(
                                         color:
                                             Theme.of(context).primaryColorDark,
                                         fontWeight: FontWeight.w700,
@@ -101,8 +100,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                     auth_provider!.user["outlet"]
                                         ["outlet_name"],
                                     style:
-                                        TextStyle(
-                                            fontFamily: "Poppins",
+                                        GoogleFonts.roboto(
                                             color: Theme.of(context)
                                                 .primaryColorDark,
                                             fontWeight: FontWeight.w500,
@@ -134,8 +132,8 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                                           ["product_name"],
                                                       overflow:
                                                           TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                          fontFamily: "Poppins",
+                                                      style: GoogleFonts.roboto(
+                                                          
                                                           fontSize: 10)),
                                                   Row(children: [
                                                     Text(
@@ -144,15 +142,11 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                                                 .carts[index][
                                                                     "product_price"]
                                                                 .toString())),
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Poppins",
+                                                        style: GoogleFonts.roboto(
                                                             fontSize: 10)),
                                                     Text(
                                                         " x ${checkout_provider!.carts[index]["quantity"]}",
-                                                        style: TextStyle(
-                                                            fontFamily:
-                                                                "Poppins",
+                                                        style: GoogleFonts.roboto(
                                                             fontSize: 10))
                                                   ])
                                                 ]),
@@ -165,8 +159,8 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                                     checkout_provider!
                                                             .carts[index]
                                                         ["quantity"]),
-                                                style: TextStyle(
-                                                    fontFamily: "Poppins",
+                                                style: GoogleFonts.roboto(
+                                                    
                                                     fontSize: 10))
                                           ])),
                                 const SizedBox(height: 10),
@@ -180,19 +174,18 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text("Total",
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
+                                          style: GoogleFonts.roboto(
                                               fontSize: 12)),
                                       Text(
                                           transformPrice(
                                               checkout_provider!.cart_total),
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
+                                          style: GoogleFonts.roboto(
+                                              
                                               fontSize: 12))
                                     ]),
                                 const SizedBox(height: 35),
                                 Text("Terimakasih ^_^",
-                                    style: TextStyle(fontFamily: "Poppins"))
+                                    style: GoogleFonts.roboto())
                               ]))),
                       Column(children: [
                         Row(children: [
@@ -211,8 +204,8 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(8))),
                                       child: Text("Bluetooth print",
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
+                                          style: GoogleFonts.roboto(
+                                              
                                               // color: Theme.of(context).primaryColorDark
                                               color: Theme.of(context)
                                                   .primaryColorDark))))),
@@ -231,8 +224,8 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                           borderRadius: BorderRadius.all(
                                               Radius.circular(8))),
                                       child: Text("Share print",
-                                          style: TextStyle(
-                                              fontFamily: "Poppins",
+                                          style: GoogleFonts.roboto(
+                                              
                                               color: Theme.of(context)
                                                   .primaryColorDark)))))
                         ]),
@@ -251,8 +244,8 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(8))),
                                 child: Text("Kembali memesan",
-                                    style: TextStyle(
-                                        fontFamily: "Poppins",
+                                    style: GoogleFonts.roboto(
+                                        
                                         fontWeight: FontWeight.w600,
                                         color: Colors.white,
                                         fontSize: 16))))
