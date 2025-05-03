@@ -59,9 +59,9 @@ class _MyAppState extends State<MyApp> {
       builder: (context, orientation, deviceType) {
         return Theme(
           data: ThemeData(
-            primaryColor: Color(0xffc02a34),
-            indicatorColor: Color(0xffc02a34),
-            focusColor: Color(0xffc02a34),
+            primaryColor: Color(0xFF18CB96),
+            indicatorColor: Color(0xFF18CB96),
+            focusColor: Color(0xFF18CB96),
             dividerColor: Color(0xffd6dfeb),
             disabledColor: Color(0xff6d7588),
             primaryColorDark: Color(0xff292929),

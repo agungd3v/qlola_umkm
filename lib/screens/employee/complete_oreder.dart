@@ -300,7 +300,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
                   const SizedBox(height: 10),
                   GestureDetector(
                     onTap: () {
-                      context.go("/order");
+                      context.goNamed("Employee Order");
                       checkout_provider?.reset();
                     },
                     child: Container(
