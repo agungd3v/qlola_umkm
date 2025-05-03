@@ -3,7 +3,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
-import 'package:sizer/sizer.dart'; // Pastikan menggunakan Sizer untuk responsivitas
+import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeProductSheet extends StatefulWidget {
   dynamic product;
@@ -97,19 +98,16 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                     widget.product["product_name"],
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                    style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColorDark,
                       fontSize: 16.sp, // Using responsive font size
                     ),
                   ),
                   Text(
-                    transformPrice(double.parse(
-                        widget.product["product_price"].toString())),
+                    transformPrice(double.parse(widget.product["product_price"].toString())),
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                    style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       fontSize: 14.sp, // Using responsive font size
@@ -143,8 +141,7 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                       alignment: Alignment.center,
                       child: Text(
                         quantity.toString(),
-                        style: TextStyle(
-                          fontFamily: "Poppins",
+                        style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w700,
                           color: Theme.of(context).primaryColorDark,
                           fontSize: 20,
@@ -180,8 +177,7 @@ class _EmployeeProductSheetState extends State<EmployeeProductSheet> {
                     alignment: Alignment.center,
                     child: Text(
                       "Tambahkan",
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w700,
                         color: Colors.white,
                         fontSize: 16,

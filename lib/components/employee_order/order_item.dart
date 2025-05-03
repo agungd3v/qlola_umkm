@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qlola_umkm/components/employee_product_sheet.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OrderItem extends StatefulWidget {
   dynamic item;
@@ -74,8 +75,7 @@ class _OrderItemState extends State<OrderItem> {
                     widget.item["product_name"],
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                    style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColorDark,
                       fontSize: 18
@@ -83,8 +83,7 @@ class _OrderItemState extends State<OrderItem> {
                   ),
                   Text(
                     transformPrice(double.parse(widget.item["product_price"].toString())),
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                    style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w700,
                       color: Theme.of(context).primaryColor,
                       fontSize: 14

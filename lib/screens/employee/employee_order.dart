@@ -6,6 +6,7 @@ import 'package:qlola_umkm/components/employee_order/order_item.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EmployeeOrderScreen extends StatefulWidget {
   const EmployeeOrderScreen({super.key});
@@ -53,9 +54,8 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
             elevation: 0,
             title: Text(
               "Order Produk",
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w700,
+              style: GoogleFonts.roboto(
+                fontWeight: FontWeight.bold,
                 color: Theme.of(context).primaryColorDark,
                 fontSize: 18
               )
@@ -96,8 +96,7 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
                                   Text(
                                     'Produk tidak di temukan',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
+                                    style: GoogleFonts.roboto(
                                       fontWeight: FontWeight.w700,
                                       color: Theme.of(context).primaryColorDark,
                                       fontSize: 4.w
@@ -107,8 +106,7 @@ class _EmployeeOrderScreenState extends State<EmployeeOrderScreen> {
                                   Text(
                                     'Oops... produk tidak ditemukan atau kamu belum di daftarkan pada outlet ini, hubungi owner bisnis untuk memastikannya!',
                                     textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
+                                    style: GoogleFonts.roboto(
                                       color: Theme.of(context).primaryColorDark,
                                       fontSize: 3.w
                                     )

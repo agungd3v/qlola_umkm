@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ButtonCheckout extends StatefulWidget {
   const ButtonCheckout({super.key});
@@ -33,21 +34,19 @@ class _ButtonCheckoutState extends State<ButtonCheckout> {
           children: [
             Text(
               "Checkout",
-              style: TextStyle(
-                fontFamily: "Poppins",
+              style: GoogleFonts.roboto(
                 fontWeight: FontWeight.w500,
                 color: Colors.white,
-                fontSize: 12
+                fontSize: 14
               )
             ),
             const SizedBox(width: 8),
             Text(
               "( ${checkout_provider?.carts.length} )",
-              style: TextStyle(
-                fontFamily: "Poppins",
+              style: GoogleFonts.roboto(
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
-                fontSize: 12
+                fontSize: 14
               )
             )
           ]
