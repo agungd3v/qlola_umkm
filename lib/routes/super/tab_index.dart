@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TabIndex extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -38,8 +39,8 @@ class _TabIndexState extends State<TabIndex> {
           type: BottomNavigationBarType.fixed,
           selectedItemColor: Theme.of(context).primaryColor,
           unselectedItemColor: Theme.of(context).disabledColor,
-          unselectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 12),
-          selectedLabelStyle: TextStyle(fontFamily: "Poppins", fontSize: 12),
+          unselectedLabelStyle: GoogleFonts.roboto(fontSize: 12),
+          selectedLabelStyle: GoogleFonts.roboto(fontSize: 12),
           elevation: 0,
           currentIndex: currentIndex,
           onTap: (index) => goIndex(index),
@@ -48,8 +49,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 0 ?
-                  Image.asset("assets/icons/home.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/home_outline.png", width: 27, height: 27)
+                  Icon(Icons.home_work_rounded, size: 33) :
+                  Icon(Icons.home_work_rounded, size: 33)
               ),
               label: 'Home'
             ),
@@ -57,8 +58,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 1 ?
-                  Image.asset("assets/icons/product.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/product_outline.png", width: 27, height: 27)
+                  Icon(Icons.archive, size: 33) :
+                  Icon(Icons.archive_outlined, size: 33)
               ),
               label: 'Produk'
             ),
@@ -66,8 +67,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 2 ?
-                  Image.asset("assets/icons/outlet.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/outlet_outline.png", width: 27, height: 27)
+                  Icon(Icons.store, size: 33) :
+                  Icon(Icons.store_outlined, size: 33)
               ),
               label: 'Outlet'
             ),
@@ -75,8 +76,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 3 ?
-                  Image.asset("assets/icons/employee.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/employee_outline.png", width: 27, height: 27)
+                  Icon(Icons.badge, size: 33) :
+                  Icon(Icons.badge_outlined, size: 33)
               ),
               label: 'Pegawai'
             ),
@@ -84,8 +85,8 @@ class _TabIndexState extends State<TabIndex> {
               icon: Container(
                 padding: const EdgeInsets.only(bottom: 2),
                 child: currentIndex == 4 ?
-                  Image.asset("assets/icons/profile.png", width: 27, height: 27) :
-                  Image.asset("assets/icons/profile_outline.png", width: 27, height: 27)
+                  Icon(Icons.person, size: 33) :
+                  Icon(Icons.person_outline, size: 33)
               ),
               label: 'Saya'
             )

@@ -53,6 +53,7 @@ class _OrderItemState extends State<OrderItem> {
                 height: 80,
                 fit: BoxFit.cover,
                 loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
                   return Container(
                     width: 80,
                     height: 80,

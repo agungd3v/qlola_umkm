@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:qlola_umkm/components/home/transaction_info.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,29 +17,24 @@ class _HomeScreenState extends State<HomeScreen> {
       extendBodyBehindAppBar: false,
       backgroundColor: Colors.white,
       appBar: PreferredSize(
-        preferredSize:
-            const Size.fromHeight(80), // Disesuaikan dengan height header
+        preferredSize: const Size.fromHeight(56), // Adjust height as needed
         child: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: Theme.of(context).primaryColor,
+          elevation: 0,
+          title: Text(
+            "Beranda",
+            style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).primaryColorDark,
+              fontSize: 18
+            )
+          ),
           systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.transparent,
+            statusBarColor: Theme.of(context).primaryColor,
             statusBarIconBrightness: Brightness.light,
-          ),
-          title: Padding(
-            padding: const EdgeInsets.only(
-                top: 20.0), // Memberikan padding untuk judul
-            child: Text(
-              "Beranda", // Menjaga konsistensi nama pada halaman Home
-              style: TextStyle(
-                fontFamily: "Poppins",
-                fontWeight: FontWeight.w700,
-                fontSize: 22, // Ukuran font konsisten dengan halaman lain
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
+          )
+        )
       ),
       body: SingleChildScrollView(
         keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -49,11 +45,11 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TransactionInfo() // Komponen transaksi tetap dipertahankan
-              ],
-            ),
-          ),
-        ),
-      ),
+              ]
+            )
+          )
+        )
+      )
     );
   }
 }

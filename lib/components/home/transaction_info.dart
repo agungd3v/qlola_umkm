@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class TransactionInfo extends StatefulWidget {
   const TransactionInfo({super.key});
@@ -28,8 +29,7 @@ class _TransactionInfoState extends State<TransactionInfo> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Center(
             child: CircularProgressIndicator(
-              valueColor:
-                  AlwaysStoppedAnimation(Colors.redAccent), // Red color loader
+              valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
             ),
           );
         }
@@ -73,7 +73,7 @@ class _TransactionInfoState extends State<TransactionInfo> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            Colors.red.shade800, // Dark Red
+            Theme.of(context).primaryColor, // Dark Red
             Colors.black, // Black for gradient effect
           ],
           begin: Alignment.topLeft,
@@ -94,22 +94,20 @@ class _TransactionInfoState extends State<TransactionInfo> {
         children: [
           Text(
             title,
-            style: TextStyle(
-              fontFamily: "Poppins",
+            style: GoogleFonts.roboto(
               fontWeight: FontWeight.w500,
               color: Colors.white,
-              fontSize: 4.w,
+              fontSize: 16,
             ),
           ),
           SizedBox(height: 4),
           Text(
             transformPrice(double.parse(amount.toString())),
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontFamily: "Poppins",
+            style: GoogleFonts.roboto(
               fontWeight: FontWeight.w700,
               color: Colors.white,
-              fontSize: 5.w,
+              fontSize: 18,
             ),
           ),
         ],

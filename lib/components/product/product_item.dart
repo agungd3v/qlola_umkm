@@ -1,8 +1,7 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ProductItem extends StatefulWidget {
   dynamic product;
@@ -18,15 +17,12 @@ class _ProductItemState extends State<ProductItem> {
   @override
   void initState() {
     super.initState();
-    inspect(widget.product);
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: widget.index > 0
-          ? const EdgeInsets.only(top: 14, bottom: 14)
-          : const EdgeInsets.only(top: 14, bottom: 14),
-      // : const EdgeInsets.only(top: 0),
+      margin: widget.index > 0 ? const EdgeInsets.only(top: 14, bottom: 14) : const EdgeInsets.only(top: 14, bottom: 14),
       padding: const EdgeInsets.symmetric(horizontal: 16),
       child: Row(
         children: [
@@ -34,27 +30,40 @@ class _ProductItemState extends State<ProductItem> {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(
                 Radius.circular(8),
-              ),
+              )
             ),
             clipBehavior: Clip.hardEdge,
             child: Image.network(
               "${dotenv.env["ASSET_URL"]}/${widget.product["product_image"]}",
-              width: 70,
-              height: 70,
+              width: 80,
+              height: 80,
               fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
                 return Container(
-                  width: 70,
-                  height: 70,
+                  width: 80,
+                  height: 80,
                   decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor.withOpacity(0.2)),
-                  child: Center(
-                    child: Image.asset("assets/icons/image_crash.png",
-                        width: 25, height: 25),
+                    color: Theme.of(context).primaryColor.withOpacity(0.2)
                   ),
+                  child: Center(
+                    child: Icon(Icons.photo_size_select_actual, color: Theme.of(context).primaryColorDark)
+                  )
                 );
               },
-            ),
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).primaryColor.withOpacity(0.2)
+                  ),
+                  child: Center(
+                    child: Icon(Icons.photo_size_select_actual, color: Theme.of(context).primaryColorDark)
+                  )
+                );
+              }
+            )
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -64,28 +73,30 @@ class _ProductItemState extends State<ProductItem> {
                 children: [
                   Text(
                     widget.product["product_name"],
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark),
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 18
+                    )
                   ),
                   Text(
                     transformPrice(
                       double.parse(
                         widget.product["product_price"].toString(),
-                      ),
+                      )
                     ),
-                    style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColor),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16
+                    )
+                  )
+                ]
+              )
+            )
+          )
+        ]
+      )
     );
   }
 }
