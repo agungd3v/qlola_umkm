@@ -202,6 +202,7 @@ class HelperCheckout {
               onTap: () {
                 Map<String, dynamic> item = {
                   "id": dumpId,
+                  "_other": true,
                   "product_name": productName.text,
                   "product_image": null,
                   "product_price": int.parse(productPrice.text),
