@@ -301,7 +301,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                                   SizedBox(width: 4),
                                   ElevatedButton(
                                       onPressed: () =>
-                                          context.pushNamed("Printers"),
+                                          context.pushNamed("Employee Printer"),
                                       style: ElevatedButton.styleFrom(
                                           backgroundColor: Theme.of(context)
                                               .primaryColorDark,
@@ -318,7 +318,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
                               if (inputMacAddress.text == "")
                                 ElevatedButton(
                                     onPressed: () =>
-                                        context.pushNamed("Printers"),
+                                        context.pushNamed("Employee Printer"),
                                     style: ElevatedButton.styleFrom(
                                         backgroundColor:
                                             Theme.of(context).primaryColor,

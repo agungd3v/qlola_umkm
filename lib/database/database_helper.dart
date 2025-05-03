@@ -2,7 +2,9 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 class DatabaseHelper {
+
   DatabaseHelper._();
+
   static final DatabaseHelper instance = DatabaseHelper._();
 
   static final _databaseName = "local.db";
@@ -58,4 +60,5 @@ class DatabaseHelper {
       }
     );
   }
+
 }

@@ -25,9 +25,13 @@ class _TransactionDailyState extends State<TransactionDaily> {
       future: getHistory(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Container(
-            margin: const EdgeInsets.all(16),
-            child: Text("Waiting connection...")
+          return Column(
+            children: [
+              SizedBox(height: 50),
+              CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              )
+            ]
           );
         }
         if (snapshot.data != null) {

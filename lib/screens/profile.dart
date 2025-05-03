@@ -128,7 +128,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 // History Transaction
                 GestureDetector(
-                  onTap: () => context.pushNamed("HistoryTransaction"),
+                  onTap: () => context.pushNamed("Owner History Transaction"),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -159,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 // Report Section
                 GestureDetector(
-                  onTap: () => context.pushNamed("Report"),
+                  onTap: () => context.pushNamed("Owner Report"),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 20),

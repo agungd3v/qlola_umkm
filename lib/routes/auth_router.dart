@@ -1,51 +1,28 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:qlola_umkm/screens/auth/signin.dart';
 import 'package:qlola_umkm/screens/auth/signup.dart';
-import 'package:qlola_umkm/screens/splash_screen.dart';
 
 class AuthRouter {
   AuthRouter._();
 
-  static const String initialRoute =
-      '/splash'; // Set splash screen as the initial route
-  static final GlobalKey<NavigatorState> _rootNavigatorKey =
-      GlobalKey<NavigatorState>();
+  static const String initialRoute = '/signin';
 
-  static final GoRouter router = GoRouter(
-    initialLocation: initialRoute, // Splash screen route
-    navigatorKey: _rootNavigatorKey,
-    debugLogDiagnostics: true,
-    routes: [
-      // Splash Screen route
+  static List<GoRoute> get routes {
+    return [
       GoRoute(
-        path: '/splash',
-        name: 'Splash Screen',
-        parentNavigatorKey: _rootNavigatorKey,
-        builder: (context, state) {
-          return SplashScreen(key: state.pageKey); // Display SplashScreen
-        },
-      ),
-
-      // SignIn Route
-      GoRoute(
-        path: '/signin',
+        path: '/auth/signin',
         name: 'Sign In',
-        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) {
-          return SigninScreen(key: state.pageKey); // Navigate to SigninScreen
-        },
+          return SigninScreen(key: state.pageKey);
+        }
       ),
-
-      // SignUp Route
       GoRoute(
-        path: '/signup',
+        path: '/auth/signup',
         name: 'Sign Up',
-        parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) {
-          return SignupScreen(key: state.pageKey); // Navigate to SignupScreen
-        },
-      ),
-    ],
-  );
+          return SignupScreen(key: state.pageKey);
+        }
+      )
+    ];
+  }
 }

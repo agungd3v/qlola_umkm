@@ -86,7 +86,7 @@ class _TransactionScreenState extends State<TransactionScreen> {
                       )
                     )),
                     Tab(child: Text(
-                      "Semua Transaksi",
+                      "Transaksi bulan ini",
                       style: TextStyle(
                         fontFamily: "Poppins",
                         fontWeight: FontWeight.w600,

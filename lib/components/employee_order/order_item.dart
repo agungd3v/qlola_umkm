@@ -46,7 +46,7 @@ class _OrderItemState extends State<OrderItem> {
               ),
               clipBehavior: Clip.hardEdge,
               child: Image.network(
-                "${dotenv.env["ASSET_URL"]}${widget.item["product_image"]}",
+                "${dotenv.env["ASSET_URL"]}/${widget.item["product_image"]}",
                 width: 90,
                 height: 90,
                 fit: BoxFit.cover,

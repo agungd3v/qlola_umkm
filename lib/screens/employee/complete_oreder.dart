@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:another_flushbar/flushbar.dart';
@@ -14,8 +13,6 @@ import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:qlola_umkm/utils/printer.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
-// import 'package:image/image.dart' as ImageImage;
-// import 'package:path/path.dart';
 
 class CompleteOrederScreen extends StatefulWidget {
   const CompleteOrederScreen({super.key});
@@ -34,22 +31,12 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
   final databaseHelper = DatabaseHelper.instance;
 
   Future _printShare() async {
-    // final profile = await CapabilityProfile.load();
-    // final generator = Generator(PaperSize.mm58, profile);
     List<int> bytes = [];
+    final tempDir = await getTemporaryDirectory();
 
     bytes += (await widgetsToImageController.capture())!;
-    final tempDir = await getTemporaryDirectory();
     File file = await File('${tempDir.path}/image.png').create();
     file.writeAsBytesSync(bytes);
-
-    // final ImageImage.Image? image = ImageImage.decodeImage(bytes);
-
-    // final xx = Uint8List.fromList(generator.imageRaster(image!).toList());
-    // file.writeAsBytesSync(xx);
-    // inspect(xx);
-    // file.writeAsBytesSync(bytes);
-    // inspect(bytes);
 
     await Share.shareXFiles([XFile(file.path)], text: "Resi Pembelian");
   }

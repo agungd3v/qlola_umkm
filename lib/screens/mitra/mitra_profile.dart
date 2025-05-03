@@ -116,7 +116,7 @@ class _MitraProfileState extends State<MitraProfile> {
                 ),
                 // History Transaction
                 GestureDetector(
-                  onTap: () => context.pushNamed("HistoryTransaction"),
+                  onTap: () => context.pushNamed("Mitra Transaction"),
                   child: Container(
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 20),

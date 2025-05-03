@@ -16,6 +16,7 @@ analyzer:
     curly_braces_in_flow_control_structures: ignore
     depend_on_referenced_packages: ignore
     deprecated_member_use: ignore
+    library_private_types_in_public_api: ignore
     must_be_immutable: ignore
     non_constant_identifier_names: ignore
     prefer_const_constructors: ignore

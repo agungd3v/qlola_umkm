@@ -92,7 +92,7 @@ class _OutletItemState extends State<OutletItem> {
                       _buildActionButton(
                         label: "Tambah Produk",
                         onPressed: () {
-                          context.pushNamed("Add Outlet Product",
+                          context.pushNamed("Owner Add Outlet Product",
                               extra: widget.outlet);
                         },
                         icon: Icons.production_quantity_limits,
@@ -107,7 +107,7 @@ class _OutletItemState extends State<OutletItem> {
                             child: _buildActionButton(
                               label: "Tambah Karyawan",
                               onPressed: () {
-                                context.pushNamed("Add Outlet Employee",
+                                context.pushNamed("Owner Add Outlet Employee",
                                     extra: widget.outlet);
                               },
                               icon: Icons.person_add_alt_1,
@@ -120,7 +120,7 @@ class _OutletItemState extends State<OutletItem> {
                             child: _buildActionButton(
                               label: "Tambah Mitra",
                               onPressed: () {
-                                context.pushNamed("Add Mitra",
+                                context.pushNamed("Owner Add Mitra",
                                     extra: widget.outlet);
                               },
                               icon: Icons.group_add,

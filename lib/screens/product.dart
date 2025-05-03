@@ -29,7 +29,7 @@ class _ProductScreenState extends State<ProductScreen> {
 
   void _editProduct(dynamic data) {
     owner_provider!.set_product_edit = data;
-    context.pushNamed("Edit Product");
+    context.pushNamed("Owner Edit Product");
   }
 
   Future<void> _navigateToAddProduct() async {
