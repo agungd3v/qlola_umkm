@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:io';
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/components/button_sync_data.dart';
 import 'package:qlola_umkm/components/employee_home/transaction_today.dart';
@@ -25,13 +29,19 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   BluetoothProvider? bluetooth_provider;
 
   final inputMacAddress = TextEditingController();
-  // final inputMacAddress = TextEditingController(text: localStorage.getItem("printer_mac") ?? "66:32:13:C1:9E:2A");
+
+  BluetoothAdapterState _adapterState = BluetoothAdapterState.unknown;
+  late StreamSubscription<BluetoothAdapterState> _adapterStateStateSubscription;
 
   bool testPrint = false;
-  bool isConnectedToInternet = false;
-  String connectionType = "Tidak ada koneksi"; // Variabel untuk menampilkan jenis koneksi
+  bool isConnectedToInternet = false; // Flag untuk mengecek koneksi internet
+  late StreamSubscription<List<ConnectivityResult>>
+      _connectivitySubscription; // Stream untuk mendengarkan perubahan koneksi
+  String connectionType =
+      "Tidak ada koneksi"; // Variabel untuk menampilkan jenis koneksi
   bool showSyncPrompt = false; // Flag untuk menampilkan prompt sync data
-  bool hasShownNoConnectionPrompt = false; // Flag untuk mencegah flushbar berulang
+  bool hasShownNoConnectionPrompt =
+      false; // Flag untuk mencegah flushbar berulang
 
   Future _testPrinter(BuildContext context) async {
     setState(() => testPrint = true);
@@ -45,23 +55,107 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     setState(() => testPrint = false);
   }
 
+  Future _scanPrinter() async {
+    if (Platform.isAndroid) {
+      final response = await [
+        Permission.bluetoothScan,
+        Permission.bluetoothConnect
+      ].request();
+      if (response[Permission.bluetoothScan]?.isGranted == true &&
+          response[Permission.bluetoothConnect]?.isGranted == true) {
+        bluetooth_provider?.set_status = true;
+      }
+    }
+  }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   WidgetsBinding.instance.addPostFrameCallback((callback) {
+  //     setState(() => inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
+  //   });
+  // }
+  Future<void> checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    setState(() {
+      if (connectivityResult == ConnectivityResult.mobile ||
+          connectivityResult == ConnectivityResult.wifi) {
+        isConnectedToInternet = true;
+        connectionType = connectivityResult == ConnectivityResult.mobile
+            ? "Jaringan Seluler"
+            : "Wi-Fi";
+        showSyncPrompt = true; // Set flag untuk menampilkan prompt sync
+      } else {
+        isConnectedToInternet = false;
+        connectionType = "Tidak ada koneksi";
+        showSyncPrompt = false; // Hide sync prompt jika tidak ada koneksi
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    _adapterStateStateSubscription =
+        FlutterBluePlus.adapterState.listen((state) {
+      _adapterState = state;
+      WidgetsBinding.instance.addPostFrameCallback((callback) {
+        if (mounted) {
+          _scanPrinter();
+        } else {
+          bluetooth_provider?.set_status = false;
+        }
+      });
+    });
 
-    WidgetsBinding.instance.addPostFrameCallback((callback) {
-      setState(() => inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
+    checkInternetConnection(); // Cek koneksi internet saat halaman pertama kali dibuka
+
+    // Menambahkan stream subscription untuk mendengarkan perubahan koneksi internet
+    _connectivitySubscription = Connectivity()
+        .onConnectivityChanged
+        .listen((List<ConnectivityResult> result) {
+      setState(() {
+        if (result.isNotEmpty) {
+          if (result.first == ConnectivityResult.mobile ||
+              result.first == ConnectivityResult.wifi) {
+            isConnectedToInternet = true;
+            connectionType = result.first == ConnectivityResult.mobile
+                ? "Jaringan Seluler"
+                : "Wi-Fi";
+            showSyncPrompt = true; // Tampilkan prompt sync jika ada koneksi
+          } else {
+            isConnectedToInternet = false;
+            connectionType = "Tidak ada koneksi";
+            showSyncPrompt =
+                false; // Sembunyikan prompt sync jika tidak ada koneksi
+          }
+        }
+      });
     });
   }
 
   @override
   void dispose() {
+    _adapterStateStateSubscription.cancel();
+    _connectivitySubscription
+        .cancel(); // Jangan lupa untuk membatalkan subscription saat dispose
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     checkout_provider = Provider.of<CheckoutProvider>(context);
+
+    WidgetsBinding.instance.addPostFrameCallback((callback) {
+      setState(() =>
+          inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
+      if (_adapterState == BluetoothAdapterState.on) {
+        _scanPrinter();
+      } else {
+        bluetooth_provider?.set_status = false;
+      }
+    });
 
     return Scaffold(
       extendBodyBehindAppBar: false,
