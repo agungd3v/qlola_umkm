@@ -17,10 +17,14 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  // final phone = TextEditingController(text: "89668951090");
-  // final password = TextEditingController(text: "12345678");
-  final phone = TextEditingController(text: "");
-  final password = TextEditingController(text: "");
+  // final phone = TextEditingController(text: "89668951090"); // Owner
+  final phone = TextEditingController(text: "81283134033"); // Karyawan
+  // final phone = TextEditingController(text: "81945156563"); // Mitra
+  final password = TextEditingController(text: "12345678");
+
+  // final phone = TextEditingController(text: "");
+  // final password = TextEditingController(text: "");
+
   bool showPassword = false;
   bool proccess = false;
 
@@ -46,177 +50,182 @@ class _SigninScreenState extends State<SigninScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFB),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 36),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              // Icon center sebagai logo
-              Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Theme.of(context).primaryColor.withOpacity(0.1),
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle(
+        statusBarColor: Theme.of(context).primaryColor,
+        statusBarIconBrightness: Brightness.light,
+      ),
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 36),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Icon center sebagai logo
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Theme.of(context).primaryColor.withOpacity(0.1),
+                  ),
+                  child: Icon(
+                    Icons.account_balance_wallet_rounded,
+                    size: 80,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
-                child: Icon(
-                  Icons.account_balance_wallet_rounded,
-                  size: 80,
-                  color: Theme.of(context).primaryColor,
-                ),
-              ),
-              const SizedBox(height: 24),
+                const SizedBox(height: 24),
 
-              Text(
-                "Masuk ke Akunmu",
-                style: GoogleFonts.roboto(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Theme.of(context).primaryColor,
+                Text(
+                  "Masuk ke Akunmu",
+                  style: GoogleFonts.roboto(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                "Pantau dan kelola keuangan bisnismu",
-                style: GoogleFonts.roboto(
-                  fontSize: 14,
-                  color: Colors.grey[600],
+                const SizedBox(height: 4),
+                Text(
+                  "Pantau dan kelola keuangan bisnismu",
+                  style: GoogleFonts.roboto(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 36),
+                const SizedBox(height: 36),
 
-              // Input No HP dengan +62 tetap terlihat
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-                ),
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12),
-                      child: Text(
-                        "+62",
-                        style: GoogleFonts.roboto(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: Theme.of(context).primaryColor,
+                // Input No HP dengan +62 tetap terlihat
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          "+62",
+                          style: GoogleFonts.roboto(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w500,
+                            color: Theme.of(context).primaryColor,
+                          ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        controller: phone,
-                        keyboardType: TextInputType.number,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
-                        style: GoogleFonts.roboto(fontSize: 14),
-                        decoration: const InputDecoration(
-                          hintText: "No Handphone",
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: 18,
-                            horizontal: 0,
+                      Expanded(
+                        child: TextField(
+                          controller: phone,
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
+                          style: GoogleFonts.roboto(fontSize: 14),
+                          decoration: const InputDecoration(
+                            hintText: "No Handphone",
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 18,
+                              horizontal: 0,
+                            )
                           )
                         )
                       )
-                    )
-                  ]
-                )
-              ),
-              const SizedBox(height: 16),
-              // Input Password
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-                ),
-                child: TextField(
-                  controller: password,
-                  obscureText: !showPassword,
-                  style: GoogleFonts.roboto(fontSize: 14),
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock_outline_rounded, color: Theme.of(context).primaryColor),
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        showPassword ? Icons.visibility_off : Icons.visibility,
-                        color: Colors.grey,
-                      ),
-                      onPressed: () => setState(() => showPassword = !showPassword),
-                    ),
-                    border: InputBorder.none,
-                    hintText: "Password",
-                    contentPadding: const EdgeInsets.symmetric(
-                      vertical: 18,
-                      horizontal: 16,
-                    )
+                    ]
                   )
-                )
-              ),
-              const SizedBox(height: 30),
-              // Tombol Masuk
-              if (proccess) Container(
-                height: 48,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    LoadingAnimationWidget.fourRotatingDots(
-                      color: Colors.white,
-                      size: 20,
-                    ),
-                    const SizedBox(width: 10),
-                    Text(
-                      "Masuk...",
-                      style: GoogleFonts.roboto(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
+                const SizedBox(height: 16),
+                // Input Password
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+                  ),
+                  child: TextField(
+                    controller: password,
+                    obscureText: !showPassword,
+                    style: GoogleFonts.roboto(fontSize: 14),
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.lock_outline_rounded, color: Theme.of(context).primaryColor),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          showPassword ? Icons.visibility_off : Icons.visibility,
+                          color: Colors.grey,
+                        ),
+                        onPressed: () => setState(() => showPassword = !showPassword),
+                      ),
+                      border: InputBorder.none,
+                      hintText: "Password",
+                      contentPadding: const EdgeInsets.symmetric(
+                        vertical: 18,
+                        horizontal: 16,
                       )
                     )
-                  ]
-                )
-              ),
-              if (!proccess) ElevatedButton(
-                onPressed: _signin,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).primaryColor,
-                  minimumSize: const Size.fromHeight(48),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
                   )
                 ),
-                child: Text(
-                  "Masuk",
-                  style: GoogleFonts.roboto(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                  )
-                )
-              ),
-              const SizedBox(height: 16),
-              // Tombol daftar
-              TextButton(
-                onPressed: () => context.pushNamed("Sign Up"),
-                child: Text(
-                  "Belum punya akun? Daftar di sini",
-                  style: GoogleFonts.roboto(
+                const SizedBox(height: 30),
+                // Tombol Masuk
+                if (proccess) Container(
+                  height: 48,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.w500,
-                    fontSize: 13,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      LoadingAnimationWidget.fourRotatingDots(
+                        color: Colors.white,
+                        size: 20,
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        "Masuk...",
+                        style: GoogleFonts.roboto(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                        )
+                      )
+                    ]
+                  )
+                ),
+                if (!proccess) ElevatedButton(
+                  onPressed: _signin,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    minimumSize: const Size.fromHeight(48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    )
+                  ),
+                  child: Text(
+                    "Masuk",
+                    style: GoogleFonts.roboto(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    )
+                  )
+                ),
+                const SizedBox(height: 16),
+                // Tombol daftar
+                TextButton(
+                  onPressed: () => context.pushNamed("Sign Up"),
+                  child: Text(
+                    "Belum punya akun? Daftar di sini",
+                    style: GoogleFonts.roboto(
+                      color: Theme.of(context).primaryColor,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 13,
+                    )
                   )
                 )
-              )
-            ]
+              ]
+            )
           )
         )
       )

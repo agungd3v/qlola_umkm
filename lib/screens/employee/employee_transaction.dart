@@ -19,7 +19,7 @@ class _EmployeeTransactionScreenState extends State<EmployeeTransactionScreen> {
     final httpRequest = await outlet_transaction();
     if (httpRequest["status"] == 200) {
       setState(() {
-        transactions = httpRequest["transactions"];
+        transactions = httpRequest["transactions_success"];
       });
     }
   }

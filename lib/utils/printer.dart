@@ -1,7 +1,6 @@
 import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
-import 'package:localstorage/localstorage.dart';
-import 'package:print_bluetooth_thermal/print_bluetooth_thermal.dart';
+import 'package:qlola_umkm/helpers/helper_printer.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
@@ -21,61 +20,26 @@ Future<Map<String, dynamic>> testGenerateStruck() async {
     return {"status": false, "message": "Izin bluetooth ditolak"};
   }
 
-  final macRaw = localStorage.getItem("printer_mac");
-  final mac = macRaw?.toString() ?? "";
-  if (mac.isEmpty) {
-    await GlobalLogger.logPrinter("error", "MAC printer kosong saat test print");
-    return {"status": false, "message": "Alamat MAC printer belum disimpan"};
-  }
-
-  final connected = await PrintBluetoothThermal.connect(macPrinterAddress: mac);
-  if (!connected) {
-    await GlobalLogger.logPrinter("error", "Gagal connect ke printer saat test print: $mac");
-    return {"status": false, "message": "Gagal menghubungkan ke printer"};
-  }
-
   try {
     final profile = await CapabilityProfile.load();
     final generator = Generator(PaperSize.mm58, profile);
 
     List<int> bytes = [];
     bytes += generator.text("TEST CETAK", styles: PosStyles(align: PosAlign.center, bold: true));
-    bytes += generator.text("Struk ini hanya untuk test", styles: PosStyles(align: PosAlign.center));
+    bytes += generator.text("Struk ini hanya untuk tes", styles: PosStyles(align: PosAlign.center));
     bytes += generator.feed(3);
     bytes += generator.cut();
 
-    final result = await PrintBluetoothThermal.writeBytes(bytes);
-    await GlobalLogger.logPrinter("info", "Kirim byte awal (test): $result");
-
-    if (!result) {
-      await GlobalLogger.logPrinter("warning", "Gagal kirim byte test, coba reconnect");
-
-      await PrintBluetoothThermal.disconnect;
-      await Future.delayed(Duration(seconds: 2));
-
-      final retry = await PrintBluetoothThermal.connect(macPrinterAddress: mac);
-      if (retry) {
-        await PrintBluetoothThermal.writeBytes(bytes);
-        await GlobalLogger.logPrinter("info", "Test print berhasil setelah reconnect");
-      } else {
-        await GlobalLogger.logPrinter("error", "Gagal reconnect saat test print");
-        return {"status": false, "message": "Test print gagal setelah reconnect"};
-      }
-    }
-
-    await PrintBluetoothThermal.disconnect;
-    return {"status": true, "message": ""};
-
+    final result = await PrinterHelper.sendToPrinter(bytes: bytes);
+    return result;
   } catch (e) {
-    await PrintBluetoothThermal.disconnect;
-    await GlobalLogger.logPrinter("exception", "Exception: $e");
+    await GlobalLogger.logPrinter("exception", "PrinterUtils exception: $e");
     return {"status": false, "message": "Gagal test print: $e"};
   }
 }
 
 Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, AuthProvider auth_provider, String transaction_code) async {
   final bluetoothOn = await FlutterBluePlus.isOn;
-
   if (!bluetoothOn) {
     await GlobalLogger.logPrinter("error", "Bluetooth tidak aktif");
     return {"status": false, "message": "Bluetooth tidak aktif"};
@@ -85,19 +49,6 @@ Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, 
   if (!checkPermission["status"]) {
     await GlobalLogger.logPrinter("error", "Permission bluetooth ditolak");
     return {"status": false, "message": "Izin Bluetooth ditolak"};
-  }
-
-  final macRaw = localStorage.getItem("printer_mac");
-  final mac = macRaw?.toString() ?? "";
-  if (mac.isEmpty) {
-    await GlobalLogger.logPrinter("error", "MAC Address printer kosong");
-    return {"status": false, "message": "Alamat MAC printer tidak ditemukan"};
-  }
-
-  final isConnected = await PrintBluetoothThermal.connect(macPrinterAddress: mac);
-  if (!isConnected) {
-    await GlobalLogger.logPrinter("error", "Gagal connect ke printer $mac");
-    return {"status": false, "message": "Gagal menghubungkan ke printer"};
   }
 
   try {
@@ -143,7 +94,7 @@ Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, 
 
     bytes += generator.text('--------------------------------');
 
-    // Daftar produk
+    // Produk
     for (var item in checkout_provider.carts) {
       bytes += generator.row([
         PosColumn(text: item["product_name"], width: 12),
@@ -177,31 +128,10 @@ Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, 
     bytes += generator.feed(1);
     bytes += generator.cut();
 
-    final result = await PrintBluetoothThermal.writeBytes(bytes);
-    await GlobalLogger.logPrinter("info", "Kirim byte awal: $result");
-
-    if (!result) {
-      await GlobalLogger.logPrinter("warning", "Kirim byte gagal, coba reconnect");
-
-      await PrintBluetoothThermal.disconnect;
-      await Future.delayed(Duration(seconds: 2));
-
-      final retry = await PrintBluetoothThermal.connect(macPrinterAddress: mac);
-      if (retry) {
-        await PrintBluetoothThermal.writeBytes(bytes);
-        await GlobalLogger.logPrinter("info", "Berhasil print setelah reconnect");
-      } else {
-        await GlobalLogger.logPrinter("error", "Gagal reconnect setelah kirim data gagal");
-        return {"status": false, "message": "Gagal print ulang setelah reconnect"};
-      }
-    }
-
-    await PrintBluetoothThermal.disconnect;
-    return {"status": true, "message": ""};
-
+    final result = await PrinterHelper.sendToPrinter(bytes: bytes);
+    return result;
   } catch (e) {
-    await PrintBluetoothThermal.disconnect;
-    await GlobalLogger.logPrinter("exception", "Exception: $e");
+    await GlobalLogger.logPrinter("exception", "Exception saat generate print: $e");
     return {"status": false, "message": "Gagal mencetak: $e"};
   }
 }
