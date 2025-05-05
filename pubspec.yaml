@@ -67,6 +67,7 @@ dependencies:
   connectivity_plus: ^6.1.4
   internet_connection_checker: ^3.0.1
   auto_size_text: ^3.0.0
+  shared_preferences: ^2.5.3
 
 dev_dependencies:
   flutter_test:

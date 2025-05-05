@@ -35,20 +35,17 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
 
   bool testPrint = false;
   bool isConnectedToInternet = false; // Flag untuk mengecek koneksi internet
-  late StreamSubscription<List<ConnectivityResult>>
-      _connectivitySubscription; // Stream untuk mendengarkan perubahan koneksi
-  String connectionType =
-      "Tidak ada koneksi"; // Variabel untuk menampilkan jenis koneksi
+  late StreamSubscription<List<ConnectivityResult>> _connectivitySubscription; // Stream untuk mendengarkan perubahan koneksi
+  String connectionType = "Tidak ada koneksi"; // Variabel untuk menampilkan jenis koneksi
   bool showSyncPrompt = false; // Flag untuk menampilkan prompt sync data
-  bool hasShownNoConnectionPrompt =
-      false; // Flag untuk mencegah flushbar berulang
+  bool hasShownNoConnectionPrompt = false; // Flag untuk mencegah flushbar berulang
 
   Future _testPrinter(BuildContext context) async {
     setState(() => testPrint = true);
 
     final generate = await testGenerateStruck();
 
-    if (generate != null && generate["status"] == false) {
+    if (generate["status"] == false) {
       errorMessage(context, "Printer", generate["message"]);
     }
 
@@ -68,14 +65,6 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     }
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-
-  //   WidgetsBinding.instance.addPostFrameCallback((callback) {
-  //     setState(() => inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
-  //   });
-  // }
   Future<void> checkInternetConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     setState(() {
@@ -85,11 +74,11 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
         connectionType = connectivityResult == ConnectivityResult.mobile
             ? "Jaringan Seluler"
             : "Wi-Fi";
-        showSyncPrompt = true; // Set flag untuk menampilkan prompt sync
+        showSyncPrompt = true;
       } else {
         isConnectedToInternet = false;
         connectionType = "Tidak ada koneksi";
-        showSyncPrompt = false; // Hide sync prompt jika tidak ada koneksi
+        showSyncPrompt = false;
       }
     });
   }
@@ -109,12 +98,9 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
       });
     });
 
-    checkInternetConnection(); // Cek koneksi internet saat halaman pertama kali dibuka
+    checkInternetConnection();
 
-    // Menambahkan stream subscription untuk mendengarkan perubahan koneksi internet
-    _connectivitySubscription = Connectivity()
-        .onConnectivityChanged
-        .listen((List<ConnectivityResult> result) {
+    _connectivitySubscription = Connectivity().onConnectivityChanged.listen((List<ConnectivityResult> result) {
       setState(() {
         if (result.isNotEmpty) {
           if (result.first == ConnectivityResult.mobile ||
@@ -127,8 +113,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
           } else {
             isConnectedToInternet = false;
             connectionType = "Tidak ada koneksi";
-            showSyncPrompt =
-                false; // Sembunyikan prompt sync jika tidak ada koneksi
+            showSyncPrompt = false; // Sembunyikan prompt sync jika tidak ada koneksi
           }
         }
       });
@@ -138,8 +123,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
   @override
   void dispose() {
     _adapterStateStateSubscription.cancel();
-    _connectivitySubscription
-        .cancel(); // Jangan lupa untuk membatalkan subscription saat dispose
+    _connectivitySubscription.cancel();
     super.dispose();
   }
 
@@ -148,8 +132,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
     checkout_provider = Provider.of<CheckoutProvider>(context);
 
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      setState(() =>
-          inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
+      setState(() => inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
       if (_adapterState == BluetoothAdapterState.on) {
         _scanPrinter();
       } else {
