@@ -6,6 +6,8 @@ import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:localstorage/localstorage.dart';
+import 'package:provider/provider.dart';
+import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/request_permission.dart';
 
 class EmployeePrintersScreen extends StatefulWidget {
@@ -87,6 +89,9 @@ class _EmployeePrintersScreenState extends State<EmployeePrintersScreen> {
   void connectToDevice(String mac, BuildContext context) async {
     try {
       if (mac != "") {
+        final checkoutProvider = Provider.of<CheckoutProvider>(context);
+
+        checkoutProvider.set_mac_address = mac;
         localStorage.setItem("printer_mac", mac);
         context.pop();
       } else {

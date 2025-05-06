@@ -5,8 +5,7 @@ import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
 import 'package:qlola_umkm/utils/flush_message.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
-
-import '../../utils/printer.dart';
+import 'package:qlola_umkm/utils/printer.dart';
 
 class ProcessOrder extends StatefulWidget {
   dynamic item;
@@ -42,6 +41,17 @@ class _ProcessOrderState extends State<ProcessOrder> {
     final request = await confirm_transaction(widget.item["id"] as int);
     if (request["status"] == 200) {
       successMessage(context, "Informasi", "Berhasil menyelesaikan pesanan");
+
+      final authProvider = Provider.of<AuthProvider>(context, listen: false);
+      await generateStruck(widget.item, authProvider, widget.item["transaction_code"]);
+      // final struck = await generateStruck(widget.item, authProvider, widget.item["transaction_code"]);
+
+      // if (!struck["status"]) {
+      //   errorMessage(context, "Bluetooth print", struck["message"]);
+      // } else {
+      //   successMessage(context, "Bluetooth print", "Resi sebentar lagi siap 🥣");
+      // }
+
       return true;
     } else {
       errorMessage(context, "Informasi", request["message"]);
@@ -243,13 +253,25 @@ class _ProcessOrderState extends State<ProcessOrder> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget.item["transaction_code"],
-            style: GoogleFonts.roboto(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-              color: Theme.of(context).primaryColorDark
-            )
+          Row(
+            children: [
+              Expanded(child: Text(
+                widget.item["transaction_code"],
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).primaryColorDark
+                )
+              )),
+              Text(
+                "#${widget.item["ordering"]}",
+                style: GoogleFonts.roboto(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Theme.of(context).primaryColorDark
+                )
+              )
+            ]
           ),
           SizedBox(height: 8),
           Container(
@@ -358,6 +380,7 @@ class _ProcessOrderState extends State<ProcessOrder> {
                       Expanded(child: ElevatedButton(
                         onPressed: () => cancelOrder(),
                         style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
                           backgroundColor: Theme.of(context).primaryColor,
                           minimumSize: const Size.fromHeight(40),
                           shape: RoundedRectangleBorder(
@@ -367,6 +390,7 @@ class _ProcessOrderState extends State<ProcessOrder> {
                         ),
                         child: Text(
                           "Batalkan",
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.roboto(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,
@@ -377,6 +401,7 @@ class _ProcessOrderState extends State<ProcessOrder> {
                       Expanded(child: ElevatedButton(
                         onPressed: () => confirmOrder(),
                         style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(horizontal: 0),
                           backgroundColor: Theme.of(context).primaryColor,
                           minimumSize: const Size.fromHeight(40),
                           shape: RoundedRectangleBorder(
@@ -386,6 +411,7 @@ class _ProcessOrderState extends State<ProcessOrder> {
                         ),
                         child: Text(
                           "Selesaikan",
+                          textAlign: TextAlign.center,
                           style: GoogleFonts.roboto(
                             color: Colors.white,
                             fontWeight: FontWeight.w600,

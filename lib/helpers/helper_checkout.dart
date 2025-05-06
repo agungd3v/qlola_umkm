@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/database/database_helper.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
@@ -14,11 +15,18 @@ class HelperCheckout {
         "total": checkout_provider.cart_total,
         "outlet_id": auth_provider.user["outlet"]["id"],
         "business_id": auth_provider.user["outlet"]["business_id"],
-        "products": checkout_provider.carts
+        "products": checkout_provider.carts,
+        "ordering": checkout_provider.ordering
       };
 
       final httpRquest = await proses_checkout(data);
       if (httpRquest["status"] != 200) throw Exception(httpRquest["message"]);
+
+      final isOrder = localStorage.getItem("ordering");
+      final incrementedOrder = (int.tryParse(isOrder ?? "1") ?? 1) + 1;
+      localStorage.setItem("ordering", incrementedOrder.toString());
+
+      checkout_provider.set_ordering = incrementedOrder;
 
       return <String, dynamic> {
         "status": true,

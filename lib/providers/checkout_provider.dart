@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:localstorage/localstorage.dart';
 
 class CheckoutProvider extends ChangeNotifier {
   List _carts = [];
+  String _macAddress = "";
+  int _ordering = 1;
 
   List get carts => _carts;
+  String get macAddress => _macAddress;
+  int get ordering => _ordering;
 
   num get cart_total {
     num total = 0;
@@ -31,8 +36,39 @@ class CheckoutProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  set set_mac_address(String param) {
+    _macAddress = param;
+
+    notifyListeners();
+  }
+
+  set set_ordering(int param) {
+    _ordering = param;
+
+    notifyListeners();
+  }
+
   void reset() {
     _carts = [];
+    notifyListeners();
+  }
+
+  CheckoutProvider() {
+    final macRaw = localStorage.getItem("printer_mac");
+    _macAddress = macRaw?.toString() ?? "";
+
+    final nowDay = DateTime.now().day.toString();
+    final isDate = localStorage.getItem("date_now");
+    final isOrder = localStorage.getItem("ordering");
+
+    if (isDate != null && isDate == nowDay) {
+      _ordering = int.tryParse(isOrder ?? "1") ?? 1;
+    } else {
+      localStorage.setItem("date_now", nowDay);
+      localStorage.setItem("ordering", "1");
+      _ordering = 1;
+    }
+
     notifyListeners();
   }
 }

@@ -2,7 +2,6 @@ import 'package:esc_pos_utils/esc_pos_utils.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:qlola_umkm/helpers/helper_printer.dart';
 import 'package:qlola_umkm/providers/auth_provider.dart';
-import 'package:qlola_umkm/providers/checkout_provider.dart';
 import 'package:qlola_umkm/utils/global_function.dart';
 import 'package:qlola_umkm/utils/log.dart';
 import 'package:qlola_umkm/utils/request_permission.dart';
@@ -38,7 +37,7 @@ Future<Map<String, dynamic>> testGenerateStruck() async {
   }
 }
 
-Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, AuthProvider auth_provider, String transaction_code) async {
+Future<Map<String, dynamic>> generateStruck(dynamic checkout, AuthProvider auth_provider, String transaction_code) async {
   final bluetoothOn = await FlutterBluePlus.isOn;
   if (!bluetoothOn) {
     await GlobalLogger.logPrinter("error", "Bluetooth tidak aktif");
@@ -72,7 +71,7 @@ Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, 
       styles: PosStyles(align: PosAlign.center),
     );
     bytes += generator.feed(1);
-    bytes += generator.text('----------------------------');
+    bytes += generator.text('--------------------------------');
 
     // Info kasir
     bytes += generator.row([
@@ -95,13 +94,30 @@ Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, 
     bytes += generator.text('--------------------------------');
 
     // Produk
-    for (var item in checkout_provider.carts) {
+    for (var item in checkout["checkouts"]) {
+      bytes += generator.row([
+        PosColumn(text: item["product"]["product_name"], width: 12),
+      ]);
+      bytes += generator.row([
+        PosColumn(
+          text: "${transformPrice(double.parse(item["product"]["product_price"].toString()))} x${item["quantity"]}",
+          width: 6,
+        ),
+        PosColumn(
+          text: transformPrice(double.parse(item["product"]["product_price"].toString()) * item["quantity"]),
+          width: 6,
+          styles: PosStyles(align: PosAlign.right),
+        )
+      ]);
+    }
+    // Produk
+    for (var item in checkout["others"]) {
       bytes += generator.row([
         PosColumn(text: item["product_name"], width: 12),
       ]);
       bytes += generator.row([
         PosColumn(
-          text: "${transformPrice(double.parse(item["product_price"].toString()))} x ${item["quantity"]}",
+          text: "${transformPrice(double.parse(item["product_price"].toString()))} x${item["quantity"]}",
           width: 6,
         ),
         PosColumn(
@@ -117,7 +133,7 @@ Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, 
     bytes += generator.row([
       PosColumn(text: "Total", width: 6, styles: PosStyles(align: PosAlign.left, bold: true)),
       PosColumn(
-        text: transformPrice(checkout_provider.cart_total),
+        text: transformPrice(checkout["grand_total"]),
         width: 6,
         styles: PosStyles(align: PosAlign.right, bold: true),
       ),
@@ -155,23 +171,6 @@ Future<Map<String, dynamic>> generateStruckKichen(dynamic checkout, AuthProvider
 
     List<int> bytes = [];
 
-    // Header
-    bytes += generator.text(
-      auth_provider.user["outlet"]["business"]["business_name"],
-      styles: PosStyles(
-        bold: true,
-        align: PosAlign.center,
-        width: PosTextSize.size1,
-        height: PosTextSize.size2,
-      ),
-    );
-    bytes += generator.text(
-      auth_provider.user["outlet"]["outlet_name"],
-      styles: PosStyles(align: PosAlign.center),
-    );
-    bytes += generator.feed(1);
-    bytes += generator.text('----------------------------');
-
     // Info kasir
     bytes += generator.row([
       PosColumn(text: "Kasir", width: 4, styles: PosStyles(align: PosAlign.left)),
@@ -185,34 +184,37 @@ Future<Map<String, dynamic>> generateStruckKichen(dynamic checkout, AuthProvider
       PosColumn(text: "No. Struk", width: 4, styles: PosStyles(align: PosAlign.left)),
       PosColumn(text: checkout["transaction_code"], width: 8, styles: PosStyles(align: PosAlign.right)),
     ]);
-    bytes += generator.row([
-      PosColumn(text: "Pembayaran", width: 4, styles: PosStyles(align: PosAlign.left)),
-      PosColumn(text: "Tunai", width: 8, styles: PosStyles(align: PosAlign.right)),
-    ]);
 
     bytes += generator.text('--------------------------------');
+    bytes += generator.feed(1);
+
+    bytes += generator.text(
+      "Pesanan",
+      styles: PosStyles(
+        bold: true,
+        align: PosAlign.center,
+        width: PosTextSize.size1,
+        height: PosTextSize.size2,
+      ),
+    );
+
+    bytes += generator.feed(1);
 
     // Produk
     for (var item in checkout["checkouts"]) {
       bytes += generator.row([
-        PosColumn(text: item["product"]["product_name"], width: 12),
-      ]);
-      bytes += generator.row([
         PosColumn(
-          text: "${transformPrice(double.parse(item["product"]["product_price"].toString()))} x ${item["product"]["quantity"]}",
-          width: 12,
+          text: "${item["product"]["product_name"]} x${item["quantity"]}",
+          width: 12
         ),
       ]);
     }
     // Produk Others
     for (var item in checkout["others"]) {
       bytes += generator.row([
-        PosColumn(text: item["product_name"], width: 12),
-      ]);
-      bytes += generator.row([
         PosColumn(
-          text: "${transformPrice(double.parse(item["product_price"].toString()))} x ${item["quantity"]}",
-          width: 12,
+          text: "${item["product_name"]} x${item["quantity"]}",
+          width: 12
         ),
       ]);
     }

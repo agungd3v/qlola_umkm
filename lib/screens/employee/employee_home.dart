@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:localstorage/localstorage.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/components/button_sync_data.dart';
 import 'package:qlola_umkm/components/employee_home/transaction_today.dart';
@@ -45,7 +44,7 @@ class _EmployeeHomeScreenState extends State<EmployeeHomeScreen> {
 
   void bindMac() {
     WidgetsBinding.instance.addPostFrameCallback((callback) {
-      setState(() => inputMacAddress.text = localStorage.getItem("printer_mac") ?? "");
+      setState(() => inputMacAddress.text = checkout_provider!.macAddress);
     });
   }
 
