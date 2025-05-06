@@ -17,7 +17,7 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
   late VoidCallback listener;
 
   Future getHistory() async {
-    final httpRequest = await outlet_transaction();
+    final httpRequest = await outlet_summary("success");
     if (httpRequest["status"] == 200) {
       setState(() {
         transaction = httpRequest;
@@ -55,7 +55,7 @@ class _EmployeeTransactionTodayState extends State<EmployeeTransactionToday> {
       child: Column(
         children: [
           if (transaction != null) Text(
-            transformPrice(double.parse(transaction["transaction_nominal_today"].toString())),
+            transformPrice(double.parse(transaction["data"].toString())),
             style: GoogleFonts.roboto(
               fontWeight: FontWeight.bold,
               color: Colors.white,

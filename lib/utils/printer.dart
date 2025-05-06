@@ -135,3 +135,94 @@ Future<Map<String, dynamic>> generateStruck(CheckoutProvider checkout_provider, 
     return {"status": false, "message": "Gagal mencetak: $e"};
   }
 }
+
+Future<Map<String, dynamic>> generateStruckKichen(dynamic checkout, AuthProvider auth_provider, String transaction_code) async {
+  final bluetoothOn = await FlutterBluePlus.isOn;
+  if (!bluetoothOn) {
+    await GlobalLogger.logPrinter("error", "Bluetooth tidak aktif");
+    return {"status": false, "message": "Bluetooth tidak aktif"};
+  }
+
+  final checkPermission = await checkPermissionBluetooth();
+  if (!checkPermission["status"]) {
+    await GlobalLogger.logPrinter("error", "Permission bluetooth ditolak");
+    return {"status": false, "message": "Izin Bluetooth ditolak"};
+  }
+
+  try {
+    final profile = await CapabilityProfile.load();
+    final generator = Generator(PaperSize.mm58, profile);
+
+    List<int> bytes = [];
+
+    // Header
+    bytes += generator.text(
+      auth_provider.user["outlet"]["business"]["business_name"],
+      styles: PosStyles(
+        bold: true,
+        align: PosAlign.center,
+        width: PosTextSize.size1,
+        height: PosTextSize.size2,
+      ),
+    );
+    bytes += generator.text(
+      auth_provider.user["outlet"]["outlet_name"],
+      styles: PosStyles(align: PosAlign.center),
+    );
+    bytes += generator.feed(1);
+    bytes += generator.text('----------------------------');
+
+    // Info kasir
+    bytes += generator.row([
+      PosColumn(text: "Kasir", width: 4, styles: PosStyles(align: PosAlign.left)),
+      PosColumn(text: auth_provider.user["name"], width: 8, styles: PosStyles(align: PosAlign.right)),
+    ]);
+    bytes += generator.row([
+      PosColumn(text: "Waktu", width: 4, styles: PosStyles(align: PosAlign.left)),
+      PosColumn(text: getDateTimeNow(), width: 8, styles: PosStyles(align: PosAlign.right)),
+    ]);
+    bytes += generator.row([
+      PosColumn(text: "No. Struk", width: 4, styles: PosStyles(align: PosAlign.left)),
+      PosColumn(text: checkout["transaction_code"], width: 8, styles: PosStyles(align: PosAlign.right)),
+    ]);
+    bytes += generator.row([
+      PosColumn(text: "Pembayaran", width: 4, styles: PosStyles(align: PosAlign.left)),
+      PosColumn(text: "Tunai", width: 8, styles: PosStyles(align: PosAlign.right)),
+    ]);
+
+    bytes += generator.text('--------------------------------');
+
+    // Produk
+    for (var item in checkout["checkouts"]) {
+      bytes += generator.row([
+        PosColumn(text: item["product"]["product_name"], width: 12),
+      ]);
+      bytes += generator.row([
+        PosColumn(
+          text: "${transformPrice(double.parse(item["product"]["product_price"].toString()))} x ${item["product"]["quantity"]}",
+          width: 12,
+        ),
+      ]);
+    }
+    // Produk Others
+    for (var item in checkout["others"]) {
+      bytes += generator.row([
+        PosColumn(text: item["product_name"], width: 12),
+      ]);
+      bytes += generator.row([
+        PosColumn(
+          text: "${transformPrice(double.parse(item["product_price"].toString()))} x ${item["quantity"]}",
+          width: 12,
+        ),
+      ]);
+    }
+
+    bytes += generator.cut();
+
+    final result = await PrinterHelper.sendToPrinter(bytes: bytes);
+    return result;
+  } catch (e) {
+    await GlobalLogger.logPrinter("exception", "Exception saat generate print: $e");
+    return {"status": false, "message": "Gagal mencetak: $e"};
+  }
+}

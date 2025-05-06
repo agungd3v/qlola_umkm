@@ -69,10 +69,13 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
     final checkout = await HelperCheckout.checkoutOnline(checkout_provider!, auth_provider!);
 
     if (checkout["status"]) {
-      context.pushNamed("Employee Complete");
+      // context.pushNamed("Employee Complete");
+      context.go("/employee/order");
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
+
+        checkout_provider!.reset();
         successMessage(context, auth_provider!.user["outlet"]["outlet_name"], "Berhasil melakukan pemesanan");
         setState(() => proccess = false);
       });
@@ -91,10 +94,12 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
     final checkout = await HelperCheckout.checkoutOffline(checkout_provider!, auth_provider!);
 
     if (checkout["status"]) {
-      context.pushNamed("Employee Complete");
+      // context.pushNamed("Employee Complete");
+      context.go("/employee/order");
 
       SchedulerBinding.instance.addPostFrameCallback((_) {
         if (!mounted) return;
+        checkout_provider!.reset();
         successMessage(context, auth_provider!.user["outlet"]["outlet_name"], "Berhasil melakukan pemesanan");
         setState(() => proccess = false);
       });

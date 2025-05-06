@@ -27,7 +27,15 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Center(
-                child: Icon(Icons.wallet, size: 30, color: Theme.of(context).primaryColor)
+                child: Icon(
+                  Icons.wallet,
+                  size: 30,
+                  color: widget.item["status"] == "pending" ?
+                    Theme.of(context).primaryColorDark :
+                    widget.item["status"] == "success" ?
+                    Theme.of(context).primaryColor :
+                    Color(0xFFE5484D)
+                )
               ),
               const SizedBox(height: 5),
               Text(
@@ -35,8 +43,12 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColor,
-                  fontSize: 10
+                  fontSize: 10,
+                  color: widget.item["status"] == "pending" ?
+                    Theme.of(context).primaryColorDark :
+                    widget.item["status"] == "success" ?
+                    Theme.of(context).primaryColor :
+                    Color(0xFFE5484D)
                 )
               )
             ]
@@ -49,8 +61,8 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
             widget.item["transaction_code"],
             style: GoogleFonts.roboto(
               fontWeight: FontWeight.w500,
+              fontSize: 14,
               color: Theme.of(context).primaryColorDark,
-              fontSize: 14
             )
           ),
           subtitle: Text(
@@ -80,6 +92,7 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
             isOther ? item["product_name"] : item["product"]["product_name"],
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.roboto(
+              fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColorDark,
               fontSize: 14
             )
@@ -89,8 +102,7 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
               Text(
                 transformPrice(double.parse(item["total"].toString())),
                 style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColorDark,
                   fontSize: 12
                 )
               ),
@@ -98,8 +110,7 @@ class _EmployeeTransactionDailyState extends State<EmployeeTransactionDaily> {
               Text(
                 "(x${item["quantity"]})",
                 style: GoogleFonts.roboto(
-                  fontWeight: FontWeight.w700,
-                  color: Theme.of(context).primaryColor,
+                  color: Theme.of(context).primaryColorDark,
                   fontSize: 12
                 )
               ),

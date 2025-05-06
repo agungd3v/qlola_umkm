@@ -305,6 +305,60 @@ Future outlet_transaction() async {
   }
 }
 
+Future outlet_summary(String type) async {
+  try {
+    final httpRequest = await http.get(
+        Uri.parse("${dotenv.env["API_URL"]}/transaction/summary/$type"),
+        headers: <String, String>{
+          "ACCEPT": "application/json",
+          "CONTENT-TYPE": "application/json; charset=UTF-8",
+          "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+          "AUTHORIZATION": "Bearer ${auth_provider.token}"
+        }).timeout(Duration(seconds: 5));
+
+    Map<String, dynamic> response = json.decode(httpRequest.body);
+
+    return <String, dynamic>{"status": httpRequest.statusCode, ...response};
+  } on TimeoutException catch (e) {
+    return <String, dynamic>{
+      "status": 400,
+      "message": "Request timeout, kemungkinan koneksimu mengalami pelemahan"
+    };
+  } on SocketException catch (e) {
+    return <String, dynamic>{
+      "status": 400,
+      "message": "Tidak ada koneksi internet"
+    };
+  }
+}
+
+Future outlet_transaction_part(String type) async {
+  try {
+    final httpRequest = await http.get(
+        Uri.parse("${dotenv.env["API_URL"]}/transaction/part/$type"),
+        headers: <String, String>{
+          "ACCEPT": "application/json",
+          "CONTENT-TYPE": "application/json; charset=UTF-8",
+          "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+          "AUTHORIZATION": "Bearer ${auth_provider.token}"
+        }).timeout(Duration(seconds: 5));
+
+    Map<String, dynamic> response = json.decode(httpRequest.body);
+
+    return <String, dynamic>{"status": httpRequest.statusCode, ...response};
+  } on TimeoutException catch (e) {
+    return <String, dynamic>{
+      "status": 400,
+      "message": "Request timeout, kemungkinan koneksimu mengalami pelemahan"
+    };
+  } on SocketException catch (e) {
+    return <String, dynamic>{
+      "status": 400,
+      "message": "Tidak ada koneksi internet"
+    };
+  }
+}
+
 Future get_available_employees() async {
   final httpRequest = await http.get(
       Uri.parse("${dotenv.env["API_URL"]}/outlet/employees"),
@@ -484,6 +538,38 @@ Future delete_item_transaction(dynamic request) async {
             "AUTHORIZATION": "Bearer ${auth_provider.token}"
           },
           body: jsonEncode(request));
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic>{"status": httpRequest.statusCode, ...response};
+}
+
+Future cancel_transaction(int transaction_id, String reason) async {
+  final httpRequest = await http.put(
+      Uri.parse("${dotenv.env["API_URL"]}/transaction/cancel"),
+      headers: <String, String>{
+        "ACCEPT": "application/json",
+        "CONTENT-TYPE": "application/json; charset=UTF-8",
+        "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+        "AUTHORIZATION": "Bearer ${auth_provider.token}"
+      },
+      body: jsonEncode({"transaction_id": transaction_id, "reason": reason}));
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic>{"status": httpRequest.statusCode, ...response};
+}
+
+Future confirm_transaction(int transaction_id) async {
+  final httpRequest = await http.put(
+      Uri.parse("${dotenv.env["API_URL"]}/transaction/confirm"),
+      headers: <String, String>{
+        "ACCEPT": "application/json",
+        "CONTENT-TYPE": "application/json; charset=UTF-8",
+        "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+        "AUTHORIZATION": "Bearer ${auth_provider.token}"
+      },
+      body: jsonEncode({"transaction_id": transaction_id}));
 
   Map<String, dynamic> response = json.decode(httpRequest.body);
 

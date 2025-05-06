@@ -27,8 +27,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
   AuthProvider? auth_provider;
   bool processBluetoothPrint = false;
 
-  WidgetsToImageController widgetsToImageController =
-      WidgetsToImageController();
+  WidgetsToImageController widgetsToImageController = WidgetsToImageController();
 
   final databaseHelper = DatabaseHelper.instance;
 
@@ -46,8 +45,7 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
   Future _printBluetooth(BuildContext context) async {
     setState(() => processBluetoothPrint = true);
 
-    final struck = await generateStruck(checkout_provider as CheckoutProvider,
-        auth_provider as AuthProvider, "-");
+    final struck = await generateStruck(checkout_provider as CheckoutProvider, auth_provider as AuthProvider, "-");
 
     if (!struck["status"]) {
       errorMessage(context, "Bluetooth print", struck["message"]);
@@ -64,191 +62,207 @@ class _CompleteOrederScreenState extends State<CompleteOrederScreen> {
     auth_provider = Provider.of<AuthProvider>(context);
 
     return PopScope(
-        canPop: false,
-        child: Scaffold(
-            extendBodyBehindAppBar: false,
-            backgroundColor: Colors.white,
-            appBar: PreferredSize(
-                preferredSize: const Size.fromHeight(0),
-                child: AppBar(
-                    automaticallyImplyLeading: false,
-                    systemOverlayStyle: SystemUiOverlayStyle(
-                        statusBarIconBrightness: Brightness.dark))),
-            body: Container(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      WidgetsToImage(
-                          controller: widgetsToImageController,
-                          child: Container(
-                              width: 218,
-                              padding: const EdgeInsets.all(10),
-                              decoration: BoxDecoration(color: Colors.white),
-                              child: Column(children: [
+      canPop: false,
+      child: Scaffold(
+        extendBodyBehindAppBar: false,
+        backgroundColor: Colors.white,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(0),
+          child: AppBar(
+            automaticallyImplyLeading: false,
+            systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarIconBrightness: Brightness.dark
+            )
+          )
+        ),
+        body: Container(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              WidgetsToImage(
+                controller: widgetsToImageController,
+                child: Container(
+                  width: 218,
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(color: Colors.white),
+                  child: Column(children: [
+                    Text(
+                      auth_provider!.user["outlet"]["business"]["business_name"],
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.roboto(
+                        color: Theme.of(context).primaryColorDark,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12
+                      )
+                    ),
+                    Text(
+                      auth_provider!.user["outlet"]["outlet_name"],
+                      style: GoogleFonts.roboto(
+                        color: Theme.of(context).primaryColorDark,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 10
+                      )
+                    ),
+                    const SizedBox(height: 25),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 1)
+                        )
+                      )
+                    ),
+                    const SizedBox(height: 5),
+                    for (var index = 0; index < checkout_provider!.carts.length; index++) Container(
+                      margin: const EdgeInsets.only(top: 5),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                checkout_provider!.carts[index]["product_name"],
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.roboto(
+                                  fontSize: 10
+                                )
+                              ),
+                              Row(children: [
                                 Text(
-                                    auth_provider!.user["outlet"]["business"]
-                                        ["business_name"],
-                                    textAlign: TextAlign.center,
-                                    style: GoogleFonts.roboto(
-                                        color:
-                                            Theme.of(context).primaryColorDark,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 12)),
+                                  transformPrice(double.parse(checkout_provider!.carts[index]["product_price"].toString())),
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 10
+                                  )
+                                ),
                                 Text(
-                                    auth_provider!.user["outlet"]
-                                        ["outlet_name"],
-                                    style:
-                                        GoogleFonts.roboto(
-                                            color: Theme.of(context)
-                                                .primaryColorDark,
-                                            fontWeight: FontWeight.w500,
-                                            fontSize: 10)),
-                                const SizedBox(height: 25),
-                                Container(
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(width: 1)))),
-                                const SizedBox(height: 5),
-                                for (var index = 0;
-                                    index < checkout_provider!.carts.length;
-                                    index++)
-                                  Container(
-                                      margin: const EdgeInsets.only(top: 5),
-                                      child: Row(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                      checkout_provider!
-                                                              .carts[index]
-                                                          ["product_name"],
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: GoogleFonts.roboto(
-                                                          
-                                                          fontSize: 10)),
-                                                  Row(children: [
-                                                    Text(
-                                                        transformPrice(double.parse(
-                                                            checkout_provider!
-                                                                .carts[index][
-                                                                    "product_price"]
-                                                                .toString())),
-                                                        style: GoogleFonts.roboto(
-                                                            fontSize: 10)),
-                                                    Text(
-                                                        " x ${checkout_provider!.carts[index]["quantity"]}",
-                                                        style: GoogleFonts.roboto(
-                                                            fontSize: 10))
-                                                  ])
-                                                ]),
-                                            Text(
-                                                transformPrice(double.parse(
-                                                        checkout_provider!
-                                                            .carts[index][
-                                                                "product_price"]
-                                                            .toString()) *
-                                                    checkout_provider!
-                                                            .carts[index]
-                                                        ["quantity"]),
-                                                style: GoogleFonts.roboto(
-                                                    
-                                                    fontSize: 10))
-                                          ])),
-                                const SizedBox(height: 10),
-                                Container(
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(width: 1)))),
-                                const SizedBox(height: 10),
-                                Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text("Total",
-                                          style: GoogleFonts.roboto(
-                                              fontSize: 12)),
-                                      Text(
-                                          transformPrice(
-                                              checkout_provider!.cart_total),
-                                          style: GoogleFonts.roboto(
-                                              
-                                              fontSize: 12))
-                                    ]),
-                                const SizedBox(height: 35),
-                                Text("Terimakasih ^_^",
-                                    style: GoogleFonts.roboto())
-                              ]))),
-                      Column(children: [
-                        Row(children: [
-                          Expanded(
-                              child: GestureDetector(
-                                  onTap: () => _printBluetooth(context),
-                                  child: Container(
-                                      height: 40,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          // color: Theme.of(context).dividerColor,
-                                          border: Border.all(
-                                              width: 1,
-                                              color: Theme.of(context)
-                                                  .dividerColor),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(8))),
-                                      child: Text("Bluetooth print",
-                                          style: GoogleFonts.roboto(
-                                              
-                                              // color: Theme.of(context).primaryColorDark
-                                              color: Theme.of(context)
-                                                  .primaryColorDark))))),
-                          const SizedBox(width: 10),
-                          Expanded(
-                              child: GestureDetector(
-                                  onTap: () => _printShare(),
-                                  child: Container(
-                                      height: 40,
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                              width: 1,
-                                              color: Theme.of(context)
-                                                  .dividerColor),
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(8))),
-                                      child: Text("Share print",
-                                          style: GoogleFonts.roboto(
-                                              
-                                              color: Theme.of(context)
-                                                  .primaryColorDark)))))
-                        ]),
-                        const SizedBox(height: 10),
-                        GestureDetector(
-                            onTap: () {
-                              context.go("/employee/order");
-                              checkout_provider?.reset();
-                            },
-                            child: Container(
-                                width: double.infinity,
-                                height: 40,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                    color: Theme.of(context).primaryColor,
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8))),
-                                child: Text("Kembali memesan",
-                                    style: GoogleFonts.roboto(
-                                        
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.white,
-                                        fontSize: 16))))
-                      ])
-                    ]))));
+                                  " x ${checkout_provider!.carts[index]["quantity"]}",
+                                  style: GoogleFonts.roboto(
+                                    fontSize: 10
+                                  )
+                                )
+                              ])
+                            ]
+                          ),
+                          Text(
+                            transformPrice(double.parse(checkout_provider!.carts[index]["product_price"].toString()) * checkout_provider!.carts[index]["quantity"]),
+                            style: GoogleFonts.roboto(
+                              fontSize: 10
+                            )
+                          )
+                        ]
+                      )
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(width: 1)
+                        )
+                      )
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "Total",
+                          style: GoogleFonts.roboto(
+                            fontSize: 12
+                          )
+                        ),
+                        Text(
+                          transformPrice(checkout_provider!.cart_total),
+                          style: GoogleFonts.roboto(
+                            fontSize: 12
+                          )
+                        )
+                      ]
+                    ),
+                    const SizedBox(height: 35),
+                    Text(
+                      "Terimakasih ^_^",
+                      style: GoogleFonts.roboto()
+                    )
+                  ])
+                )
+              ),
+              Column(children: [
+                Row(children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => _printBluetooth(context),
+                      child: Container(
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).dividerColor
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(8))
+                        ),
+                        child: Text("Bluetooth print",
+                          style: GoogleFonts.roboto(
+                            color: Theme.of(context).primaryColorDark
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => _printShare(),
+                      child: Container(
+                        height: 40,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: Theme.of(context).dividerColor
+                          ),
+                          borderRadius: BorderRadius.all(Radius.circular(8))
+                        ),
+                        child: Text("Share print",
+                          style: GoogleFonts.roboto(
+                            color: Theme.of(context).primaryColorDark
+                          )
+                        )
+                      )
+                    )
+                  )
+                ]),
+                const SizedBox(height: 10),
+                GestureDetector(
+                  onTap: () {
+                    context.go("/employee/order");
+                    checkout_provider?.reset();
+                  },
+                  child: Container(
+                    width: double.infinity,
+                    height: 40,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.all(Radius.circular(8))
+                    ),
+                    child: Text(
+                      "Kembali memesan",
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                        fontSize: 16
+                      )
+                    )
+                  )
+                )
+              ])
+            ]
+          )
+        )
+      )
+    );
   }
 }
