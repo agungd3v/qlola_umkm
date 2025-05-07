@@ -189,6 +189,16 @@ Future<Map<String, dynamic>> generateStruckKichen(dynamic checkout, AuthProvider
     bytes += generator.feed(1);
 
     bytes += generator.text(
+      "#${checkout["ordering"]}",
+      styles: PosStyles(
+        bold: true,
+        align: PosAlign.center,
+        width: PosTextSize.size1,
+        height: PosTextSize.size2,
+      ),
+    );
+
+    bytes += generator.text(
       "Pesanan",
       styles: PosStyles(
         bold: true,
