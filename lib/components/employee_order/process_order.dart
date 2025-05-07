@@ -21,6 +21,7 @@ class ProcessOrder extends StatefulWidget {
 class _ProcessOrderState extends State<ProcessOrder> {
   bool processCancel = false;
   bool processConfirm = false;
+  bool processPrint = false;
 
   final reason = TextEditingController(text: "");
 
@@ -29,7 +30,7 @@ class _ProcessOrderState extends State<ProcessOrder> {
 
     final request = await cancel_transaction(widget.item["id"] as int, reason.text);
     if (request["status"] == 200) {
-      successMessage(context, "Informasi", "Berhasil membatalkan pesanan");
+      Future.delayed(Duration(seconds: 1), () => successMessage(context, "Informasi", "Berhasil membatalkan pesanan"));
       return true;
     } else {
       errorMessage(context, "Informasi", request["message"]);
@@ -40,17 +41,11 @@ class _ProcessOrderState extends State<ProcessOrder> {
   Future<bool> confirmProcess() async {
     final request = await confirm_transaction(widget.item["id"] as int);
     if (request["status"] == 200) {
-      successMessage(context, "Informasi", "Berhasil menyelesaikan pesanan");
-
-      final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      await generateStruck(widget.item, authProvider, widget.item["transaction_code"]);
-      // final struck = await generateStruck(widget.item, authProvider, widget.item["transaction_code"]);
-
-      // if (!struck["status"]) {
-      //   errorMessage(context, "Bluetooth print", struck["message"]);
-      // } else {
-      //   successMessage(context, "Bluetooth print", "Resi sebentar lagi siap 🥣");
-      // }
+      Future.delayed(Duration(seconds: 1), () async {
+        final authProvider = Provider.of<AuthProvider>(context, listen: false);
+        successMessage(context, "Informasi", "Berhasil menyelesaikan pesanan");
+        await generateStruck(widget.item, authProvider, widget.item["transaction_code"]);
+      });
 
       return true;
     } else {
@@ -232,17 +227,18 @@ class _ProcessOrderState extends State<ProcessOrder> {
   }
 
   Future printStruck() async {
-    // setState(() => processBluetoothPrint = true);
+    setState(() => processPrint = true);
+
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     final struck = await generateStruckKichen(widget.item, authProvider, "-");
 
     if (!struck["status"]) {
       errorMessage(context, "Bluetooth print", struck["message"]);
-      // setState(() => processBluetoothPrint = false);
+      setState(() => processPrint = false);
     } else {
       successMessage(context, "Bluetooth print", "Resi sebentar lagi siap 🥣");
-      // setState(() => processBluetoothPrint = false);
+      setState(() => processPrint = false);
     }
   }
 
