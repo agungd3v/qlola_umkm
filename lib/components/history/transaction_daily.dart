@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/history/transaction_item.dart';
@@ -23,7 +21,6 @@ class _TransactionDailyState extends State<TransactionDaily> {
 
     final httpRequest = await owner_transaction();
     if (httpRequest["status"] == 200) {
-      inspect(httpRequest);
       setState(() {
         data = httpRequest["daily_transactions"];
         loading = false;
