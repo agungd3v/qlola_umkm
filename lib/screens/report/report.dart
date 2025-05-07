@@ -193,7 +193,7 @@ class _ReportScreenState extends State<ReportScreen> {
               onTap: () => _showSelectOutlet(),
               child: Container(
                 width: double.infinity,
-                height: 40,
+                height: 45,
                 margin: const EdgeInsets.only(left: 20, right: 20, top: 20),
                 decoration: BoxDecoration(
                   color: Theme.of(context).dividerColor,
@@ -202,16 +202,15 @@ class _ReportScreenState extends State<ReportScreen> {
                 child: Row(
                   children: [
                     const SizedBox(width: 15),
-                    Image.asset("assets/icons/outlet.png", width: 20, height: 20),
+                    Icon(Icons.storefront, color: Theme.of(context).primaryColor, size: 30),
                     const SizedBox(width: 10),
                     Text(
                       owner_provider!.reportOutlet["label"].toString(),
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).primaryColorDark,
-                        fontSize: 12
+                        fontSize: 14
                       )
                     ),
                     const SizedBox(width: 15)
@@ -223,7 +222,7 @@ class _ReportScreenState extends State<ReportScreen> {
               onTap: () => _showSelectDate(),
               child: Container(
                 width: double.infinity,
-                height: 40,
+                height: 45,
                 margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
                 decoration: BoxDecoration(
                   color: Theme.of(context).dividerColor,
@@ -232,16 +231,44 @@ class _ReportScreenState extends State<ReportScreen> {
                 child: Row(
                   children: [
                     const SizedBox(width: 15),
-                    Image.asset("assets/icons/calendar.png", width: 20, height: 20),
+                    Icon(Icons.calendar_month, color: Theme.of(context).primaryColor, size: 30),
                     const SizedBox(width: 10),
                     Text(
                       owner_provider!.reportDate["label"].toString(),
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).primaryColorDark,
-                        fontSize: 12
+                        fontSize: 14
+                      )
+                    ),
+                    const SizedBox(width: 15)
+                  ]
+                )
+              )
+            ),
+            GestureDetector(
+              onTap: () => _showSelectDate(),
+              child: Container(
+                width: double.infinity,
+                height: 45,
+                margin: const EdgeInsets.only(left: 20, right: 20, top: 10),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).dividerColor,
+                  borderRadius: BorderRadius.all(Radius.circular(8))
+                ),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 15),
+                    Icon(Icons.model_training, color: Theme.of(context).primaryColor, size: 30),
+                    const SizedBox(width: 10),
+                    Text(
+                      owner_provider!.reportType["label"].toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w600,
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 14
                       )
                     ),
                     const SizedBox(width: 15)
@@ -253,46 +280,55 @@ class _ReportScreenState extends State<ReportScreen> {
               onTap: () => _getReport(),
               child: Container(
                 width: 100,
-                height: 35,
+                height: 40,
                 alignment: Alignment.center,
                 margin: const EdgeInsets.only(left: 20, right: 20, top: 18, bottom: 20),
                 decoration: BoxDecoration(
                   color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(8))
+                  borderRadius: BorderRadius.all(Radius.circular(6))
                 ),
                 child:Text(
                   "Terapkan",
-                  style: TextStyle(
-                    fontFamily: "Poppins",
+                  style: GoogleFonts.roboto(
                     fontWeight: FontWeight.w500,
                     color: Colors.white,
-                    fontSize: 12
+                    fontSize: 14
                   )
                 )
               )
             ),
             if (loading) Container(
               margin: const EdgeInsets.symmetric(horizontal: 20),
-              child: Text(
-                "Loading...",
-                style: TextStyle(
-                  fontFamily: "Poppins",
-                  color: Theme.of(context).primaryColorDark
-                )
-              ),
+              child: Center(
+                child: CircularProgressIndicator(color: Theme.of(context).primaryColor)
+              )
             ),
+            if (!loading && report != null && report!["transactions"].isEmpty) Expanded(child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                children: [
+                  SizedBox(height: 100),
+                  Icon(Icons.note_alt, color: useColor("danger"), size: 80),
+                  SizedBox(height: 8),
+                  Text(
+                    "Data tidak ditemukan",
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 16
+                    )
+                  )
+                ]
+              )
+            )),
             if (!loading && report != null && report!["transactions"].isNotEmpty) Expanded(child: SingleChildScrollView(
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
                   children: [
-                    // if (products.isNotEmpty) PieChartComponent(
-                    //   products: [...products, ...other_products],
-                    // ),
-                    // if (products.isNotEmpty) LineChartComponent(report: report!),
                     Container(
                       width: double.infinity,
-                      height: 65,
+                      height: 75,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -313,19 +349,17 @@ class _ReportScreenState extends State<ReportScreen> {
                         children: [
                           Text(
                             "Total Penjualan",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w500,
-                              fontSize: 12
+                              fontSize: 14
                             )
                           ),
                           const SizedBox(height: 2),
                           Text(
                             transformPrice(report!["sales"]),
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
                             )
                           )
                         ]
@@ -334,7 +368,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     const SizedBox(height: 12),
                     Container(
                       width: double.infinity,
-                      height: 65,
+                      height: 75,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -355,19 +389,17 @@ class _ReportScreenState extends State<ReportScreen> {
                         children: [
                           Text(
                             "Total Transaksi",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w500,
-                              fontSize: 12
+                              fontSize: 14
                             )
                           ),
                           const SizedBox(height: 2),
                           Text(
                             "${report!["count"]}",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
                             )
                           )
                         ]
@@ -376,7 +408,7 @@ class _ReportScreenState extends State<ReportScreen> {
                     const SizedBox(height: 12),
                     Container(
                       width: double.infinity,
-                      height: 65,
+                      height: 75,
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -397,19 +429,17 @@ class _ReportScreenState extends State<ReportScreen> {
                         children: [
                           Text(
                             "Produk Terjual",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
+                            style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w500,
-                              fontSize: 12
+                              fontSize: 14
                             )
                           ),
                           const SizedBox(height: 2),
                           Text(
                             "${report!["product_sales"] + report!["product_other_sales"]}",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
                             )
                           )
                         ]
@@ -436,10 +466,9 @@ class _ReportScreenState extends State<ReportScreen> {
                         children: [
                           Text(
                             "Detail Produk Terjual",
-                            style: TextStyle(
-                              fontFamily: "Poppins",
-                              fontWeight: FontWeight.w700,
-                              fontSize: 16
+                            style: GoogleFonts.roboto(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18
                             )
                           ),
                           const SizedBox(height: 20),
@@ -451,8 +480,8 @@ class _ReportScreenState extends State<ReportScreen> {
                               children: [
                                 Text(
                                   products[index]["product_name"],
-                                  style: TextStyle(
-                                    fontFamily: "Poppins"
+                                  style: GoogleFonts.roboto(
+                                    fontWeight: FontWeight.w500
                                   )
                                 ),
                                 const SizedBox(width: 20),
@@ -461,8 +490,7 @@ class _ReportScreenState extends State<ReportScreen> {
                                   children: [
                                     Text(
                                       products[index]["quantity"].toString() + "pcs",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
+                                      style: GoogleFonts.roboto(
                                         fontSize: 12
                                       )
                                     ),
@@ -470,9 +498,8 @@ class _ReportScreenState extends State<ReportScreen> {
                                       transformPrice(
                                         int.parse(products[index]["quantity"].toString()) * double.parse(products[index]["product_price"].toString()),
                                       ),
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
-                                        fontWeight: FontWeight.w700,
+                                      style: GoogleFonts.roboto(
+                                        fontWeight: FontWeight.bold,
                                       )
                                     )
                                   ]

@@ -278,6 +278,21 @@ Future owner_transaction() async {
   return <String, dynamic>{"status": httpRequest.statusCode, ...response};
 }
 
+Future owner_for_cancel() async {
+  final httpRequest = await http.get(
+      Uri.parse("${dotenv.env["API_URL"]}/transaction/owner/cancel"),
+      headers: <String, String>{
+        "ACCEPT": "application/json",
+        "CONTENT-TYPE": "application/json; charset=UTF-8",
+        "X-REQUEST-QLOLA-UMKM-MOBILE": "${dotenv.env["APP_KEY"]}",
+        "AUTHORIZATION": "Bearer ${auth_provider.token}"
+      });
+
+  Map<String, dynamic> response = json.decode(httpRequest.body);
+
+  return <String, dynamic>{"status": httpRequest.statusCode, ...response};
+}
+
 Future owner_summary() async {
   final httpRequest = await http.get(
       Uri.parse("${dotenv.env["API_URL"]}/transaction/owner/summary"),

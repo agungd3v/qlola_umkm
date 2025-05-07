@@ -7,6 +7,7 @@ import 'package:qlola_umkm/screens/add_outlet.dart';
 import 'package:qlola_umkm/screens/add_outlet_employee.dart';
 import 'package:qlola_umkm/screens/add_outlet_product.dart';
 import 'package:qlola_umkm/screens/add_product.dart';
+import 'package:qlola_umkm/screens/cancel_order.dart';
 import 'package:qlola_umkm/screens/delete_transaction.dart';
 import 'package:qlola_umkm/screens/edit_product.dart';
 import 'package:qlola_umkm/screens/employee.dart';
@@ -170,6 +171,13 @@ class SuperRouter {
       name: "Owner Report",
       builder: (context, state) {
         return ReportScreen(key: state.pageKey);
+      }
+    ),
+    GoRoute(
+      path: '/owner/cancel',
+      name: "Owner Cancel",
+      builder: (context, state) {
+        return CancelOrderScreen(key: state.pageKey);
       }
     )
   ];

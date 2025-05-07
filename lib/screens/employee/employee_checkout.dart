@@ -417,7 +417,7 @@ class _EmployeeCheckoutScreenState extends State<EmployeeCheckoutScreen> {
           bottom: 96,
           right: 16,
           child: GestureDetector(
-            onTap: () => HelperCheckout.otherOrder(context, checkout_provider!),
+            onTap: () => HelperCheckout.otherOrder(context, checkout_provider!, auth_provider!),
             child: Container(
               width: 45,
               height: 45,

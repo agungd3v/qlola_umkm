@@ -122,11 +122,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   height: 50,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
-                    ),
-                  ),
                   child: Row(
                     children: [
                       Expanded(
@@ -143,6 +138,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   )
                 )
               ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor))
+                )
+              ),
               // Report Section
               GestureDetector(
                 onTap: () => context.pushNamed("Owner Report"),
@@ -150,11 +150,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   height: 50,
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
-                    )
-                  ),
                   child: Row(
                     children: [
                       Expanded(
@@ -169,6 +164,38 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Image.asset("assets/icons/arrow_right_black.png", width: 13, height: 13)
                     ]
                   )
+                )
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor))
+                )
+              ),
+              GestureDetector(
+                onTap: () => context.pushNamed("Owner Cancel"),
+                child: Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  height: 50,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          "Cancel Order",
+                          style: GoogleFonts.roboto(
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 14,
+                          )
+                        )
+                      ),
+                      Image.asset("assets/icons/arrow_right_black.png", width: 13, height: 13)
+                    ]
+                  )
+                )
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  border: Border(bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor))
                 )
               )
             ]

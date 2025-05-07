@@ -341,14 +341,15 @@ class _ProcessOrderState extends State<ProcessOrder> {
                             color: Theme.of(context).primaryColorDark
                           )
                         )),
-                        Expanded(child: Text(
+                        SizedBox(width: 6),
+                        Text(
                           transformPrice(widget.item["checkouts"][index]["total"]),
                           textAlign: TextAlign.right,
                           style: GoogleFonts.roboto(
                             fontSize: 14,
                             color: Theme.of(context).primaryColorDark
                           )
-                        )),
+                        )
                       ],
                     )
                   ),
@@ -358,20 +359,23 @@ class _ProcessOrderState extends State<ProcessOrder> {
                       children: [
                         Expanded(child: Text(
                           "${widget.item["others"][index]["product_name"]} x ${widget.item["others"][index]["quantity"]}",
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.roboto(
                             fontSize: 14,
                             color: Theme.of(context).primaryColorDark
                           )
                         )),
-                        Expanded(child: Text(
+                        SizedBox(width: 6),
+                        Text(
                           transformPrice(widget.item["others"][index]["total"]),
                           textAlign: TextAlign.right,
                           style: GoogleFonts.roboto(
                             fontSize: 14,
                             color: Theme.of(context).primaryColorDark
                           )
-                        )),
-                      ],
+                        )
+                      ]
                     )
                   ),
                   SizedBox(height: 10),

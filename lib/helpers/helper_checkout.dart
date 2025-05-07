@@ -66,7 +66,8 @@ class HelperCheckout {
           '${data["products"][index]["quantity"]},'
           '${(double.parse(data["products"][index]["product_price"].toString()) * data["products"][index]["quantity"])},'
           '"paid",'
-          '"${getDateTimeNow(isRequest: true)}", "${getDateTimeNow(isRequest: true)}",'
+          '"${getDateTimeNow(isRequest: true)}",'
+          '"${getDateTimeNow(isRequest: true)}",'
           '${data["products"][index]["id"] >= 999999 ? 1 : 0}'
         ')');
       }
@@ -85,7 +86,7 @@ class HelperCheckout {
     }
   }
 
-  static void otherOrder(BuildContext context, CheckoutProvider checkout_provider) {
+  static void otherOrder(BuildContext context, CheckoutProvider checkout_provider, AuthProvider auth_provider) {
     final productName = TextEditingController(text: "");
     final productPrice = TextEditingController(text: "");
     final productQty = TextEditingController(text: "");
