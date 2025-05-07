@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:qlola_umkm/utils/flush_message.dart';
+import 'package:qlola_umkm/utils/global_function.dart';
 
 class OutletItem extends StatefulWidget {
   final dynamic outlet;
@@ -96,7 +97,7 @@ class _OutletItemState extends State<OutletItem> {
                 },
                 icon: Icons.production_quantity_limits,
                 isFullWidth: true,
-                backgroundColor: Color(0xFFF5A623),
+                backgroundColor: useColor("warning"),
               )),
               SizedBox(width: screenWidth * 0.020),
               Expanded(child: _buildActionButton(
@@ -106,7 +107,7 @@ class _OutletItemState extends State<OutletItem> {
                 },
                 icon: Icons.person_add_alt_1,
                 isFullWidth: false,
-                backgroundColor: Color(0xFF3AA0F3),
+                backgroundColor: useColor("info"),
               )),
               SizedBox(width: screenWidth * 0.020),
               Expanded(child: _buildActionButton(
@@ -153,28 +154,22 @@ class _OutletItemState extends State<OutletItem> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(
-                  icon,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                SizedBox(width: 5),
                 Expanded(child: AutoSizeText(
                   label,
-                  textAlign: TextAlign.left,
+                  textAlign: TextAlign.center,
                   maxLines: 3,
                   style: GoogleFonts.roboto(
                     fontWeight: FontWeight.w600,
                     color: Colors.white,
                     fontSize: 10,
                     height: 1
-                  ),
+                  )
                 ))
               ]
             )
           )
-        ),
-      ),
+        )
+      )
     );
   }
 }

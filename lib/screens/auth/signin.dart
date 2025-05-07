@@ -17,8 +17,8 @@ class SigninScreen extends StatefulWidget {
 }
 
 class _SigninScreenState extends State<SigninScreen> {
-  // final phone = TextEditingController(text: "89668951090"); // Owner
-  final phone = TextEditingController(text: "81283134033"); // Karyawan
+  final phone = TextEditingController(text: "89668951090"); // Owner
+  // final phone = TextEditingController(text: "81283134033"); // Karyawan
   // final phone = TextEditingController(text: "81945156563"); // Mitra
   final password = TextEditingController(text: "12345678");
 

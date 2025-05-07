@@ -265,7 +265,7 @@ Future proses_checkout(Map<String, dynamic> request) async {
 
 Future owner_transaction() async {
   final httpRequest = await http.get(
-      Uri.parse("${dotenv.env["API_URL"]}/transaction/owner"),
+      Uri.parse("${dotenv.env["API_URL"]}/transaction/owner/summary"),
       headers: <String, String>{
         "ACCEPT": "application/json",
         "CONTENT-TYPE": "application/json; charset=UTF-8",

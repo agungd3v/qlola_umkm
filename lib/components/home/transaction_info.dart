@@ -27,25 +27,66 @@ class _TransactionInfoState extends State<TransactionInfo> {
       future: getHistory(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(
-            child: CircularProgressIndicator(
-              valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
-            ),
+          return Container(
+            margin: const EdgeInsets.only(top: 50),
+            child: Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation(Theme.of(context).primaryColor),
+              )
+            )
           );
         }
         if (snapshot.data != null) {
           return Column(
             children: [
               _buildTransactionCard(
+                icon: Container(
+                  width: 80,
+                  color: Theme.of(context).primaryColor,
+                  child: Center(
+                    child: Icon(Icons.payments, color: Colors.white, size: 40),
+                  )
+                ),
                 title: "Penjualan ${getThisMonth()}",
-                amount: snapshot.data["transaction_nominal_month"],
+                amount: snapshot.data["transaction_success_month"],
+              ),  
+              const SizedBox(height: 12),
+              _buildTransactionCard(
+                icon: Container(
+                  width: 80,
+                  color: Theme.of(context).primaryColor,
+                  child: Center(
+                    child: Icon(Icons.payments, color: Colors.white, size: 35),
+                  )
+                ),
+                title: "Penjualan Hari ini",
+                amount: snapshot.data["transaction_success_today"],
               ),
               const SizedBox(height: 12),
               _buildTransactionCard(
-                title: "Penjualan hari ini",
-                amount: snapshot.data["transaction_nominal_today"],
+                icon: Container(
+                  width: 80,
+                  color: Theme.of(context).primaryColorDark,
+                  child: Center(
+                    child: Icon(Icons.list_alt, color: Colors.white, size: 40),
+                  )
+                ),
+                title: "Order Disimpan Hari ini",
+                amount: snapshot.data["transaction_pending_today"],
               ),
-            ],
+              const SizedBox(height: 12),
+              _buildTransactionCard(
+                icon: Container(
+                  width: 80,
+                  color: Color(0xFFE5484D),
+                  child: Center(
+                    child: Icon(Icons.playlist_remove_outlined, color: Colors.white, size: 40),
+                  )
+                ),
+                title: "Order Cancel Hari ini",
+                amount: snapshot.data["transaction_void_today"],
+              ),
+            ]
           );
         }
         return Center(
@@ -55,63 +96,59 @@ class _TransactionInfoState extends State<TransactionInfo> {
               fontFamily: "Poppins",
               fontWeight: FontWeight.w600,
               fontSize: 4.w,
-              color: Colors.redAccent, // Red color for error text
-            ),
-          ),
+              color: Color(0xFFE5484D),
+            )
+          )
         );
-      },
+      }
     );
   }
 
-  Widget _buildTransactionCard({
-    required String title,
-    required dynamic amount,
-  }) {
+  Widget _buildTransactionCard({required String title, required dynamic amount, required Widget icon}) {
     return Container(
       width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+      clipBehavior: Clip.hardEdge,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            Theme.of(context).primaryColor, // Dark Red
-            Colors.black, // Black for gradient effect
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.2),
-            blurRadius: 8,
-            spreadRadius: 2,
-            offset: Offset(0, 4),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(width: 1, color: Theme.of(context).dividerColor),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: GoogleFonts.roboto(
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-              fontSize: 16,
-            ),
-          ),
-          SizedBox(height: 4),
-          Text(
-            transformPrice(double.parse(amount.toString())),
-            overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.roboto(
-              fontWeight: FontWeight.w700,
-              color: Colors.white,
-              fontSize: 18,
-            ),
-          ),
-        ],
-      ),
+      child: IntrinsicHeight(
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            icon,
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 16,
+                      ),
+                    ),
+                    SizedBox(height: 4),
+                    Text(
+                      transformPrice(amount),
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w700,
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 20,
+                      )
+                    )
+                  ]
+                )
+              )
+            )
+          ]
+        )
+      )
     );
   }
 }

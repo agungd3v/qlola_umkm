@@ -23,11 +23,11 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: Theme.of(context).primaryColor,
           elevation: 0,
           title: Text(
-            "Beranda",
+            "Home",
             style: GoogleFonts.roboto(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColorDark,
-              fontSize: 18
+              fontSize: 20
             )
           ),
           systemOverlayStyle: SystemUiOverlayStyle(

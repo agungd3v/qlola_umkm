@@ -69,7 +69,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
             style: GoogleFonts.roboto(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColorDark,
-              fontSize: 18
+              fontSize: 20
             )
           ),
           systemOverlayStyle: SystemUiOverlayStyle(
@@ -81,11 +81,10 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
       body: Stack(
         children: [
           Column(
-            crossAxisAlignment: employees.isNotEmpty
-                ? CrossAxisAlignment.start
-                : CrossAxisAlignment.center,
             children: [
               Container(
+                alignment: Alignment.centerLeft,
+                color: Colors.white,
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,21 +116,14 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                 child: LayoutBuilder(
                   builder: (context, constraints) => RefreshIndicator(
                     color: Theme.of(context).indicatorColor,
-                    onRefresh: () => Future.delayed(
-                      const Duration(seconds: 1),
-                      () => _getEmployee(),
-                    ),
-                    child: loading
-                        ? Center(
-                            child:
-                                CircularProgressIndicator()) // Show loading spinner
-                        : employees.isEmpty
-                            ? _emptyData(constraints)
-                            : _notEmptyData(constraints),
-                  ),
-                ),
-              ),
-            ],
+                    onRefresh: () => Future.delayed(const Duration(seconds: 1), () => _getEmployee()),
+                    child: loading ? Center(
+                      child: CircularProgressIndicator(color: Theme.of(context).primaryColor)
+                    ) : employees.isEmpty ? _emptyData(constraints) : _notEmptyData(constraints)
+                  )
+                )
+              )
+            ]
           ),
           Positioned(
             bottom: 10,
@@ -142,31 +134,28 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                 width: 45,
                 height: 45,
                 decoration: BoxDecoration(
-                    color: Theme.of(context).primaryColor,
-                    borderRadius: BorderRadius.all(Radius.circular(99)),
-                    boxShadow: [
-                      BoxShadow(
-                          color: Theme.of(context).disabledColor,
-                          spreadRadius: 0,
-                          blurRadius: 8,
-                          offset: const Offset(1, 2))
-                    ]),
-                child: Center(
-                  child: Icon(
-                    Icons.add,
-                    color: Colors.white,
-                    size: 32,
-                  ),
+                  color: Theme.of(context).primaryColor,
+                  borderRadius: BorderRadius.all(Radius.circular(99)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).disabledColor,
+                      spreadRadius: 0,
+                      blurRadius: 1,
+                      offset: const Offset(1, 2),
+                    )
+                  ]
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
+                child: Center(
+                  child: Icon(Icons.add, color: Colors.white, size: 32)
+                )
+              )
+            )
+          )
+        ]
+      )
     );
   }
 
-  // Widget for showing employees when data is available
   Widget _notEmptyData(BoxConstraints constraints) {
     return ConstrainedBox(
       constraints: BoxConstraints(minHeight: constraints.maxHeight),
@@ -178,17 +167,13 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
           padding: EdgeInsets.symmetric(vertical: 20, horizontal: 12),
           physics: AlwaysScrollableScrollPhysics(),
           children: [
-            for (var index = 0; index < employees.length; index++)
-              EmployeeItem(
-                  employee: employees[index],
-                  index: index) // Pass employee data and index
-          ],
-        ),
-      ),
+            for (var index = 0; index < employees.length; index++) EmployeeItem(employee: employees[index], index: index)
+          ]
+        )
+      )
     );
   }
 
-  // Widget for showing an empty state when no employees are available
   Widget _emptyData(BoxConstraints constraints) {
     return SingleChildScrollView(
       physics: AlwaysScrollableScrollPhysics(),
@@ -198,17 +183,17 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset("assets/icons/employee_empty.png",
-                  width: 200, height: 150, fit: BoxFit.contain),
+              Image.asset("assets/icons/employee_empty.png", width: 200, height: 150, fit: BoxFit.contain),
               Column(
                 children: [
                   const SizedBox(height: 12),
                   Text(
                     "Belum ada Pegawai",
                     style: TextStyle(
-                        fontFamily: "Poppins",
-                        fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark),
+                      fontFamily: "Poppins",
+                      fontWeight: FontWeight.w700,
+                      color: Theme.of(context).primaryColorDark
+                    )
                   ),
                   const SizedBox(height: 12),
                   SizedBox(
@@ -217,17 +202,18 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                       'Tekan tombol "Tambah Pegawai" untuk menambahkan pegawai baru.',
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          fontFamily: "Poppins",
-                          color: Theme.of(context).primaryColorDark,
-                          fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
+                        fontFamily: "Poppins",
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 14
+                      )
+                    )
+                  )
+                ]
+              )
+            ]
+          )
+        )
+      )
     );
   }
 }

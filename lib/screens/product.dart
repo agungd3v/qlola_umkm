@@ -18,12 +18,22 @@ class ProductScreen extends StatefulWidget {
 class _ProductScreenState extends State<ProductScreen> {
   OwnerProvider? owner_provider;
   List products = [];
+  bool loading = true;
 
   Future _getProduct() async {
+    setState(() {
+      loading = true;
+    });
+
     final httpRequest = await get_product();
     if (httpRequest["status"] == 200) {
       setState(() {
         products = httpRequest["data"];
+        loading = false;
+      });
+    } else {
+      setState(() {
+        loading = false;
       });
     }
   }
@@ -69,7 +79,7 @@ class _ProductScreenState extends State<ProductScreen> {
             style: GoogleFonts.roboto(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColorDark,
-              fontSize: 18
+              fontSize: 20
             )
           ),
           systemOverlayStyle: SystemUiOverlayStyle(
@@ -80,9 +90,10 @@ class _ProductScreenState extends State<ProductScreen> {
       ),
       body: Stack(children: [
         Column(
-          crossAxisAlignment: products.isNotEmpty ? CrossAxisAlignment.start : CrossAxisAlignment.center,
           children: [
             Container(
+              color: Colors.white,
+              alignment: Alignment.centerLeft,
               padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -116,71 +127,12 @@ class _ProductScreenState extends State<ProductScreen> {
                 onRefresh: () => Future.delayed(const Duration(seconds: 1), () => _getProduct()),
                 child: SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
-                  child: ConstrainedBox(
-                    constraints: BoxConstraints(minHeight: constraints.maxHeight),
-                    child: IntrinsicHeight(
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 16),
-                          if (products.isNotEmpty) for (var index = 0; index < products.length; index++) GestureDetector(
-                            onTap: () => _editProduct(products[index]),
-                            child: Container(
-                              margin: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(0.2),
-                                    spreadRadius: 1,
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 3),
-                                  )
-                                ]
-                              ),
-                              child: ProductItem(product: products[index], index: index)
-                            )
-                          ),
-                          if (products.isEmpty) Expanded(child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                "assets/icons/product_empty.png",
-                                width: 300,
-                                height: 200,
-                                fit: BoxFit.contain
-                              ),
-                              Column(
-                                children: [
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    "Belum ada Produk",
-                                    style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold,
-                                      color: Theme.of(context).primaryColorDark
-                                    )
-                                  ),
-                                  const SizedBox(height: 12),
-                                  SizedBox(
-                                    width: 320,
-                                    child: Text(
-                                      'Tekan "Icon Plus" untuk menambahkan produk kamu ke dalam inventory',
-                                      textAlign: TextAlign.center,
-                                      style: GoogleFonts.roboto(
-                                        color: Theme.of(context).primaryColorDark,
-                                        fontSize: 12,
-                                      )
-                                    )
-                                  )
-                                ]
-                              )
-                            ]
-                          )),
-                          const SizedBox(height: 16),
-                        ]
-                      )
+                  child: loading ? Container(
+                    margin: const EdgeInsets.only(top: 50),
+                    child: Center(
+                      child: CircularProgressIndicator(color: Theme.of(context).primaryColor)
                     )
-                  )
+                  ) : products.isEmpty ? _emptyData(constraints) : _notEmptyData(constraints)
                 )
               )
             ))
@@ -209,16 +161,96 @@ class _ProductScreenState extends State<ProductScreen> {
                 ]
               ),
               child: Center(
-                child: Image.asset(
-                  "assets/icons/plus_white.png",
-                  width: 25,
-                  height: 25,
-                )
+                child: Icon(Icons.add, color: Colors.white, size: 32)
               )
             )
           )
         )
       ])
+    );
+  }
+
+  Widget _notEmptyData(BoxConstraints constraints) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+      child: IntrinsicHeight(
+        child: Column(
+          children: [
+            const SizedBox(height: 16),
+            for (var index = 0; index < products.length; index++) GestureDetector(
+              onTap: () => _editProduct(products[index]),
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.2),
+                      spreadRadius: 1,
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    )
+                  ]
+                ),
+                child: ProductItem(product: products[index], index: index)
+              )
+            ),
+            const SizedBox(height: 16)
+          ]
+        )
+      )
+    );
+  }
+
+  Widget _emptyData(BoxConstraints constraints) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(minHeight: constraints.maxHeight),
+      child: IntrinsicHeight(
+        child: Column(
+          children: [
+            Expanded(child: Container(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/icons/product_empty.png",
+                    width: 300,
+                    height: 200,
+                    fit: BoxFit.contain
+                  ),
+                  Column(
+                    children: [
+                      const SizedBox(height: 12),
+                      Text(
+                        "Belum ada Produk",
+                        style: GoogleFonts.roboto(
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).primaryColorDark,
+                          fontSize: 16
+                        )
+                      ),
+                      const SizedBox(height: 12),
+                      SizedBox(
+                        width: 320,
+                        child: Text(
+                          'Tekan "Icon Plus" untuk menambahkan produk kamu ke dalam inventory',
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.roboto(
+                            color: Theme.of(context).primaryColorDark,
+                            fontSize: 14,
+                          )
+                        )
+                      )
+                    ]
+                  )
+                ]
+              )
+            ))
+          ]
+        )
+      )
     );
   }
 }

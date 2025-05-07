@@ -97,3 +97,17 @@ String getDeviceType() {
   final media = MediaQueryData.fromView(WidgetsBinding.instance.window);
   return media.size.shortestSide < 600 ? "phone" : "tablet";
 }
+
+Color useColor(String color) {
+  if (color == "danger") {
+    return Color(0xFFE65353);
+  }
+  if (color == "warning") {
+    return Color(0xFFFFB74D);
+  }
+  if (color == "info") {
+    return Color(0xFF4DA6FF);
+  }
+
+  return Colors.white;
+}
