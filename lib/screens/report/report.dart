@@ -159,7 +159,6 @@ class _ReportScreenState extends State<ReportScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12, top: 42),
               decoration: BoxDecoration(
                 color: Theme.of(context).primaryColor,
                 border: Border(
@@ -169,21 +168,25 @@ class _ReportScreenState extends State<ReportScreen> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(
-                    width: 40,
-                    child: GestureDetector(
-                      onTap: () => Navigator.pop(context),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Container(
+                      color: Colors.transparent,
+                      padding: const EdgeInsets.only(top: 42, bottom: 12, left: 20, right: 14),
                       child: Image.asset("assets/icons/arrow_back_white.png", width: 16, height: 16)
                     )
                   ),
-                  Text(
-                    "Laporan Penjualan",
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    style: GoogleFonts.roboto(
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      fontSize: 4.5.w
+                  Container(
+                    padding: const EdgeInsets.only(top: 42, bottom: 12),
+                    child: Text(
+                      "Laporan Penjualan",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                      style: GoogleFonts.roboto(
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                        fontSize: 4.5.w
+                      )
                     )
                   )
                 ]
@@ -248,7 +251,7 @@ class _ReportScreenState extends State<ReportScreen> {
               )
             ),
             GestureDetector(
-              onTap: () => _showSelectDate(),
+              onTap: () => {},
               child: Container(
                 width: double.infinity,
                 height: 45,
@@ -547,7 +550,7 @@ class _ReportScreenState extends State<ReportScreen> {
                         ]
                       )
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 40),
                   ]
                 )
               )

@@ -25,6 +25,7 @@ analyzer:
     prefer_const_literals_to_create_immutables: ignore
     prefer_final_fields: ignore
     prefer_interpolation_to_compose_strings: ignore
+    sized_box_for_whitespace: ignore
     unnecessary_brace_in_string_interps: ignore
     unnecessary_this: ignore
     unrelated_type_equality_checks: ignore

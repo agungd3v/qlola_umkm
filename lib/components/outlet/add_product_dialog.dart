@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AddProductDialog extends StatefulWidget {
   dynamic outlet;
@@ -67,11 +68,10 @@ class _AddProductDialogState extends State<AddProductDialog> {
       ),
       title: Text(
         "Daftar Produk",
-        style: TextStyle(
-          fontFamily: "Poppins",
+        style: GoogleFonts.roboto(
           fontWeight: FontWeight.w600,
           color: Theme.of(context).primaryColorDark,
-          fontSize: 16
+          fontSize: 18
         )
       ),
       content: Column(
@@ -94,10 +94,9 @@ class _AddProductDialogState extends State<AddProductDialog> {
             child: Text(
               "Tidak ada satupun produk tersedia di bisnis anda",
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontFamily: "Poppins",
+              style: GoogleFonts.roboto(
                 color: Theme.of(context).primaryColorDark,
-                fontSize: 12
+                fontSize: 14
               )
             )
           ),
@@ -113,10 +112,9 @@ class _AddProductDialogState extends State<AddProductDialog> {
                       Text(
                         productDump[index]["product_name"],
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontFamily: "Poppins",
+                        style: GoogleFonts.roboto(
                           color: Theme.of(context).primaryColorDark,
-                          fontSize: 12
+                          fontSize: 14
                         )
                       ),
                       SizedBox(
@@ -153,11 +151,10 @@ class _AddProductDialogState extends State<AddProductDialog> {
               alignment: Alignment.center,
               child: Text(
                 "Tambahkan",
-                style: TextStyle(
-                  fontFamily: "Poppins",
+                style: GoogleFonts.roboto(
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
-                  fontSize: 12
+                  fontSize: 14
                 )
               )
             )

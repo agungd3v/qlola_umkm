@@ -6,6 +6,8 @@ import 'package:qlola_umkm/api/request.dart';
 import 'package:qlola_umkm/components/outlet/add_product_dialog.dart';
 import 'package:qlola_umkm/providers/owner_provider.dart';
 import 'package:qlola_umkm/utils/flush_message.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:sizer/sizer.dart';
 
 class AddOutletProductScreen extends StatefulWidget {
   dynamic outlet;
@@ -118,10 +120,10 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                   Text(
                     "Produk - ${widget.outlet["outlet_name"]}",
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontFamily: "Poppins",
+                    style: GoogleFonts.roboto(
                         fontWeight: FontWeight.w700,
-                        color: Theme.of(context).primaryColorDark),
+                        color: Theme.of(context).primaryColorDark,
+                        fontSize: 4.w),
                   ),
                 ],
               ),
@@ -132,10 +134,9 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
               child: GestureDetector(
                 onTap: () => _showListProduct(),
                 child: Container(
-                  width: MediaQuery.of(context).size.width *
-                      0.3, // Set width as a percentage of screen width
+                  width: 140, // Set width as a percentage of screen width
                   height:
-                      30, // You can adjust the height for better proportions
+                      38, // You can adjust the height for better proportions
                   alignment: Alignment
                       .center, // Ensures the text is centered both vertically and horizontally
                   decoration: BoxDecoration(
@@ -144,11 +145,10 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                   ),
                   child: Text(
                     "Tambah Produk",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
+                    style: GoogleFonts.roboto(
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
-                      fontSize: 12, // Font size remains consistent
+                      fontSize: 14, // Font size remains consistent
                     ),
                   ),
                 ),
@@ -190,10 +190,9 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                                     owner_provider!.products[index]
                                         ["product_name"],
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontFamily: "Poppins",
+                                    style: GoogleFonts.roboto(
                                       color: Theme.of(context).primaryColorDark,
-                                      fontSize: 12,
+                                      fontSize: 14,
                                     ),
                                   ),
                                 ),
@@ -216,10 +215,9 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                                     ),
                                     child: Text(
                                       "Hapus",
-                                      style: TextStyle(
-                                        fontFamily: "Poppins",
+                                      style: GoogleFonts.roboto(
                                         color: Colors.white,
-                                        fontSize: 11,
+                                        fontSize: 12,
                                       ),
                                     ),
                                   ),
@@ -247,15 +245,15 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
             if (!proccess)
               Container(
                 width: double.infinity,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                margin: const EdgeInsets.only(bottom: 5),
                 child: GestureDetector(
                   onTap: () {
                     FocusScope.of(context).unfocus();
                     _addEmployee();
                   },
                   child: Container(
-                    height: 40,
+                    height: 45,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
@@ -265,8 +263,7 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                     ),
                     child: Text(
                       "Simpan",
-                      style: TextStyle(
-                          fontFamily: "Poppins",
+                      style: GoogleFonts.roboto(
                           fontWeight: FontWeight.w700,
                           color: Colors.white),
                     ),
@@ -279,7 +276,7 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                 padding:
                     const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                 child: Container(
-                  height: 40,
+                  height: 45,
                   alignment: Alignment.center,
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,
@@ -296,8 +293,7 @@ class _AddOutletProductScreenState extends State<AddOutletProductScreen> {
                       ),
                       const SizedBox(width: 5),
                       Text("Proses Simpan...",
-                          style: TextStyle(
-                              fontFamily: "Poppins",
+                          style: GoogleFonts.roboto(
                               fontWeight: FontWeight.w700,
                               color: Colors.white))
                     ],
