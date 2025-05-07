@@ -13,7 +13,7 @@ class TransactionInfo extends StatefulWidget {
 
 class _TransactionInfoState extends State<TransactionInfo> {
   Future getHistory() async {
-    final httpRequest = await owner_transaction();
+    final httpRequest = await owner_summary();
     if (httpRequest["status"] == 200) {
       return httpRequest;
     }

@@ -23,7 +23,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
         statusBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
-        extendBodyBehindAppBar: false,
         body: Column(
           children: [
             Container(
@@ -57,55 +56,61 @@ class _TransactionScreenState extends State<TransactionScreen> {
                 ]
               )
             ),
-            Expanded(child: DefaultTabController(
-              length: 2,
-              initialIndex: 0,
-              child: Scaffold(
-                appBar: AppBar(
-                  toolbarHeight: 0,
-                  backgroundColor: Colors.white,
-                  bottom: TabBar(
-                    indicatorColor: Theme.of(context).primaryColor,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    onTap: (index) {
-                      setState(() {
-                        tabIndex = index;
-                      });
-                    },
-                    padding: const EdgeInsets.only(top: 0),
-                    tabs: [
-                      Tab(child: Text(
-                        "Transaksi hari ini",
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w600,
-                          color: tabIndex == 0 ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
-                          fontSize: 14
-                        )
-                      )),
-                      Tab(child: Text(
-                        "Transaksi bulan ini",
-                        style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.w600,
-                          color: tabIndex == 1 ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
-                          fontSize: 14
-                        )
-                      ))
-                    ]
-                  )
-                ),
-                body: TabBarView(
-                  physics: const NeverScrollableScrollPhysics(),
+            Expanded(
+              child: DefaultTabController(
+                length: 2,
+                child: Column(
                   children: [
-                    TransactionDaily(),
-                    TransactionMonthly()
+                    Container(
+                      color: Colors.white,
+                      child: TabBar(
+                        indicatorColor: Theme.of(context).primaryColor,
+                        indicatorSize: TabBarIndicatorSize.tab,
+                        onTap: (index) {
+                          setState(() {
+                            tabIndex = index;
+                          });
+                        },
+                        tabs: [
+                          Tab(
+                            child: Text(
+                              "Transaksi hari ini",
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w600,
+                                color: tabIndex == 0 ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
+                                fontSize: 14,
+                              )
+                            )
+                          ),
+                          Tab(
+                            child: Text(
+                              "Transaksi bulan ini",
+                              style: GoogleFonts.roboto(
+                                fontWeight: FontWeight.w600,
+                                color: tabIndex == 1 ? Theme.of(context).primaryColor : Theme.of(context).primaryColorDark,
+                                fontSize: 14,
+                              )
+                            )
+                          )
+                        ]
+                      )
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: [
+                          TransactionDaily(),
+                          TransactionMonthly()
+                        ]
+                      )
+                    )
                   ]
                 )
               )
             )
-          )
-        ]
-      ),
-    )
+          ]
+        )
+      )
     );
   }
 }

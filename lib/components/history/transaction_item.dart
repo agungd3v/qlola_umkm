@@ -79,11 +79,12 @@ class _TransactionItemState extends State<TransactionItem> {
           shape: Border(),
           title: Text(
             widget.transaction["checkouts"][0]["outlet"]["outlet_name"],
+            maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.roboto(
               fontWeight: FontWeight.w500,
               color: Theme.of(context).primaryColorDark,
-              fontSize: 14
+              fontSize: 16
             )
           ),
           subtitle: Text(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:sizer/sizer.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class HistoryTransactionScreen extends StatefulWidget {
   const HistoryTransactionScreen({super.key});
@@ -42,11 +43,10 @@ class _HistoryTransactionScreenState extends State<HistoryTransactionScreen> {
                   ),
                   Text(
                     "History Transaksi",
-                    style: TextStyle(
-                      fontFamily: "Poppins",
-                      fontWeight: FontWeight.w700,
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 3.6.w
+                      fontSize: 4.5.w
                     )
                   ),
                 ]
@@ -55,14 +55,9 @@ class _HistoryTransactionScreenState extends State<HistoryTransactionScreen> {
             GestureDetector(
               onTap: () => context.pushNamed("Owner Transaction"),
               child: Container(
-                width: double.infinity,
+                color: Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                height: 50,
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1, color: Theme.of(context).dividerColor)
-                  )
-                ),
+                height: 70,
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -73,27 +68,32 @@ class _HistoryTransactionScreenState extends State<HistoryTransactionScreen> {
                       children: [
                         Text(
                           "History Transaksi",
-                          style: TextStyle(
-                            fontFamily: "Poppins",
+                          style: GoogleFonts.roboto(
                             color: Theme.of(context).primaryColorDark,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 12
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16
                           )
                         ),
                         Text(
                           "history traansaksi bulan ini dan hari ini",
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontFamily: "Poppins",
+                          style: GoogleFonts.roboto(
                             color: Theme.of(context).primaryColorDark.withOpacity(0.6),
-                            fontSize: 12
+                            fontSize: 14
                           )
                         )
                       ]
                     ),
-                    Image.asset("assets/icons/arrow_right_black.png", width: 13, height: 13)
+                    Image.asset("assets/icons/arrow_right_black.png", width: 17, height: 17)
                   ]
                 )
+              )
+            ),
+            Container(
+              height: 1,
+              decoration: BoxDecoration(
+                border: Border.all(width: 1, color: Theme.of(context).dividerColor)
               )
             )
           ]

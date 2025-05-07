@@ -65,7 +65,7 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
           backgroundColor: Theme.of(context).primaryColor,
           elevation: 0,
           title: Text(
-            "Kelola Pegawai",
+            "Pegawai",
             style: GoogleFonts.roboto(
               fontWeight: FontWeight.bold,
               color: Theme.of(context).primaryColorDark,
@@ -78,81 +78,79 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
           )
         )
       ),
-      body: Stack(
-        children: [
-          Column(
-            children: [
-              Container(
-                alignment: Alignment.centerLeft,
-                color: Colors.white,
-                padding: const EdgeInsets.all(16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Kelola Pegawai",
-                      style: GoogleFonts.roboto(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                        color: Theme.of(context).primaryColorDark,
-                      ),
+      body: Stack(children: [
+        Column(
+          children: [
+            Container(
+              alignment: Alignment.centerLeft,
+              color: Colors.white,
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Kelola Pegawai",
+                    style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Theme.of(context).primaryColorDark,
                     ),
-                    Text(
-                      "Kelola semua pegawai kamu di sini.",
-                      style: GoogleFonts.roboto(
-                        color: Theme.of(context).disabledColor,
-                        fontSize: 14,
-                      )
-                    )
-                  ]
-                )
-              ),
-              // Divider
-              Container(
-                height: 8,
-                color: Theme.of(context).dividerColor.withOpacity(0.3),
-              ),
-              Expanded(
-                child: LayoutBuilder(
-                  builder: (context, constraints) => RefreshIndicator(
-                    color: Theme.of(context).indicatorColor,
-                    onRefresh: () => Future.delayed(const Duration(seconds: 1), () => _getEmployee()),
-                    child: loading ? Center(
-                      child: CircularProgressIndicator(color: Theme.of(context).primaryColor)
-                    ) : employees.isEmpty ? _emptyData(constraints) : _notEmptyData(constraints)
-                  )
-                )
-              )
-            ]
-          ),
-          Positioned(
-            bottom: 10,
-            right: 10,
-            child: GestureDetector(
-              onTap: _navigateToAddEmployee, // Navigate to add employee page
-              child: Container(
-                width: 45,
-                height: 45,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).primaryColor,
-                  borderRadius: BorderRadius.all(Radius.circular(99)),
-                  boxShadow: [
-                    BoxShadow(
+                  ),
+                  Text(
+                    "Kelola semua pegawai kamu di sini.",
+                    style: GoogleFonts.roboto(
                       color: Theme.of(context).disabledColor,
-                      spreadRadius: 0,
-                      blurRadius: 1,
-                      offset: const Offset(1, 2),
+                      fontSize: 14,
                     )
-                  ]
-                ),
-                child: Center(
-                  child: Icon(Icons.add, color: Colors.white, size: 32)
+                  )
+                ]
+              )
+            ),
+            // Divider
+            Container(
+              height: 8,
+              color: Theme.of(context).dividerColor.withOpacity(0.3),
+            ),
+            Expanded(
+              child: LayoutBuilder(
+                builder: (context, constraints) => RefreshIndicator(
+                  color: Theme.of(context).indicatorColor,
+                  onRefresh: () => Future.delayed(const Duration(seconds: 1), () => _getEmployee()),
+                  child: loading ? Center(
+                    child: CircularProgressIndicator(color: Theme.of(context).primaryColor)
+                  ) : employees.isEmpty ? _emptyData(constraints) : _notEmptyData(constraints)
                 )
               )
             )
+          ]
+        ),
+        Positioned(
+          bottom: 10,
+          right: 10,
+          child: GestureDetector(
+            onTap: _navigateToAddEmployee, // Navigate to add employee page
+            child: Container(
+              width: 45,
+              height: 45,
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: BorderRadius.all(Radius.circular(99)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Theme.of(context).disabledColor,
+                    spreadRadius: 0,
+                    blurRadius: 1,
+                    offset: const Offset(1, 2),
+                  )
+                ]
+              ),
+              child: Center(
+                child: Icon(Icons.add, color: Colors.white, size: 32)
+              )
+            )
           )
-        ]
-      )
+        )
+      ])
     );
   }
 
@@ -192,7 +190,8 @@ class _EmployeeScreenState extends State<EmployeeScreen> {
                     style: TextStyle(
                       fontFamily: "Poppins",
                       fontWeight: FontWeight.w700,
-                      color: Theme.of(context).primaryColorDark
+                      color: Theme.of(context).primaryColorDark,
+                      fontSize: 16
                     )
                   ),
                   const SizedBox(height: 12),
